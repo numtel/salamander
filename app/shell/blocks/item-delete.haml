@@ -1,0 +1,12 @@
+-$item=pull_item($render_params)
+-if($item===false)
+	.alert.alert-error
+		%strong Error!
+		Invalid Item!
+-else
+	%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/delete"}
+	%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}"}
+	%p
+		%strong Current Item:
+		%code=$item['node:address']
+	%p Are you sure you wish to delete this item and its children?

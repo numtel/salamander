@@ -1,0 +1,125 @@
+-function drawField($patVal,$thisItem=array())
+	-if(!isset($patVal['type']) || !in_array($patVal['type'],array('array','recursive')))
+		-$patKey=$patVal['node:name']
+		-$cItemValFixed=isset($thisItem[$patKey]) ? htmlspecialchars($thisItem[$patKey]) : ''
+		-$cExtraKey=isset($thisItem['insert-item-key']) ? '['.quote2entities($thisItem['insert-item-key']).']' : ''
+		-if(isset($patVal['type']) && $patVal['type']==='textarea')
+			.field-textarea
+				.span5=$patVal['label']
+				%textarea.span5.plaintext{:name=>"fields[data]#{$cExtraKey}[#{$patKey}]"}=$cItemValFixed
+		-elseif(isset($patVal['type']) && $patVal['type']==='richtext')
+			.field-richtext
+				.span5=$patVal['label']
+				%textarea.span5.ckeditor{:name=>"fields[data]#{$cExtraKey}[#{$patKey}]"}=$cItemValFixed
+		-elseif(isset($patVal['type']) && $patVal['type']==='checkbox')
+			%label.field-checkbox
+				-if($cItemValFixed)
+					%input{:type=>'checkbox',:name=>"fields[data]#{$cExtraKey}[#{$patKey}]",:value=>'1',:checked=>'checked'}
+				-else
+					%input{:type=>'checkbox',:name=>"fields[data]#{$cExtraKey}[#{$patKey}]",:value=>'1'}
+				=$patVal['label']
+		-else
+			.span2=$patVal['label']
+			%input.span3{:type=>"text",:name=>"fields[data]#{$cExtraKey}[#{$patKey}]",:value=>"#{quote2entities($cItemValFixed)}"}
+%form.modal.hide.fade##{$_GET['modalId']}
+	.modal-header
+		%a.close{:href=>"#",:data-dismiss=>"modal"} ×
+		%h3=$_GET['modalTitle']
+	.modal-body 
+		-if($tool==='edit')
+			%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/edit"}
+			%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$thisItem['node:address']}"}
+			%input{:type=>"hidden",:name=>"fields[data][pattern:match]",:value=>"#{$thisItem['pattern:match']}"}
+			-foreach($patternItem['node:children'] as $patVal)
+				-drawField($patVal,$thisItem)
+		-elseif($tool==='insert')
+			-if(count($childTypes)===0)
+				%p No children can be inserted on this item type.
+			-else
+				%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/insert"}
+				%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$thisItem['node:address']}/"}
+				.pattern-selector.#{count($childTypes)===1 ? 'hide' :''}
+					.span2 Item Type
+					%select.span3.pattern-match{:name=>"fields[data][#RAND#][pattern:match]"}
+						-foreach($childTypes as $patVal)
+							%option{:value=>"#{$patVal['node:address']}"}=$patVal['label']
+				-foreach($childTypes as $patVal)
+					.pattern-type{:data-address=>"#{$patVal['node:address']}"}
+						-foreach($patVal['node:children'] as $patField)
+							-drawField($patField,array('insert-item-key'=>'#RAND#'))
+		-elseif($tool==='delete')
+			%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/delete"}
+			%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$thisItem['node:address']}"}
+			%p Are you sure you wish to delete this item and its children?
+		-elseif($tool==='move')
+			%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/move"}
+			%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$thisItem['node:address']}"}
+			%p Where would you like to move this item?
+			%input.span5.new-address{:type=>"text",:name=>"fields[newAddress]",:value=>"#{quote2entities(substr($thisItem['node:address'],0,strrpos($thisItem['node:address'],'/')+1))}",:placeholder=>"New Address"}
+			.control-group.copy
+				%input#make-copy-not-move{:type=>"checkbox"}
+				%label{:for=>'make-copy-not-move'} Make a Copy
+		-elseif($tool==='rename')
+			%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/rename"}
+			%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$thisItem['node:address']}"}
+			%p What would you like to rename this item to?
+			%input.span3.new-name{:type=>"text",:name=>"fields[name]",:value=>"#{$thisItem['node:name']}",:placeholder=>"New Name"}
+		-elseif($tool==='owner')
+			%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/chown"}
+			%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$thisItem['node:address']}"}
+			.span2 New Owner
+			%select.select-users.span3{:name=>"fields[user]",:value=>"#{$thisItem['node:owner']}"}
+				-foreach($node->db->select($node->user_user->table,array('name')) as $userId=>$user)
+					-if($thisItem['node:owner']*1===$userId*1)
+						%option{:value=>"#{$userId}",:selected=>"selected"}=$user['name']
+					-else
+						%option{:value=>"#{$userId}"}=$user['name']
+		-elseif($tool==='permission')
+			.control-group
+				%select.select-users.span5{:multiple=>"multiple",:name=>"fields[accessors][]"}
+					%optgroup{:label=>'Special Groups'}
+						%option{:value=>"#{0}"} World
+						%option{:value=>"#{-1}"} All Logged In Users
+					%optgroup{:label=>'Groups'}
+						-foreach($node->record_group->list_groups($node->user_user->table) as $groupId=>$group)
+							%option{:value=>"#{($groupId*-1)-100}"}=$group['name']
+					%optgroup{:label=>'Users'}
+						-foreach($node->db->select($node->user_user->table,array('name')) as $userId=>$user)
+							%option{:value=>"#{$userId}"}=$user['name']
+			.control-group
+				%input.select-mode.span5{:type=>"text",:name=>"fields[mode]",:value=>"#{0}",:data-mode=>"#{$thisItem['node:modeString']}"}
+			%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/chmod"}
+			%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$thisItem['node:address']}"}
+			-if(count($permissions)===0)
+				%p There are no permission rules set on this item.
+			-else
+				%table.table.table-striped
+					%thead
+						%tr
+							%th Access Group
+							%th Roles
+							%th=' '
+					%tbody
+						-foreach($permissions as $permId=>$perm)
+							-$accessor=$node->record_tree2->access_id_load($perm['access_id'])
+							%tr{:data-id=>"#{$permId}"}
+								%td
+									-if($accessor['group'])
+										%strong='Group: '
+									=$accessor['name']
+								%td=$node->record_tree2->mode_to_string($perm['mode'])
+								%td
+									-if($thisItem['node:roles']['o'] || $perm['owner']*1===$node->user_user->currentId)
+										.delete-permission{:data-address=>"#{$thisItem['node:address']}",:data-accessors=>"#{$perm['access_id']}"}
+											%a.btn{:href=>'javascript:',:title=>'Delete Permission'}
+												%i.icon-trash
+									-if($thisItem['node:roles']['o'] || $perm['owner']*1!==$node->user_user->currentId)
+										%p
+											%strong Set By:
+											=' '.$node->user_user->find_name($perm['owner'])
+		-elseif($tool===false)
+			Invalid tool selected!
+	.modal-footer
+		%a.btn{:href=>"#",:data-dismiss=>"modal"} Close
+		-if($tool!=='insert' || count($childTypes)>0)
+			%button.btn.btn-primary{:type=>"submit"} Save Changes

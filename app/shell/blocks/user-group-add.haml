@@ -1,0 +1,4 @@
+%input{:type=>"hidden",:name=>"action",:value=>"record_group/create"}
+%input.table{:type=>"hidden",:name=>"fields[table]",:value=>"#{$node->user_user->table}"}
+.span2 Name
+%input.name.span3{:type=>"text",:name=>"fields[name][]"}

@@ -1,0 +1,45 @@
+!!! 5
+%html
+	%head
+		%meta{:charset=>'utf-8'}
+		%title='Welcome'
+		=$headerHTML
+	%body{:style=>'padding-top:50px;'}
+		.container
+			.row
+				.well.span4.offset4
+					%h1 Welcome to the internet!
+					-if($node->render_post->status) 
+						.alert.#{strpos(strtolower($node->render_post->status),'fail')!==false ? 'alert-error' : ''}
+							%button.close{:type=>'button',:data-dismiss=>'alert'} ×
+							=$node->render_post->status
+					-elseif($node->render_post->did_post)
+						.alert.alert-error
+							%button.close{:type=>'button',:data-dismiss=>'alert'} ×
+							Invalid form submission!
+
+					-if(isset($node->record_tree2) && $node->admin_install->installable())
+						%p This appears to be your first time. Please fill in the following fields to continue your installation.
+						%form{:method=>'post'}
+							%p.field
+								%label Root Group Name
+									%input{:name=>'fields[group]',:value=>'Administrators'}
+							%p.field
+								%label First User Name
+									%input{:name=>'fields[user]',:value=>'root'}
+							%p.field
+								%label First User Password
+									%input{:name=>'fields[pw]',:value=>'',:type='password'}
+							%p.field
+								%label.checkbox
+									%input{:name=>'fields[installDocs]',:value=>'1',:type=>'checkbox',:checked=>'checked'}
+									Install Docs Data
+							.submit
+								%input{:type=>'hidden',:name=>'action',:value=>'admin_install/install'}
+								%button.btn.btn-primary{:type=>'submit'} Install
+					-else
+						%ul
+							%li 
+								%a{:href=>'docs'} Read the documentation to learn more.
+							%li 
+								%a{:href=>'shell'} Visit the shell to get started!

@@ -1,0 +1,15 @@
+-if($item===false)
+	.alert.alert-error
+		%strong Error!
+		Invalid Item!
+-else
+	%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/insert"}
+	%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}/"}
+	%p
+		%strong Insert Into:
+		%code=$item['node:address'].'/'
+	%p.modal-content-sep-bottom An item name and at least one attribute is required.
+	.span2 Item Name
+	%input.item-name.span3{:type=>"text"}
+	.modal-content-sep-top#insert-item-attributes
+		%ul.key-value.narrow.insert.form-horizontal

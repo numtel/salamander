@@ -1,0 +1,62 @@
+
+.padding { padding:10px; }
+.margin-vertical { margin-top:10px; margin-bottom:10px; }
+.no-margin-left { margin-left:0px; }
+/*.hide {display:none !important;}*/
+
+body {padding:50px 0 0;}
+
+.navbar.navbar-fixed-top .brand {
+	padding-right: 0;
+	padding-left: 0;
+	margin-left: 20px;
+	float: right;
+	font-weight: normal;
+	color: #f89406;
+	text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+	text-transform:lowercase;
+}
+
+#terminal { width:100%; height:50%;  font-family:monospace; color:#ddd; background-color:#003; font-weight:bold; }
+
+.tree-address { width:300px; }
+.tree-control.loading .tree-address {background-image:url(img/load.gif); background-repeat:no-repeat; background-position:98% 50%; }
+
+.address-bar {position:relative; z-index:5; margin-left:10px; width:370px; float:left; }
+#main-tree {margin-top:4px;}
+#tree-browser { 
+	.tree-sel { height:280px; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+	&.loading .tree-sel {  background-image:url(img/load-bar.gif); background-repeat:no-repeat; background-position:50% 50%; 
+		* { visibility:hidden; }
+	}
+}
+/*.tab-content { overflow:initial; }*/
+
+/* STYLES FOR DATA DETAILS */
+#details { padding-top:30px; }
+
+ul.key-value {
+	li.item-key-value {margin-bottom:4px; list-style:none; clear:both;
+		.item-key { margin-left:0px; }
+		.item-value { margin:0 5px 10px 0; box-sizing:border-box;}
+		input.key { margin-right:4px; margin-left:-4px; }
+	}
+}
+
+form.delete-permission { float:right; }
+
+/* STYLES FOR THINGS IN MODALS */
+.modal-content-sep-top { margin-top:10px; border-top:1px solid #eee; padding-top:10px; }
+.modal-content-sep-bottom { margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:10px; }
+
+.tree-sel { margin-left:0px; overflow:auto; padding:0px; 
+	.tree-sel-wrapper {}
+	.sel-column {float:left; width:150px; height:260px; overflow:auto; border-right:1px solid #ddd; padding:10px 0px; }
+	.sel-column:nth-child(even) { background-color:#fafafa; }
+/*	.sel-column:last-child { border-right:0px; }*/
+}
+
+#admin-move .control-group.copy { clear:both; margin:0px;
+	input { float:left; }
+	label { padding-left:20px; line-height:20px;}
+}

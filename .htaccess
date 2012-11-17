@@ -1,0 +1,11 @@
+<Files ~ "\.(ini|haml)$">
+  order allow,deny
+  deny from all
+</Files>
+
+# Rewrite the request for *.* that doesnt exist to index.php?resource=*.* [QSA,NC,L]
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?page=$1 [QSA,NC,L]

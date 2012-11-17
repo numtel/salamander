@@ -1,0 +1,71 @@
+-if($thisItem===false)
+	Please select a valid item.
+-else
+	#top
+	-if(count($node->page['params']))
+		-#if not homepage, display breadcrumbs
+		%ul.breadcrumb
+			%li
+				%a{:href=>"#{$p}"} docs
+				%span.divider='/'
+			-$cBreadcrumb=''
+			-foreach($node->page['params'] as $i=>$param)
+				-if($i===count($node->page['params'])-1)
+					%li.active=$param
+				-else
+					-$cBreadcrumb.=$param.'/'
+					%li
+						%a{:href=>"#{$p.$cBreadcrumb}"}=$param
+						%span.divider='/'
+	-else
+		-#display welcome message
+		-$this->render($appDir.'/welcome',array(),false)
+	-if($thisSections!==false)
+		.subnav
+			%ul.nav.nav-pills
+				%li
+					%a{:href=>'#top'} Overview
+				-foreach($thisSections as $cSectName=>$cSection)
+					%li
+						%a{:href=>'##{$cSectName}'}=$cSection['title']
+	-function displayDataAsUL($data,$patternFlat,$patternAddr,$p,$dataPath,$notRoot=false)
+		%ul.items#{$notRoot ? '-children' : ''}
+			-foreach($data as $item)
+				-if(!isset($item['pattern:match']) && count($item['node:children']))
+					%li.item.no-pattern{:data-item-address=>"#{$item['node:address']}", :data-item-roles=>"#{$item['node:modeString']}"}
+						-displayDataAsUL($item['node:children'],$patternFlat,$patternAddr,$p,$dataPath,true)
+				-else
+					-$match=$patternFlat[$item['pattern:match']]
+					-if(isset($match['hide-on-page']))
+						-$matchHide=explode(',',$match['hide-on-page'])
+					-else
+						-$matchHide=array()
+					-if(in_array($patternAddr,$matchHide) && $notRoot===true)
+						-continue;
+					%li.item.#{$match['node:name']}##{$match['node:name']==='section' ? $item['node:name'] : ''}{:data-item-address=>"#{$item['node:address']}", :data-item-roles=>"#{$item['node:modeString']}",:data-pattern-match=>"#{$item['pattern:match']}"}
+						.item=$match['label']
+						%ul.attributes
+							-foreach($match['node:children'] as $key=>$matchKey)
+								-if((isset($matchKey['type']) && in_array($matchKey['type'],array('array', 'recursive'))) || !isset($item[$key]))
+									-continue;
+								-$value=str_replace('%%toroot%%',$p,$item[$key])
+								-$attribMods=extract_modifiers($matchKey)
+								-$applyWrapper=isset($matchKey['wrapper-element']) && !in_array($patternAddr,$attribMods['no-wrapper-on-page'])
+								-if(in_array($patternAddr,$attribMods['hide-on-page']))
+									-continue;
+								%li.attribute.#{$key}
+									-if($applyWrapper)
+										='<'.$matchKey['wrapper-element'].(isset($matchKey['wrapper-element-class']) ? ' class="'.$matchKey['wrapper-element-class'].'"' : '').'>'
+									-if(in_array($patternAddr,$attribMods['display-as-link']))
+										%a{:href=>"#{$p.substr($item['node:address'],strlen($dataPath)+1)}"}
+											.label=$matchKey['label']
+											.value=$value
+									-else
+										.label=$matchKey['label']
+										.value=$value
+									-if($applyWrapper)
+										='</'.$matchKey['wrapper-element'].'>'
+						-if(count($item['node:children']))
+							-displayDataAsUL($item['node:children'],$patternFlat,$patternAddr,$p,$dataPath,true)
+	-displayDataAsUl($pageData,$patternFlat,$patternAddr,$p,$dataPath)
+		

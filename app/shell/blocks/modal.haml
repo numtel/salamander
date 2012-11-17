@@ -1,0 +1,8 @@
+%form.modal.hide.fade##{$render_params['id']}
+	.modal-header
+		%a.close{:href=>"#",:data-dismiss=>"modal"} ×
+		%h3=$render_params['title']
+	.modal-body=$render_params['content']
+	.modal-footer
+		%a.btn{:href=>"#",:data-dismiss=>"modal"} Close
+		%button.btn.btn-primary{:type=>"submit"} Save Changes

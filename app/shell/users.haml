@@ -1,0 +1,49 @@
+.row#users
+	.span7
+		.btn-group.margin-vertical#user-controls
+			%a.btn.signup-user-btn{:href=>"javascript:"}
+				%i.icon-plus
+				New User
+			%a.btn.delete-user-btn{:href=>"javascript:"}
+				%i.icon-remove
+				Delete
+			%a.btn.rename-user-btn{:href=>"javascript:"}
+				%i.icon-edit
+				Rename
+			%a.btn.change-pw-btn{:href=>"javascript:"}
+				%i.icon-lock
+				Change Password
+			%a.btn.disabled.disassociate-btn{:href=>"javascript:"}
+				%i.icon-ban-circle
+				Remove From Group
+		%select.user-select{:value=>"#{$node->user_user->currentId}"}
+			-foreach($users as $userId=>$user)
+				-if($userId===$node->user_user->currentId)
+					%option{:selected=>"selected",:value=>"#{$userId}",:data-groups=>"#{isset($user['admin:groups']) ? implode(',',$user['admin:groups']) : ''}"}=$user['name']
+				-else
+					%option{:value=>"#{$userId}",:data-groups=>"#{isset($user['admin:groups']) ? implode(',',$user['admin:groups']) : ''}"}=$user['name']
+		.margin-vertical#user-details
+			.alert.alert-info 
+				Please select a user to modify its details.
+	.span5
+		.btn-group.margin-vertical#group-controls
+			%a.btn.create-group-btn{:href=>"javascript:"}
+				%i.icon-plus
+				Insert Group
+			%a.btn.disabled.delete-group-btn{:href=>"javascript:"}
+				%i.icon-remove
+				Delete
+			%a.btn.disabled.rename-group-btn{:href=>"javascript:"}
+				%i.icon-edit
+				Rename
+			%a.btn.disabled.associate-btn{:href=>"javascript:"}
+				%i.icon-ok-circle
+				Add User to Group
+		.well
+			%ul.nav.nav-list#group-list
+				-foreach($node->user_user->groups['names'] as $groupId=>$group)
+					%li{:data-group-id=>"#{$groupId}",:data-name=>"#{$group['name']}"}
+						%a.select-group{:href=>"javascript:"}
+							%i.icon-cog
+							=$group['name']
+		

@@ -1,0 +1,14 @@
+-$item=pull_item($render_params)
+-if($item===false)
+	.alert.alert-error
+		%strong Error!
+		Invalid Item!
+-else
+	%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/rename"}
+	%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}"}
+	%p
+		%strong Current Item:
+		%code=$item['node:address']
+	%p What would you like to rename this item to?
+	%input.span3.new-name{:type=>"text",:name=>"fields[name]",:value=>"",:placeholder=>"New Name"}
+	

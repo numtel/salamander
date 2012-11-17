@@ -1,0 +1,18 @@
+-$item=pull_item($render_params)
+-if($item===false)
+	.alert.alert-error
+		%strong Error!
+		Invalid Item!
+-else
+	%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/move"}
+	%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}"}
+	%p
+		%strong Current Item:
+		%code=$item['node:address']
+	%p Where would you like to move this item?
+	%input.span5.new-address{:type=>"text",:name=>"fields[newAddress]",:value=>"#{quote2entities(substr($item['node:address'],0,strrpos($item['node:address'],'/')+1))}",:placeholder=>"New Address"}
+	.control-group.copy
+		%input#make-copy-not-move{:type=>"checkbox"}
+		%label{:for=>'make-copy-not-move'} Make a Copy
+
+	

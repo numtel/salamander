@@ -1,0 +1,134 @@
+-if(isset($error))
+	.alert.alert-error
+		%strong Error!
+		=' '.$error
+-else
+	-if(!$isRoot)
+		%h4.padding
+			%i.icon-#{isset($item['admin:icon']) ? $item['admin:icon'] : 'file'}
+			=$item['node:address']
+			%small
+				%strong Owner:
+				%em=' '.((int)$item['node:owner']===0 ? 'No Owner' : $node->user_user->find_name($item['node:owner']))
+				%strong Created:
+				%em=' '.$item['node:created']
+				%strong My Roles:
+				%em=' '.$item['node:modeString']
+	-else
+		%h4.padding
+			%i.icon-asterisk
+			Data Root
+			%small
+				%strong My Roles:
+				%em=' '.$item['node:modeString']
+	-if($item['node:roles']['o'] || $item['node:roles']['p'])
+		%ul.nav.nav-tabs
+			%li.active
+				%a{:href=>"#editor",:data-toggle=>"tab"} Data
+			%li
+				%a{:href=>"#permissions",:data-toggle=>"tab"} Access
+	.tab-content
+		.tab-pane.active#editor
+			-if($isRoot)
+				.alert.alert-info
+					%strong Root Item
+					%p Attributes cannot be set on root.
+			-else
+				%form.form-inline.edit-item
+					%ul.key-value.#{$item['node:roles']['w'] ? '' : 'no-write'}
+						-foreach($item as $key=>$value)
+							-if(substr($key,0,5)!=='node:')
+								%li.item-key-value{:data-key=>"#{$key}"}
+									.span2.item-key=$key
+									-if(is_array($value))
+										%pre.span5.item-value=print_r($value,true)
+									-else
+										-if($item['node:roles']['w'])
+											%input.span5{:type=>"text", :name=>"fields[data][#{$key}]", :value=>"#{quote2entities($value)}"}
+										-else
+											.span5.item-value=$value
+									-if($item['node:roles']['d'])
+										%a.btn.delete-key-value{:href=>'javascript:',:title=>'Delete Attribute'}
+											%i.icon-trash
+					-if($item['node:roles']['w'])
+						.form-actions
+							%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/edit"}
+							%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}"}
+							%button.btn.btn-primary{:type=>"submit"} Save Changes
+		.tab-pane#permissions{:data-roles=>"#{$item['node:modeString']}"}
+			-if($item['node:roles']['p'])
+				-if(count($permissions)===0)
+					%h5.padding There are no permission rules set on this item.
+				-else
+					%table.table.table-striped
+						%thead
+							%tr
+								%th Access Group
+								%th Roles
+								%th=' '
+						%tbody
+							-foreach($permissions as $permId=>$perm)
+								-$accessor=$node->record_tree2->access_id_load($perm['access_id'])
+								%tr{:data-id=>"#{$permId}"}
+									%td
+										-if($accessor['group'])
+											%strong='Group: '
+										=$accessor['name']
+									%td=$node->record_tree2->mode_to_string($perm['mode'])
+									%td
+										-if($item['node:roles']['o'] || $perm['owner']*1===$node->user_user->currentId)
+											%form.delete-permission
+												%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/chmod"}
+												%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}"}
+												%input{:type=>"hidden",:name=>"fields[mode]",:value=>"delete"}
+												%input{:type=>"hidden",:name=>"fields[accessors][]",:value=>"#{$perm['access_id']}"}
+												%button.btn{:type=>"submit",:title=>'Delete Permission'}
+													%i.icon-trash
+										-if($item['node:roles']['o'] || $perm['owner']*1!==$node->user_user->currentId)
+											%p
+												%strong Set By:
+												=' '.$node->user_user->find_name($perm['owner'])
+				%form.well.clearfix#add-permission
+					%h5.padding
+						%i.icon-lock
+						Set Permission
+					.span6
+						.control-group
+							%select.select-users.span5{:multiple=>"multiple",:name=>"fields[accessors][]"}
+								%optgroup{:label=>'Special Groups'}
+									%option{:value=>"#{0}"} World
+									%option{:value=>"#{-1}"} All Logged In Users
+								%optgroup{:label=>'Groups'}
+									-foreach($node->record_group->list_groups($node->user_user->table) as $groupId=>$group)
+										%option{:value=>"#{($groupId*-1)-100}"}=$group['name']
+								%optgroup{:label=>'Users'}
+									-foreach($node->db->select($node->user_user->table,array('name')) as $userId=>$user)
+										%option{:value=>"#{$userId}"}=$user['name']
+						.control-group
+							%input.select-mode.span5{:type=>"text",:name=>"fields[mode]",:value=>"#{0}"}
+					.span2
+						%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/chmod"}
+						%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}"}
+						%button.btn{:type=>"submit"} 
+							Set Permissions
+			-if($item['node:roles']['o'] && !$isRoot)
+				%form.well.clearfix#set-owner
+					%h5.padding
+						%i.icon-flag
+						Set Owner
+					.span6
+						.control-group
+							%select.select-users.span5{:name=>"fields[user]",:value=>"#{$item['node:owner']}"}
+								%option{:value=>"#{0}"} No Owner
+								-foreach($node->db->select($node->user_user->table,array('name')) as $userId=>$user)
+									-if($item['node:owner']*1===$userId*1)
+										%option{:value=>"#{$userId}",:selected=>"selected"}=$user['name']
+									-else
+										%option{:value=>"#{$userId}"}=$user['name']
+					.span2
+						%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/chown"}
+						%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}"}
+						%button.btn{:type=>"submit"} 
+							Set Owner
+			
+

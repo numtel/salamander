@@ -1,0 +1,42 @@
+!!! 5
+%html
+	%head
+		%meta{:charset=>'utf-8'}
+		%title=(isset($pageAddr) ? $pageAddr : '/docs')
+		%script
+			var appPath="#{$p}", appDir="#{$appDir}";
+		=$headerHTML
+	%body{:data-spy=>'scroll'}
+		.container
+			.navbar.navbar-fixed-top
+				.navbar-inner
+					.container
+						%a.brand{:href=>"#{$p}"}='Salamander Docs'
+						%ul.nav
+							-foreach($dataRoot['node:children'] as $cName=>$cInfo)
+								-if(count($cInfo['node:children'])>0 && (!isset($cInfo['hide-menu']) || $cInfo['hide-menu']==false))
+									%li.dropdown.#{isset($pageAddr) && $cInfo['node:address']===$pageAddr ? 'active' : ''}
+										%a.dropdown-toggle{:href=>"#",:data-toggle=>"dropdown"} 
+											=$cInfo['title']
+											%b.caret
+										%ul.dropdown-menu
+											-foreach($cInfo['node:children'] as $cChildName=>$cChildInfo)
+												-if(!in_array(substr($cChildInfo['pattern:match'],strrpos($cChildInfo['pattern:match'],'/')+1),array('module','page')))
+													-continue;
+												%li
+													%a{:href=>"#{$p.substr($cChildInfo['node:address'],strlen($dataPath)+1)}"}=isset($cChildInfo['title']) ? $cChildInfo['title'] : $cChildInfo['name']
+								-else
+									%li.#{isset($pageAddr) && $cInfo['node:address']===$pageAddr ? 'active' : ''}
+										%a{:href=>"#{$p.substr($cInfo['node:address'],strlen($dataPath)+1)}"}=isset($cInfo['title']) ? $cInfo['title'] : $cInfo['name']
+							
+			#contents
+				=$content
+			.footer
+				%p 
+					Designed and built by 
+					%a{:href=>'mailto:ben@latenightsketches.com'} ben@latenightsketches.com
+				%p
+					Code licensed under 
+					%a{:href=>'http://www.gnu.org/licenses/'} GPL v3
+					, documentation under 
+					%a{:href=>'http://creativecommons.org/licenses/by/3.0/'} CC BY 3.0

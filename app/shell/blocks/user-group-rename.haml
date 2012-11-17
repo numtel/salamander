@@ -1,0 +1,5 @@
+%input{:type=>"hidden",:name=>"action",:value=>"record_group/rename"}
+%input{:type=>"hidden",:name=>"fields[table]",:value=>"#{$node->user_user->table}"}
+%input.groupId{:type=>"hidden",:name=>"fields[group]",:value=>""}
+.span2 New Name
+%input.name.span3{:type=>"text",:name=>"fields[name]"}

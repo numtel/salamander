@@ -1,0 +1,33 @@
+
+#tool-dropdown-button { position:absolute; z-index:9999; top:5px; right:5px; }
+.tool-hovered { box-shadow:0 0 25px rgba(0,0,0,0.1); }
+
+#tool-move-item{
+	.tree-sel { margin-left:0px; overflow:auto; padding:0px; 
+		.tree-sel-wrapper {}
+		.sel-column {float:left; width:150px; max-height:240px; overflow:auto; border-right:1px solid #ddd; padding:10px 0px; }
+		.sel-column:nth-child(even) { background-color:#fafafa; }
+		.sel-column:last-child { border-right:0px; }
+	}
+	.control-group.copy { clear:both; margin:0px;
+		input { float:left; }
+		label { padding-left:20px; line-height:20px;}
+	}
+}
+
+#tool-item-permission {
+	.modal-body { min-height:270px; }
+}
+#tool-item-owner { overflow:visible;
+	.modal-body { overflow-y:visible; }
+}
+
+.modal-body {
+	.field-textarea, .field-richtext {
+		.span5 { padding-bottom:10px; }
+		.cke_skin_kama, textarea.plaintext { margin-left:30px; clear:both; margin-bottom:15px; }
+	}
+	.field-checkbox { padding: 10px 0 10px 30px;
+		input { margin-right:10px; }
+	}
+}
