@@ -9,7 +9,7 @@ MySQL
 Installation
 =======================================
 1. create directory 'cache' and chmod 'cache' 0777
-2. Update database settings in 'config.ini'
+2. Update database settings in 'config.ini' and 'install=true' under '[db]'
 3. Browse to directory on server and perform installation
 4. Set 'install=false' in 'config.ini' under '[db]'
 
