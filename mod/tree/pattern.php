@@ -154,6 +154,12 @@ class Node_tree_pattern {
 							return false;
 						}
 						break;
+					case 'array':
+						if(!is_array($value)) {
+							$this->error_message("Value not array on '".$key."'."); 
+							return false;
+						}
+						break;
 					case 'enum':
 						//load enum values from keys that start with 'enum:'
 						$availableEnum=array();

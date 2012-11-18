@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
 Requires in ini: frontend/cache_dir
-Ini arrays to read: frontend/css, frontend/sass
+Ini arrays to read: frontend/css, frontend/scss
 
 */
 class Node_render_scss {
@@ -30,13 +30,19 @@ class Node_render_scss {
 	public function __construct($node){
 		$this->node=$node;
 
-		//require_once $node->fs_path.'lib/sass/SassParser.php';
-		require_once $node->fs_path.'lib/scssphp/scss.inc.php';
-		
 		$scsscCacheDir=$node->ini['front']['cache_dir'].'scss';
 		$cssCacheDir=$node->ini['front']['cache_dir'].'css';
-
-		$scss = new scss();
+		
+		if(!isset($node->ini['front']['scss_compiler']) || $node->ini['front']['scss_compiler']==='scssphp'){
+			require_once $node->fs_path.'lib/scssphp/scss.inc.php';
+			$scss = new scssc();
+		}elseif($node->ini['front']['scss_compiler']==='phamlp'){
+			require_once $node->fs_path.'lib/sass/SassParser.php';
+			$sass = new SassParser(array('cache_location'=>$scsscCacheDir,
+										 'css_location'=>$cssCacheDir,
+										 'style'=>'compact',
+										 'vendor_properties'=>true));
+		}		
 		
 		//load css fields
 		$this->css=isset($node->ini['front']['css']) && 
@@ -51,7 +57,11 @@ class Node_render_scss {
 				try {
 					if (!file_exists($output) || (@filemtime($input) > filemtime($output))) {
 						if (!is_dir($cssCacheDir)) @mkdir($cssCacheDir);
-						$parsed=$scss->compile(file_get_contents($input));
+						if(isset($scss)){
+							$parsed=$scss->compile(file_get_contents($input));
+						}else{
+							$parsed=$sass->toCss($input);
+						}
 						//adjust src values relative to the cache dir
 						$relative=str_repeat('../',count(explode('/',$node->query['page']))).substr($input,0,strrpos($input,'/')+1);
 						$parsed=explode('url(',$parsed);

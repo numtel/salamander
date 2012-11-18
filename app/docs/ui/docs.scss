@@ -1,6 +1,7 @@
+@media screen and (min-width: 980px) {
 
 body {padding:50px 0 200px;}
-
+}
 h1.padding-vertical { padding-top:20px; padding-bottom:20px;}
 
 .navbar.navbar-fixed-top .brand {
@@ -14,11 +15,6 @@ h1.padding-vertical { padding-top:20px; padding-bottom:20px;}
 	text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
 }
 
-.meows { top:50px; }
-.meow.error .inner,
-.meow.success .inner { padding-left:70px; min-height:50px; background-repeat:no-repeat; background-position:10px 50%; }
-.meow.error .inner { background-image:url(error.png); }
-.meow.success .inner { background-image:url(info.png); }
 
 .footer { margin-top: 45px; padding: 35px 0 36px; border-top: 1px solid #e5e5e5;
 	p { margin-bottom: 0; color: #555; }
