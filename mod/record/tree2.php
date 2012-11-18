@@ -1,5 +1,5 @@
 <?/*
-node social program 20120318
+salamander framework 20120318
 Filename:		mod/record/tree2.php
 Description:	hierachical database module with events, permissions,
 				customizable address filters

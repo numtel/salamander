@@ -1,7 +1,7 @@
 <?/*
-node social program 20110905
+salamander framework 20110905
 Filename:		mod/img/resize.php
-Description:	the shiz
+Description:	uses ImageMagick!
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -71,4 +71,5 @@ class Node_img_resize {
 		return $retval;	 
 	}
 }
-?>
+
+

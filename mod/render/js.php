@@ -1,5 +1,5 @@
 <?/*
-node social program 20110503
+salamander framework 20110503
 Filename:		mod/render/js.php
 Description:	the shiz
 
@@ -69,4 +69,4 @@ class Node_render_js {
 	}
 		
 }
-?>
+

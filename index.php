@@ -1,5 +1,5 @@
 <?/*
-node social program 20110503
+salamander framework 20110503
 Filename:		index.php
 Description:	main page
 
@@ -17,15 +17,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$time_start = microtime(true);
 require_once('node.php');
-
 $node=new Node();
-//$node->user_user->login('ben2','numwtel');
+
 echo $node->render_haml->render();
 
-$time_end = microtime(true);
-$time = $time_end - $time_start;
-
-//echo "Did nothing in $time seconds\n";
-?>

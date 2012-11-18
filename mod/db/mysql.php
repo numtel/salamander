@@ -1,5 +1,5 @@
 <?/*
-node social program 20110730
+salamander framework 20110730
 Filename:		mod/db/mysql.php
 Description:	the shiz
 
@@ -235,4 +235,4 @@ class Node_db_mysql {
 	}
 	
 }
-?>
+

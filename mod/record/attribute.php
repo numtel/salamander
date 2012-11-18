@@ -1,5 +1,5 @@
 <?/*
-node social program 20110503
+salamander framework 20110503
 Filename:		mod/record/attribute.php
 Description:	the shiz
 
@@ -170,4 +170,4 @@ class Node_record_attribute {
     	return $this->db->delete($this->table,$fields);
     }
 }
-?>
+

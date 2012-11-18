@@ -1,5 +1,5 @@
 <?/*
-node social program 20110503
+salamander framework 20110503
 Filename:		mod/record/group.php
 Description:	the shiz
 
@@ -189,4 +189,4 @@ class Node_record_group {
     }
     
 }
-?>
+

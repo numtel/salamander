@@ -1,5 +1,5 @@
 <?/*
-node social program 20110503
+salamander framework 20110503
 Filename:		mod/admin/terminal.php
 Description:	the shiz
 
@@ -122,7 +122,7 @@ Example - Clear your saved terminal commands and variables.
 						 									  'data'=>$_SESSION['terminalVars'])));
 						}
  						return $retval;
- 					}else{ return 'Access Denied! Must be have owner permissions on root.'; }
+ 					}else{ return 'Access Denied!'; }
  			}
  		}
  	}
@@ -133,4 +133,4 @@ Example - Clear your saved terminal commands and variables.
  	}
    	
 }
-?>
+

@@ -1,5 +1,5 @@
 <?/*
-node social program 20110503
+salamander framework 20110503
 Filename:		mod/render/post.php
 Description:	the shiz
 
@@ -239,4 +239,4 @@ class Node_render_post {
 	}
 		
 }
-?>
+

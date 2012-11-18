@@ -1,6 +1,6 @@
 <?/*
-node social program 20120428
-Filename:		mod/user/home.php
+salamander framework 20120428
+Filename:		mod/tree/home.php
 Description:	the shiz
 
 This program is free software: you can redistribute it and/or modify

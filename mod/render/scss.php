@@ -1,6 +1,6 @@
 <?/*
-node social program 20110503
-Filename:		mod/render/sass.php
+salamander framework 20121117
+Filename:		mod/render/scss.php
 Description:	the shiz
 
 This program is free software: you can redistribute it and/or modify

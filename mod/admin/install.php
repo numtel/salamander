@@ -1,5 +1,5 @@
 <?/*
-node social program 20121023
+salamander framework 20121023
 Filename:		mod/admin/install.php
 Description:	the shiz
 
@@ -82,4 +82,4 @@ class Node_admin_install {
  	}
    	
 }
-?>
+

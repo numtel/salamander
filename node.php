@@ -1,5 +1,5 @@
 <?/*
-node social program 20110503
+salamander framework 20110503
 Filename:		index.php
 Description:	module manager
 
@@ -277,4 +277,3 @@ class Node {
 
 }
 
-?>

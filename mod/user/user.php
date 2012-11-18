@@ -1,5 +1,5 @@
 <?/*
-node social program 20110503
+salamander framework 20110503
 Filename:		mod/user/user.php
 Description:	the shiz
 
@@ -196,4 +196,4 @@ class Node_user_user {
     }
 
 }
-?>
+

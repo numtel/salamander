@@ -1,5 +1,5 @@
 <?/*
-node social program 20120506
+salamander framework 20120506
 Filename:		mod/tree/pattern.php
 Description:	the shiz
 
