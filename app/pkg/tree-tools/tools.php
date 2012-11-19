@@ -37,7 +37,30 @@ switch($tool){
 				if(isset($patternItem['type']) && $patternItem['type']==='recursive') $childTypes[$patternItem['node:name']]=$patternItem;
 				foreach($patternItem['node:children'] as $patKey=>$patVal){
 					if(isset($patVal['type']) && in_array($patVal['type'],array('array','recursive'))){
-						$childTypes[$patKey]=$patVal;
+						if(!isset($patVal['enable-insert'])){
+							$childTypes[$patKey]=$patVal;
+						}else{
+							$inserters=explode(',',$patVal['enable-insert']);
+							//determine user's access ids
+							$userId=$node->user_user->currentId;
+							if($userId!==false){
+								//determine this user's groups
+								$groups=isset($node->user_user->groups['by_user_id'][$userId]) ? 
+											$node->user_user->groups['by_user_id'][$userId] : array();
+								//find all the items that this item matches
+								$accessId=array_map(function($e){return ($e*-1)-($e!==0 ? 100 : 0);},$groups); //groups use negative ids
+								$accessId[]=$userId; //load current user
+								$accessId[]=-1; //all logged in users
+							}
+							$accessId[]=0; //use 0 for global permissions
+				
+							//cross check it!
+							foreach($inserters as $cId){
+								if(in_array(trim($cId)*1,$accessId)){
+									$childTypes[$patKey]=$patVal;
+								}
+							}
+						}
 					}
 				}
 			}

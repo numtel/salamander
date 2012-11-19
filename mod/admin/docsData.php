@@ -188,6 +188,8 @@ $docsPattern=array (
                           ),
                         ),
                         'label' => 'Parameter',
+                        'set-permission' => '0:1',
+                        'enable-insert' => '-101',
                       ),
                       'example' => 
                       array (
@@ -214,6 +216,8 @@ $docsPattern=array (
                           ),
                         ),
                         'label' => 'Example',
+                        'set-permission' => '0:1',
+                        'enable-insert' => '-101',
                       ),
                       'comment' => 
                       array (
@@ -229,15 +233,17 @@ $docsPattern=array (
                             array (
                             ),
                             'type' => 'textarea',
-                            'min-length' => '1',
+                            'min-length' => '5',
                             'max-length' => '100000',
                           ),
                         ),
                         'label' => 'Comment',
+                        'enable-insert' => '0',
                       ),
                     ),
                     'label' => 'Function',
                     'page-read-depth' => '5',
+                    'set-permission' => '0:5',
                   ),
                 ),
                 'page-read-depth' => '1',
@@ -738,24 +744,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 	Column=&gt;Value pairs to match for count</p>
 ',
                   ),
-                  'comment-dqzodyngfb' => 
-                  array (
-                    'comment' => 'hello? hero plewasdfadf ashdhfasdasdfd',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-onfouqmnmc' => 
-                  array (
-                    'comment' => 'shwya',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
                 ),
                 'name' => 'count($table_name,$field=\'*\',$where=array())',
                 'description' => '<p>
@@ -833,52 +821,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                     'description' => '<p>
 	Placed after the where clause in the query (could contain &#39;ORDER BY&#39;, &#39;LIMIT&#39;)</p>
 ',
-                  ),
-                  'comment-bcaafomklw' => 
-                  array (
-                    'comment' => 'how hard is this function to get to work?!?! seriously!!',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-twlonpoymr' => 
-                  array (
-                    'comment' => 'we want people with drug use experience and stds, open minded philosophies, growing california trees, we\'re going to burn orange county down then riverside bakersfield and fresno too, then we\'re coming after you!!!',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-rmqtodnswa' => 
-                  array (
-                    'comment' => 'punch new holes in the bible belt!',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-wlbrhbxlqu' => 
-                  array (
-                    'comment' => 'thats sicckness',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-xgdbvbjydc' => 
-                  array (
-                    'comment' => 'wapoo
-',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
                   ),
                 ),
                 'name' => 'delete($table_name,$where,$reallyDelete=false,$reallyDeleteVersions=false,$limit=\'\')',
@@ -976,15 +918,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                     ),
                     'description' => 'Insert an item into a table',
                     'code' => '$node->db_mysql->insert(\'myTable\',array(\'field1\'=>\'myval\', \'field2\'=>\'another value\'));',
-                  ),
-                  'bosaiunjds' => 
-                  array (
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                    'node:owner' => '6',
-                    'node:children' => 
-                    array (
-                    ),
-                    'comment' => 'How do you even work this thing?>!?!? WHy would you ever need to go backwards? Time is just an illusion... WHahahahha',
                   ),
                 ),
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
@@ -1166,16 +1099,16 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   ),
                   'pvsotwndqq' => 
                   array (
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
+                    'type' => 'Boolean',
                     'node:owner' => '1',
                     'node:children' => 
                     array (
                     ),
-                    'name' => '$center',
-                    'type' => 'Boolean',
                     'description' => '<p>
 	False to fit the image to the dimensions or true to crop the image to fill the dimensions given (default: false)</p>
 ',
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
+                    'name' => '$center',
                   ),
                 ),
                 'name' => 'load($file,$width,$height,$center=false)',
@@ -2087,16 +2020,16 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   ),
                   'ohsoolmqoc' => 
                   array (
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
+                    'description' => '<p>
+	Accepted values: &#39;validate&#39;, &#39;complete&#39;</p>
+',
                     'node:owner' => '1',
                     'node:children' => 
                     array (
                     ),
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
                     'name' => '$type',
                     'type' => 'String',
-                    'description' => '<p>
-	Accepted values: &#39;validate&#39;, &#39;complete&#39;</p>
-',
                   ),
                   'tmdklrooat' => 
                   array (
@@ -2183,6 +2116,14 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 	<li>
 		An array can be returned to replace the data or false can be returned to cancel the operation</li>
 </ul>
+<p>
+	<strong>Insert &#39;i&#39;:&nbsp;</strong><code>function($address, $node, $curItem, $data)</code></p>
+<p>
+	&nbsp;</p>
+<p>
+	<strong>Write &#39;w&#39;:&nbsp;</strong><code>function($address, $node, $curItem, $data)</code></p>
+<p>
+	&nbsp;</p>
 <p>
 	<strong>Move &#39;m&#39;:&nbsp;</strong><code>function($address, $node, $oldAddress)</code></p>
 <p>
@@ -2484,87 +2425,6 @@ function($address,$node,$curItem,$data){
                     'description' => 'Some code',
                     'code' => 'You\'ve just been farked around!',
                   ),
-                  'comment-wvvvmkxifh' => 
-                  array (
-                    'comment' => 'Hey I don\'t know how this works!!!',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-nmfevqanuh' => 
-                  array (
-                    'comment' => 'i can\'t pay the rent!',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-hbzdvzxsdm' => 
-                  array (
-                    'comment' => 'you must pay the rent!!',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                      'wxixckaebp' => 
-                      array (
-                        'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                        'node:owner' => '0',
-                        'node:children' => 
-                        array (
-                        ),
-                        'comment' => 'child commentrer',
-                      ),
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-udjsdssecd' => 
-                  array (
-                    'comment' => 'I\'ll pay the rent!',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-zulofdeabv' => 
-                  array (
-                    'comment' => 'Does anybody know why these things don\'t have a username attached!?!!',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-mxsqpivfes' => 
-                  array (
-                    'comment' => 'horse fetish',
-                    'node:owner' => '0',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-bpiwpakwlo' => 
-                  array (
-                    'comment' => 'foobared',
-                    'node:owner' => '0',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-tggzlkjtlw' => 
-                  array (
-                    'comment' => 'foobarededede',
-                    'node:owner' => '0',
-                    'node:children' => 
-                    array (
-                    ),
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
                 ),
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
                 'name' => 'edit($address,$data,$suppressEvents=false)',
@@ -2689,7 +2549,15 @@ function($address,$node,$curItem,$data){
                     ),
                     'name' => '$depth',
                     'type' => 'Boolean/Integer',
-                    'description' => 'When grabbing an address range: false corresponds to unlimited depth, 0 to only immediate children, 1 for one level of child recursion, et cetera. When grabbing only one item: false corresponds to return no children, true with returning all levels of children, or integer for a specific number of levels.',
+                    'description' => '<ul>
+	<li>
+		<strong>False</strong> (default) - Return only initial level</li>
+	<li>
+		<strong>True</strong> - Return all levels of children</li>
+	<li>
+		<em>Integer</em> - Return a specific number of levels deep (0 for immediate children, 1 for the next level of children, etc.)</li>
+</ul>
+',
                   ),
                   'jqpaqmsmvk' => 
                   array (
@@ -2980,9 +2848,7 @@ function($address,$node,$curItem,$data){
               ),
               'move' => 
               array (
-                'description' => '<p>
-	Move an item to another parent</p>
-',
+                'name' => 'move($itemAddress,$newAddress,$suppressEvents=false)',
                 'node:owner' => '1',
                 'node:children' => 
                 array (
@@ -3020,9 +2886,11 @@ function($address,$node,$curItem,$data){
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'move($itemAddress,$newAddress,$suppressEvents=false)',
                 'return' => 'True on success, False on failure',
+                'description' => '<p>
+	Move an item to another parent</p>
+',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
               ),
               'post' => 
               array (
@@ -3383,7 +3251,7 @@ function($address,$node,$curItem,$data){
 	On the pattern items, other attributes can be used to perform validation with the class:</p>
 <ul>
 	<li>
-		<strong>pattern:specificity</strong> - Set to &#39;<em>vague</em>&#39; for items of this type to not have to conform to the given fields</li>
+		<strong>specificity</strong> - Set to &#39;<em>vague</em>&#39; for items of this type to not have to conform to the given fields</li>
 	<li>
 		<strong>max-length</strong> - Maximum string length for field</li>
 	<li>
@@ -3402,6 +3270,8 @@ function($address,$node,$curItem,$data){
 			<li>
 				<em>numeric</em></li>
 			<li>
+				<em>array</em></li>
+			<li>
 				<em>enum</em> - Create attribute keys prefixed with &#39;enum:&#39; to define enumerated options. The portion of the string after &#39;enum:&#39; determines the valid key. The values of these atttributes are for labeling</li>
 			<li>
 				<em>regex</em> - Define a &#39;preg-match&#39; attribute as well containing the pattern required to match for validation</li>
@@ -3411,7 +3281,18 @@ function($address,$node,$curItem,$data){
 	</li>
 </ul>
 <p>
-	&nbsp;</p>
+	Pattern items may also include instructions for permissions on patterned items:</p>
+<ul>
+	<li>
+		<strong>set-permission</strong> - String consisting of a list of permission rules to apply. Each rule is separated by a comma, each rule contains an &#39;[access_id]:[mode]&#39; pair.
+		<ul>
+			<li>
+				ex: 0:5,-102:15 (Set &#39;World&#39; to read, insert and set group id 2 to read, write, insert, delete)</li>
+		</ul>
+	</li>
+	<li>
+		<strong>enable-insert</strong> - String consisting of a list of accessors that can insert this type of item. Each access id is separated by a comma. Access Ids described in record_tree2-&gt;chmod documentation.</li>
+</ul>
 ',
                   ),
                 ),
@@ -3420,6 +3301,19 @@ function($address,$node,$curItem,$data){
 	Determine if a write or insert at the specified address with the given data is valid according to any pattern attributes in place.</p>
 ',
                 'return' => 'True on success, False on failure',
+              ),
+              'rebuild_permissions' => 
+              array (
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'node:owner' => '1',
+                'node:children' => 
+                array (
+                ),
+                'name' => 'rebuild_permissions($address=\'/\',$depth=true)',
+                'description' => '<p>
+	Process any &#39;set-permissions&#39; attributes in found items.</p>
+',
+                'return' => 'True on success, False on failure.',
               ),
             ),
             'name' => 'tree_pattern',

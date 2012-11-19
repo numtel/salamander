@@ -18,7 +18,12 @@ jQuery(function($){
 		if(comments.length){
 			comments.eq(0).before(form.parent());
 		}else{
-			cFunc.children('.items-children').append(form.parent());
+			var comments=cFunc.children('.items-children');
+			if(comments.length===0){
+				cFunc.append('<ul class="items-children" />');
+				comments=cFunc.children('.items-children');
+			}
+			comments.append(form.parent());
 		}
 		
 		nodeTools.initAjaxForm(form,function(data){

@@ -30,15 +30,60 @@ class Node_tree_pattern {
 		$this->tree=$parent->record_tree2;
 
 		$this->tree->bind(
-			"/node:wild-recursive-or-nothing/node:attributes(`pattern:children`!='')/node:wild-recursive-or-nothing", 
-			'i', 'complete', function($address,$node){
-				//TODO:set permissions for this item if the pattern specifies it
-				
-		});
-		$this->tree->bind(
 			"/node:wild-recursive-or-nothing/node:attributes(`pattern:children`!='')/node:wild-recursive", 
 			'w', 'validate', function($address,$node,$curItem,$data){
 				return $node->tree_pattern->validate($address,$data);
+		});
+
+		$this->tree->bind(
+			"/node:wild-recursive-or-nothing/node:attributes(`pattern:children`!='')/node:wild-recursive-or-nothing", 
+			'i', 'validate', function($address,$node,$curItem,$data){
+				//load the pattern match specified
+				foreach($data as $name=>$attr){
+					if(!isset($attr['pattern:match'])) return false;
+					$pattern=pull_item($node->record_tree2->get($attr['pattern:match']));
+					if($pattern===false) return false;
+					if(!isset($pattern['enable-insert'])) continue;
+					$inserters=explode(',',$pattern['enable-insert']);
+					//determine user's access ids
+					$userId=$node->user_user->currentId;
+					if($userId!==false){
+						//determine this user's groups
+						$groups=isset($node->user_user->groups['by_user_id'][$userId]) ? 
+									$node->user_user->groups['by_user_id'][$userId] : array();
+						//find all the items that this item matches
+						$accessId=array_map(function($e){return ($e*-1)-($e!==0 ? 100 : 0);},$groups); //groups use negative ids
+						$accessId[]=$userId; //load current user
+						$accessId[]=-1; //all logged in users
+					}
+					$accessId[]=0; //use 0 for global permissions
+				
+					//cross check it!
+					$foundMatch=false;
+					foreach($inserters as $cId){
+						if(in_array(trim($cId)*1,$accessId)) $foundMatch=true;
+					}
+					if($foundMatch===false) return false;
+				}
+				return true;
+		});
+
+		$this->tree->bind(
+			"/node:wild-recursive-or-nothing/node:attributes(`pattern:children`!='')/node:wild-recursive-or-nothing", 
+			'i', 'complete', function($address,$node,$curItem,$data){
+				//set permissions for this item if the pattern specifies it
+				foreach($data as $name=>$attr){
+					if(!isset($attr['pattern:match'])) return false;
+					$pattern=pull_item($node->record_tree2->get($attr['pattern:match']));
+					if($pattern===false) return false;
+					if(!isset($pattern['set-permission'])) continue;
+					$perms=explode(',',$pattern['set-permission']);
+					foreach($perms as $perm){
+						$perm=explode(':',$perm);
+						if($node->record_tree2->chmod($address.'/'.$name,trim($perm[1])*1,array(trim($perm[0])*1))===false) return false;
+					}
+				}
+				return true;
 		});
 		
  	}
@@ -100,7 +145,7 @@ class Node_tree_pattern {
 		}else{ $this->error_message('No pattern info!'); return false; }
 		
 		//allow anything if specificity is vague
-		if(isset($match['pattern:specificity']) && $match['pattern:specificity']==='vague') return true;
+		if(isset($match['specificity']) && $match['specificity']==='vague') return true;
 		//load up children of this pattern match
 		$matchChildren=$this->tree->get($data['pattern:match'].'/');
 		foreach($matchChildren as $key=>$details){
@@ -198,5 +243,27 @@ class Node_tree_pattern {
 		return true;
  	}
 
+	public function rebuild_permissions($address='/',$depth=true){
+		$cache=array();
+		//find all items that have a pattern match!
+		$patterned=$this->tree->query($address,"`pattern:match`!=''",$depth);
+		foreach($patterned as $itemAddress=>$item){
+			if(array_key_exists($item['pattern:match'],$cache)){
+				$pattern=$cache[$item['pattern:match']];
+			}else{
+				$pattern=pull_item($this->tree->get($item['pattern:match']));
+				$cache[$item['pattern:match']]=$pattern;
+			}
+			if($pattern===false) return false;
+			if(!isset($pattern['set-permission'])) continue;
+			$perms=explode(',',$pattern['set-permission']);
+			foreach($perms as $perm){
+				$perm=explode(':',$perm);
+				if($this->tree->chmod($itemAddress,trim($perm[1])*1,array(trim($perm[0])*1))===false) return false;
+			}
+		}
+		return true;
+
+	}
 }
 

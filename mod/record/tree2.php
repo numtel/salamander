@@ -77,6 +77,7 @@ class Node_record_tree2 {
 		
 		//add filter hook for relative paths
 		$this->addressFilters[]=function($address,$node){
+			if(is_array($address)) var_export($address);
 			if(strstr($address,'/../')!==false){
 				while(strstr($address,'/../')!==false){
 					$curBack=strpos($address,'/../');
@@ -142,14 +143,13 @@ class Node_record_tree2 {
 		else $maxOrder=0;
 
 		$dataMod=$this->adjust_addresses($data);
-		
 		$depth=substr_count($address,'/')-1;
 		
-		$dataMod=$this->create_insert_items($dataMod,$address,$depth,false,$maxOrder);
-		if($dataMod===false) return false;
+		$insRows=$this->create_insert_items($dataMod,$address,$depth,false,$maxOrder);
+		if($insRows===false) return false;
 		$allGood=false;
 		$nameIn=array();
-		foreach($dataMod as $item){
+		foreach($insRows as $item){
 			//don't allow anything that contains directory separator
 			if(strpos($item['name'],'/')!==false) return false;
 			//skip over a name that matches a reserved value
@@ -165,7 +165,9 @@ class Node_record_tree2 {
 		}
 		
  		if($allGood===true && $suppressEvents===false){
- 			$this->event($address==='/' ? '/' : substr($address,0,-1),'i','complete');
+ 			$itemAddress=$address==='/' ? '/' : substr($address,0,-1);
+ 			$dataMod=$this->inserted_items($dataMod,$itemAddress);
+ 			$this->event($itemAddress,'i','complete',array($curItem,$dataMod));
  			$this->each_write_event($data,$address,true);
  		}
 		return $allGood;
@@ -223,7 +225,7 @@ class Node_record_tree2 {
  			}
  			if($allGood===false) break;
  		}
- 		if($allGood===true && $suppressEvents===false) $this->event($curItem['node:address'],'w','complete');
+ 		if($allGood===true && $suppressEvents===false) $this->event($curItem['node:address'],'w','complete',array($curItem,$data));
  		return $allGood;
  	}
 
@@ -497,8 +499,9 @@ class Node_record_tree2 {
 	 		$where['address']=$address;
 	 	}else{
 	 		$addrDepth=substr_count($address,'/')-1;
-	 		if($depth===false || $depth===true){ $depthStr=''; }
+	 		if($depth===true){ $depthStr=''; }
 	 		else{
+	 			if($depth===false) $depth=0;
 	 			$depthStr=" AND `depth`>='".mysql_real_escape_string($addrDepth,$this->db->link)."' AND `depth`<='".mysql_real_escape_string($addrDepth+$depth,$this->db->link)."'";
 	 		}
 	 		$where['@str']="(`address` LIKE '".mysql_real_escape_string($address,$this->db->link)."%'".$depthStr.")";
@@ -776,6 +779,7 @@ class Node_record_tree2 {
 			}
     	}else{$lineage=$address;}
     	$where=array('address'=>$lineage);
+    	$accessId=array();
     	if($userId!==false){
 			//determine this user's groups
 			$groups=isset($this->parent->user_user->groups['by_user_id'][$userId]) ? 
@@ -1007,6 +1011,15 @@ class Node_record_tree2 {
 			
 			//add this
 			$output[$key]=$this->adjust_array_to_db($val)+$thisChildren;
+		}
+		return $output;
+	}
+	
+	private function inserted_items($data,$rootAddress){
+		$output=array();
+		foreach($data as $key=>$val){
+			$item=pull_item($this->get($rootAddress.'/'.$key,true,false,true));
+			if($item!==false) $output[$key]=$item;
 		}
 		return $output;
 	}
