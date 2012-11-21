@@ -415,7 +415,7 @@ class Node_record_tree2 {
  			$this->db->update($this->tablePerms,array('@str'=>"(`address` LIKE '".$oldChildAddress."/%')"),
  					array('@str'=>"`address`=replace(`address`,'".$oldChildAddress."/','".$newChildAddress."/')"))){
  			 if($suppressEvents===false){
- 			 	$this->event($newParent['node:address'],'i','complete');
+ 			 	$this->event($newParent['node:address'],'i','complete',array(array($curItem['node:name']=>$curItem),array($curItem['node:name']=>$curItem)));
  			 	$this->event($newItemAddress,'m','complete',array($itemAddress));
  			 }
  			return true;

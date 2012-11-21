@@ -1,18 +1,49 @@
-<?
-$docsPattern=array (
-  'patterns' => 
+<? $docsPattern=array('patterns'=>array (
+  'documentation' => 
   array (
-    'admin:icon' => 'th',
+    'label' => 'Documentation Site',
     'node:owner' => '1',
     'node:children' => 
     array (
-      'documentation' => 
+      'page' => 
       array (
-        'label' => 'Documentation Site',
+        'type' => 'recursive',
         'node:owner' => '1',
         'node:children' => 
         array (
-          'page' => 
+          'title' => 
+          array (
+            'label' => 'Title',
+            'node:owner' => '1',
+            'node:children' => 
+            array (
+            ),
+            'wrapper-element' => 'h1',
+            'wrapper-element-class' => 'padding-vertical',
+            'no-wrapper-on-page' => '/patterns/documentation',
+            'display-as-link' => '/patterns/documentation',
+          ),
+          'description' => 
+          array (
+            'label' => 'Description',
+            'node:owner' => '1',
+            'node:children' => 
+            array (
+            ),
+            'type' => 'textarea',
+            'hide-on-page' => '/patterns/documentation/page',
+          ),
+          'content' => 
+          array (
+            'type' => 'richtext',
+            'node:owner' => '1',
+            'node:children' => 
+            array (
+            ),
+            'label' => 'Content',
+            'hide-on-page' => '/patterns/documentation',
+          ),
+          'section' => 
           array (
             'type' => 'recursive',
             'node:owner' => '1',
@@ -20,110 +51,104 @@ $docsPattern=array (
             array (
               'title' => 
               array (
+                'wrapper-element' => 'h2',
+                'node:owner' => '1',
+                'node:children' => 
+                array (
+                ),
                 'label' => 'Title',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
-                'wrapper-element' => 'h1',
-                'wrapper-element-class' => 'padding-vertical',
-                'no-wrapper-on-page' => '/patterns/documentation',
-                'display-as-link' => '/patterns/documentation',
-              ),
-              'description' => 
-              array (
-                'label' => 'Description',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
-                'type' => 'textarea',
-                'hide-on-page' => '/patterns/documentation/page',
-              ),
-              'content' => 
-              array (
-                'type' => 'richtext',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
-                'label' => 'Content',
-                'hide-on-page' => '/patterns/documentation',
               ),
               'section' => 
               array (
-                'type' => 'recursive',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                  'title' => 
-                  array (
-                    'wrapper-element' => 'h2',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'label' => 'Title',
-                  ),
-                  'section' => 
-                  array (
-                    'label' => 'Content',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'type' => 'richtext',
-                  ),
-                ),
-                'label' => 'Section',
-                'hide-on-page' => '/patterns/documentation',
-              ),
-              'hide-menu' => 
-              array (
-                'label' => 'Hide Dropdown Menu on Frontend',
+                'label' => 'Content',
                 'node:owner' => '1',
                 'node:children' => 
                 array (
                 ),
-                'type' => 'checkbox',
-                'hide-on-page' => '/patterns/documentation,/patterns/documentation/page',
+                'type' => 'richtext',
               ),
             ),
-            'label' => 'Page',
-            'page-read-depth' => '5',
-            'hide-on-page' => '/patterns/documentation/page',
+            'label' => 'Section',
+            'hide-on-page' => '/patterns/documentation',
           ),
-          'module-list' => 
+          'hide-menu' => 
           array (
-            'type' => 'array',
+            'label' => 'Hide Dropdown Menu on Frontend',
             'node:owner' => '1',
             'node:children' => 
             array (
-              'module' => 
+            ),
+            'type' => 'checkbox',
+            'hide-on-page' => '/patterns/documentation,/patterns/documentation/page',
+          ),
+        ),
+        'label' => 'Page',
+        'page-read-depth' => '5',
+        'hide-on-page' => '/patterns/documentation/page',
+      ),
+      'module-list' => 
+      array (
+        'type' => 'array',
+        'node:owner' => '1',
+        'node:children' => 
+        array (
+          'module' => 
+          array (
+            'label' => 'Module Documentation',
+            'node:owner' => '1',
+            'node:children' => 
+            array (
+              'name' => 
               array (
-                'label' => 'Module Documentation',
+                'label' => 'Class',
+                'node:owner' => '1',
+                'node:children' => 
+                array (
+                ),
+                'display-as-link' => '/patterns/documentation,/patterns/documentation/module-list',
+              ),
+              'description' => 
+              array (
+                'type' => 'textarea',
+                'node:owner' => '1',
+                'node:children' => 
+                array (
+                ),
+                'label' => 'Description',
+              ),
+              'function' => 
+              array (
+                'type' => 'array',
                 'node:owner' => '1',
                 'node:children' => 
                 array (
                   'name' => 
                   array (
-                    'label' => 'Class',
+                    'display-as-link' => '/patterns/documentation/module-list/module',
                     'node:owner' => '1',
                     'node:children' => 
                     array (
                     ),
-                    'display-as-link' => '/patterns/documentation,/patterns/documentation/module-list',
+                    'label' => 'Name',
                   ),
                   'description' => 
                   array (
-                    'type' => 'textarea',
+                    'type' => 'richtext',
                     'node:owner' => '1',
                     'node:children' => 
                     array (
                     ),
                     'label' => 'Description',
                   ),
-                  'function' => 
+                  'return' => 
+                  array (
+                    'label' => 'Return Value',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                  ),
+                  'parameter' => 
                   array (
                     'type' => 'array',
                     'node:owner' => '1',
@@ -131,12 +156,19 @@ $docsPattern=array (
                     array (
                       'name' => 
                       array (
-                        'display-as-link' => '/patterns/documentation/module-list/module',
+                        'label' => 'Variable Name',
                         'node:owner' => '1',
                         'node:children' => 
                         array (
                         ),
-                        'label' => 'Name',
+                      ),
+                      'type' => 
+                      array (
+                        'label' => 'Data Type',
+                        'node:owner' => '1',
+                        'node:children' => 
+                        array (
+                        ),
                       ),
                       'description' => 
                       array (
@@ -147,137 +179,95 @@ $docsPattern=array (
                         ),
                         'label' => 'Description',
                       ),
-                      'return' => 
+                    ),
+                    'label' => 'Parameter',
+                    'set-permission' => '0:1',
+                    'enable-insert' => '-101',
+                  ),
+                  'example' => 
+                  array (
+                    'type' => 'array',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                      'description' => 
                       array (
-                        'label' => 'Return Value',
+                        'label' => 'Description',
                         'node:owner' => '1',
                         'node:children' => 
                         array (
                         ),
                       ),
-                      'parameter' => 
+                      'code' => 
                       array (
-                        'type' => 'array',
+                        'label' => 'Code',
                         'node:owner' => '1',
                         'node:children' => 
                         array (
-                          'name' => 
-                          array (
-                            'label' => 'Variable Name',
-                            'node:owner' => '1',
-                            'node:children' => 
-                            array (
-                            ),
-                          ),
-                          'type' => 
-                          array (
-                            'label' => 'Data Type',
-                            'node:owner' => '1',
-                            'node:children' => 
-                            array (
-                            ),
-                          ),
-                          'description' => 
-                          array (
-                            'type' => 'richtext',
-                            'node:owner' => '1',
-                            'node:children' => 
-                            array (
-                            ),
-                            'label' => 'Description',
-                          ),
                         ),
-                        'label' => 'Parameter',
-                        'set-permission' => '0:1',
-                        'enable-insert' => '-101',
-                      ),
-                      'example' => 
-                      array (
-                        'type' => 'array',
-                        'node:owner' => '1',
-                        'node:children' => 
-                        array (
-                          'description' => 
-                          array (
-                            'label' => 'Description',
-                            'node:owner' => '1',
-                            'node:children' => 
-                            array (
-                            ),
-                          ),
-                          'code' => 
-                          array (
-                            'label' => 'Code',
-                            'node:owner' => '1',
-                            'node:children' => 
-                            array (
-                            ),
-                            'type' => 'textarea',
-                          ),
-                        ),
-                        'label' => 'Example',
-                        'set-permission' => '0:1',
-                        'enable-insert' => '-101',
-                      ),
-                      'comment' => 
-                      array (
-                        'type' => 'recursive',
-                        'node:owner' => '1',
-                        'node:children' => 
-                        array (
-                          'comment' => 
-                          array (
-                            'label' => 'Comment',
-                            'node:owner' => '1',
-                            'node:children' => 
-                            array (
-                            ),
-                            'type' => 'textarea',
-                            'min-length' => '5',
-                            'max-length' => '100000',
-                          ),
-                        ),
-                        'label' => 'Comment',
-                        'enable-insert' => '0',
+                        'type' => 'textarea',
                       ),
                     ),
-                    'label' => 'Function',
-                    'page-read-depth' => '5',
-                    'set-permission' => '0:5',
+                    'label' => 'Example',
+                    'set-permission' => '0:1',
+                    'enable-insert' => '-101',
+                  ),
+                  'comment' => 
+                  array (
+                    'type' => 'recursive',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                      'comment' => 
+                      array (
+                        'label' => 'Comment',
+                        'node:owner' => '1',
+                        'node:children' => 
+                        array (
+                        ),
+                        'type' => 'textarea',
+                        'min-length' => '5',
+                        'max-length' => '100000',
+                      ),
+                    ),
+                    'label' => 'Comment',
+                    'enable-insert' => '0',
                   ),
                 ),
-                'page-read-depth' => '1',
-                'type' => 'array',
-              ),
-              'title' => 
-              array (
-                'display-as-link' => '/patterns/documentation',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
-                'label' => 'Title',
-              ),
-              'description' => 
-              array (
-                'label' => 'Description',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
-                'type' => 'textarea',
+                'label' => 'Function',
+                'page-read-depth' => '5',
+                'set-permission' => '0:5',
               ),
             ),
             'page-read-depth' => '1',
-            'label' => 'Module List',
+            'type' => 'array',
+          ),
+          'title' => 
+          array (
+            'display-as-link' => '/patterns/documentation',
+            'node:owner' => '1',
+            'node:children' => 
+            array (
+            ),
+            'label' => 'Title',
+          ),
+          'description' => 
+          array (
+            'label' => 'Description',
+            'node:owner' => '1',
+            'node:children' => 
+            array (
+            ),
+            'type' => 'textarea',
           ),
         ),
         'page-read-depth' => '1',
+        'label' => 'Module List',
       ),
     ),
+    'page-read-depth' => '1',
   ),
-);
-
+));
 
 $docsData=array (
   'docs' => 
@@ -2060,7 +2050,7 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 	<li>
 		$curItem will be a blank array on item insert.</li>
 	<li>
-		If an array is returned on edit or string on rename, the data is replaced.</li>
+		If an array is returned, the data is replaced.</li>
 </ul>
 <p>
 	&nbsp;</p>
@@ -2978,6 +2968,8 @@ function($address,$node,$curItem,$data){
 	Key values containing &#39;%&#39; (percent symbol) will be matched using the like operator.</p>
 <p>
 	Example: String values can also be used: $args=&quot;(`name`=&#39;itemName&#39; and `foobar`&gt;&#39;32&#39;) or (`name`=&#39;somethingElse&#39; and `foobar`&lt;=&#39;7&#39;)&quot;</p>
+<p>
+	Always use single quotes inside argument string values.</p>
 ',
                   ),
                   'vviqzvnnpq' => 
@@ -3023,6 +3015,16 @@ function($address,$node,$curItem,$data){
                     ),
                     'description' => 'Print all home item attributes with attribute \'admin:edit-count\' greater than 10.',
                     'code' => 'print_r(array_keys($node->record_tree2->query(\'~/..\', "`admin:edit-count` > \'10\'", 1)));',
+                  ),
+                  'srtifozhco' => 
+                  array (
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/example',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                    'description' => 'Load all the comments that match the documentation\'s comment pattern.',
+                    'code' => '$comments=$node->record_tree2->query(\'/\',"`pattern:match`=\'/patterns/documentation/module-list/module/function/comment\'");',
                   ),
                 ),
                 'name' => 'query($rootAddress=\'/\',$args=array(),$depth=true,$suppressEvents=false,$onlySearch=false)',
@@ -3698,7 +3700,20 @@ function($address,$node,$curItem,$data){
             'section' => '<p>
 	Directly run PHP commands through a terminal interface in the browser.</p>
 <p>
+	Example - Display items at root of data tree:</p>
+<pre>
+print_r($this-&gt;tree-&gt;get(&#39;/&#39;,0));</pre>
+<p>
 	Command and local variable history are saved in the user&#39;s home item.</p>
+<p>
+	Config.ini terminal save history settings:</p>
+<pre>
+[front]
+;save terminal history to user&#39;s home item instead of just session
+save_terminal_history=true|false 
+;number of terminal commands to save
+save_terminal_commands=[integer] 
+</pre>
 <p>
 	Perform operations on your site without needing to build test pages.</p>
 <p>
@@ -3723,9 +3738,11 @@ function($address,$node,$curItem,$data){
         'title' => 'Using HAML & SASS',
         'description' => 'Learn how to speed up templating HTML views as well as simplify coding out CSS.',
         'content' => '<p>
-	This framework employs <a href="http://code.google.com/p/phamlp/" target="_blank">Google&#39;s PHamlP</a> implementation the standard Ruby <a href="http://haml.info/" target="_blank">HAML</a> and <a href="http://sass-lang.com/" target="_blank">SCSS</a> translators. Visit their websites for basic information on how to learn these amazing ways to simplify coding frontends.</p>
+	This framework employs <a href="http://code.google.com/p/phamlp/" target="_blank">Google&#39;s PHamlP</a> implementation the standard Ruby <a href="http://haml.info/" target="_blank">HAML</a>&nbsp;translators.</p>
 <p>
 	The Haml library included with this framework has been modified slightly to also allow PHP function() declarations inside of a HAML document, thereby allowing recursion in templates without multiple templates.</p>
+<p>
+	For tranlating SCSS files, <a href="http://leafo.net/scssphp/">SCSSPHP</a> has been included as another option to PHamlP. Media query support makes SCSSPHP a good choice.</p>
 ',
         'hide-menu' => '1',
       ),

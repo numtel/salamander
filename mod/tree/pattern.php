@@ -43,6 +43,15 @@ class Node_tree_pattern {
 					if(!isset($attr['pattern:match'])) return false;
 					$pattern=pull_item($node->record_tree2->get($attr['pattern:match']));
 					if($pattern===false) return false;
+					
+					//make sure that this pattern match fits hierarchically
+					$parent=pull_item($node->record_tree2->get($address));
+					if($parent===false) { 
+						$this->error_message('Parent not found!'); 
+						return false;
+					}
+					if($node->tree_pattern->validate_structure($attr,$parent,$pattern)===false) return false;
+					
 					if(!isset($pattern['enable-insert'])) continue;
 					$inserters=explode(',',$pattern['enable-insert']);
 					//determine user's access ids
@@ -63,7 +72,10 @@ class Node_tree_pattern {
 					foreach($inserters as $cId){
 						if(in_array(trim($cId)*1,$accessId)) $foundMatch=true;
 					}
-					if($foundMatch===false) return false;
+					if($foundMatch===false){
+						$this->error_message('User not member of available inserters!'); 
+						return false;
+					}
 				}
 				return true;
 		});
@@ -123,26 +135,8 @@ class Node_tree_pattern {
 			return false;
 		}
 		
-		if(isset($parent['pattern:children'])){
-			//if parent has 'pattern:children' set, this is a root item
-			if(substr($parent['pattern:children'],-1)!=='/'){
-				if($data['pattern:match']!==$parent['pattern:children']){ 
-					$this->error_message('Incorrect root pattern.'); return false;
-				}elseif(substr($data['pattern:match'],0,strlen($parent['pattern:children']))!==$parent['pattern:children']){
-					$this->error_message('Incorrect root pattern range.'); return false;
-				}
-			}
-		}elseif(isset($parent['pattern:match'])){
-			if(isset($match['type'])){
-				//make sure parent matches the parent type if array
-				if($match['type']==='array' && $parent['pattern:match']!==substr($data['pattern:match'],0,strrpos($data['pattern:match'],'/'))){ $this->error_message('Array type incorrect.'); return false;}
-				//if recursive, make sure same as parent or if the parent matches up
-				if($match['type']==='recursive' && 
-						!($parent['pattern:match']===$data['pattern:match'] || 
-							$parent['pattern:match']===substr($data['pattern:match'],0,strrpos($data['pattern:match'],'/'))))
-					{ $this->error_message('Recursive type incorrect.'); return false; }
-			}
-		}else{ $this->error_message('No pattern info!'); return false; }
+		if($this->validate_structure($data,$parent,$match)===false) return false;
+		
 		
 		//allow anything if specificity is vague
 		if(isset($match['specificity']) && $match['specificity']==='vague') return true;
@@ -242,6 +236,30 @@ class Node_tree_pattern {
 		//i guess it went alright
 		return true;
  	}
+ 	
+ 	public function validate_structure($data,$parent,$match){
+ 	
+		if(isset($parent['pattern:children'])){
+			//if parent has 'pattern:children' set, this is a root item
+			if(substr($parent['pattern:children'],-1)!=='/'){
+				if($data['pattern:match']!==$parent['pattern:children']){ 
+					$this->error_message('Incorrect root pattern.'); return false;
+				}elseif(substr($data['pattern:match'],0,strlen($parent['pattern:children']))!==$parent['pattern:children']){
+					$this->error_message('Incorrect root pattern range.'); return false;
+				}
+			}
+		}elseif(isset($parent['pattern:match'])){
+			if(isset($match['type'])){
+				//make sure parent matches the parent type if array
+				if($match['type']==='array' && $parent['pattern:match']!==substr($data['pattern:match'],0,strrpos($data['pattern:match'],'/'))){ $this->error_message('Array type incorrect.'); return false;}
+				//if recursive, make sure same as parent or if the parent matches up
+				if($match['type']==='recursive' && 
+						!($parent['pattern:match']===$data['pattern:match'] || 
+							$parent['pattern:match']===substr($data['pattern:match'],0,strrpos($data['pattern:match'],'/'))))
+					{ $this->error_message('Recursive type incorrect.'); return false; }
+			}
+		}else{ $this->error_message('No pattern info!'); return false; }
+	}
 
 	public function rebuild_permissions($address='/',$depth=true){
 		$cache=array();

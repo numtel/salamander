@@ -76,9 +76,17 @@ class Node_admin_install {
  			if(!$this->tree->insert('/',$docsPattern,true) ||
  				!$this->tree->insert('/',$docsData,true))
  				return 'Install Failure: Could not import documentation data.';
+ 			if(!$this->parent->tree_pattern->rebuild_permissions())
+ 				return 'Install Failure: Could not set permissions on import data.';
  		}
  			
  		return 'Installation successful!';
+ 	}
+ 	
+ 	public function generate_docsdata($outfile=false){
+ 		$out="<? \$docsPattern=array('patterns'=>".var_export($this->tree->filter_for_insert($this->tree->get('/patterns/documentation',true)),true).");\n\n\$docsData=".var_export($this->tree->filter_for_insert($this->tree->get('/docs',true)),true).";";
+ 		if($outfile===false) return $out;
+ 		return file_put_contents($outfile,$out)!==false;
  	}
    	
 }

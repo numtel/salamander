@@ -25,7 +25,7 @@
 .tree-control.loading .tree-address {background-image:url(img/load.gif); background-repeat:no-repeat; background-position:98% 50%; }
 
 .address-bar {position:relative; z-index:5; width:370px; float:left; }
-#main-tree {margin-top:4px;}
+#main-tree {margin-top:4px; padding:0 10px 5px;}
 #tree-browser { position:relative;
 	.tree-sel { height:280px; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
 	&.loading .tree-sel {  background-image:url(img/load-bar.gif); background-repeat:no-repeat; background-position:50% 50%; 
