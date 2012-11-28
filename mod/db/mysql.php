@@ -22,6 +22,8 @@ class Node_db_mysql {
 	protected $parent=false;
 	
 	public $link=false;
+	public $count=0;
+	public $printSelectBacktrace=false;
 	
 	public function __construct($parent){
 		$this->parent=$parent;
@@ -35,6 +37,9 @@ class Node_db_mysql {
 			}
 		}
 		mysql_select_db($this->parent->ini['db']['database'],$this->link);
+
+		if(isset($this->parent->ini['db']['print_select_backtrace']))
+			$this->printSelectBacktrace=(bool)$this->parent->ini['db']['print_select_backtrace'];
 		
 		//don't show the password all the time
 		unset($this->parent->ini['db']['password']);
@@ -63,6 +68,7 @@ class Node_db_mysql {
 						"PRIMARY KEY (  `".$name."_id` ));";
 		
 		$all_good=true;
+		$this->count++;
 		if(mysql_query($table_query,$this->link)){
 			foreach($fields as $id=>$field){
 				$id=mysql_real_escape_string($id,$this->link);
@@ -80,6 +86,7 @@ class Node_db_mysql {
 		$field_names='`'.implode(array_map("mysql_real_escape_string",array_keys($fields),array_fill(0,count($fields),$this->link)),'`, `').'`';
 		$values="'".implode(array_map("mysql_real_escape_string",array_values($fields),array_fill(0,count($fields),$this->link)),"', '")."'";
 		$insert_query="INSERT INTO `".$table_name."` (".$field_names.") VALUES (".$values.");";
+		$this->count++;
 		$return=mysql_query($insert_query,$this->link);
 		if(!$return || $return_index===false) return $return;
 		$return=mysql_insert_id($this->link);
@@ -99,7 +106,7 @@ class Node_db_mysql {
 			$where[$id]="`".mysql_real_escape_string($id)."`='".(is_array($val)?implode("' OR `".$id."`='",array_map("mysql_real_escape_string",$val,array_fill(0,count($val),$this->link))):mysql_real_escape_string($val))."'";
 		}
 		$where_val=implode(array_values($where), ' AND ');
-		
+		$this->count++;
 		$query="SELECT COUNT(".mysql_real_escape_string($field).") FROM `".$table_name."` WHERE ".$where_val;
 		$result = mysql_query($query,$this->link);
 		
@@ -141,8 +148,17 @@ class Node_db_mysql {
 		if(is_array($limit)) $limit="LIMIT ".implode(',',$limit);
 		$limit=mysql_real_escape_string($limit,$this->link);
 		
+		$this->count++;
 		$query="SELECT ".$field_names." FROM `".$table_name."`".$where_val." ".$limit;
-		//echo $query;
+		if($this->printSelectBacktrace===true){
+			$calls=debug_backtrace();
+			echo "<p>";
+			foreach($calls as $call){
+				echo "<strong>".$call['file'].' line '.$call['line'].'</strong><br>';
+			}
+			echo $query.'</p>';
+		}
+		
 		$result = mysql_query($query,$this->link);
 		
 		$output=array();
@@ -182,7 +198,7 @@ class Node_db_mysql {
 			if($id!=='@str' && !$versioning) $where[$id]="(`".mysql_real_escape_string($id,$this->link)."`='".(is_array($val)?implode("' OR `".mysql_real_escape_string($id,$this->link)."`='",array_map("mysql_real_escape_string",$val,array_fill(0,count($val),$this->link))):mysql_real_escape_string($val,$this->link))."')";
 		}
 		$where_val=implode(array_values($where), ' AND ');
-		
+		$this->count++;
 		if($versioning){
 			$parent_id=$item_id;
 			$fields['parent_id']=$parent_id;
@@ -213,7 +229,7 @@ class Node_db_mysql {
 			$extraWhere=$where['@str']; 
 			unset($where['@str']);
 		}
-		
+		$this->count++;
 		foreach($where as $id=>$val){
 			if($id==='id'){
 				$parent_id=$val;

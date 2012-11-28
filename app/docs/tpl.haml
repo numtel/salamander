@@ -41,3 +41,9 @@
 					%a{:href=>'http://www.gnu.org/licenses/'} GPL v3
 					, documentation under 
 					%a{:href=>'http://creativecommons.org/licenses/by/3.0/'} CC BY 3.0
+				%p Peak memory usage:
+					=' '.convert(memory_get_peak_usage(true))
+				%p Included files:
+				%pre=print_r(get_included_files())
+				%p SQL Queries:
+					=' '.$node->db->count

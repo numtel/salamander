@@ -1,4 +1,9 @@
 <?
+function convert($size){
+	$unit=array('b','kb','mb','gb','tb','pb');
+	return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+}
+
 //useful value: path to app
 $p=$node->root_http_path.$node->ini['front']['appPath'];
 $appDir=substr($node->page['template'],0,strrpos($node->page['template'],'/'));

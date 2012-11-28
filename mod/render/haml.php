@@ -24,7 +24,6 @@ class Node_render_haml {
 
 	public function __construct($parent){
 		$this->parent=$parent;
-		require_once $this->parent->fs_path.'lib/haml/HamlParser.php';
 	}
 
 	public function render($page='',$render_params=array(),$template='',$return=false){
@@ -37,7 +36,6 @@ class Node_render_haml {
 		//TODO:for some reason this doesn't work...I think it's a big in the parser
 		if($node->ini['front']['debug_haml']) $hamlOpts=array('style'=>'nested', 'ugly'=>true);
 		else $hamlOpts=array();
-		$haml = new HamlParser($hamlOpts);
 		
 		$curPage=$node->root_http_path.$page;
 		if(isset($node->query['page']))
@@ -59,19 +57,29 @@ class Node_render_haml {
 				//load page content
 				$page_filename=$node->ini['front']['template_dir'].$page;
 				ob_start();
-				if(file_exists($page_filename.'.haml'))
+				$page_haml_cache=$tplCacheDir.'/'.preg_replace(array('/^.\//','/\//','/.haml/'),array('','-',''),$page_filename).'.php';
+				if(file_exists($page_haml_cache) && (@filemtime($page_haml_cache) > filemtime($page_filename.'.haml'))){
+					include $page_haml_cache; 
+				}elseif(file_exists($page_filename.'.haml')){
+					require_once $this->parent->fs_path.'lib/haml/HamlParser.php';
+					if(!isset($haml)) $haml = new HamlParser($hamlOpts);
 					include $haml->parse($page_filename.'.haml', $tplCacheDir);
-				elseif(file_exists($page_filename.'.phtml'))
+				}elseif(file_exists($page_filename.'.phtml')){
 					include $page_filename.'.phtml';
+				}
 				$content=ob_get_clean();
 			}else $content='';
 		}else $content='';
-		
 		//load template or dump content
 		$template_filename=$node->ini['front']['template_dir'].$template;
+		$template_haml_cache=$tplCacheDir.'/'.preg_replace(array('/^.\//','/\//','/.haml/'),array('','-',''),$template_filename).'.php';
 		if($return){
 			return $content;
+		}elseif($template && file_exists($template_haml_cache) && (@filemtime($template_haml_cache) > filemtime($template_filename.'.haml'))){
+			include $template_haml_cache; 
 		}elseif($template && file_exists($template_filename.'.haml')){
+			require_once $this->parent->fs_path.'lib/haml/HamlParser.php';
+			if(!isset($haml)) $haml = new HamlParser($hamlOpts);
 			include $haml->parse($template_filename.'.haml', $tplCacheDir);
 		}elseif($template && file_exists($template_filename.'.phtml')){
 			include $template_filename.'.phtml';

@@ -472,7 +472,7 @@ class Node_record_tree2 {
  	//$suppressPermissions=used privately to get items for checking permissions
  	public function get($address='/',$depth=false,$suppressPermissions=false,$suppressEvents=false){
  		$address=$this->filter_address($address);
- 		if(!$suppressPermissions){
+ 		if($suppressPermissions===false){
  			 $rootRoles=$this->mode_to_roles($this->mode('/'));
  			 if(!$rootRoles['r']) return false;
  		}
@@ -507,13 +507,12 @@ class Node_record_tree2 {
 	 		$where['@str']="(`address` LIKE '".mysql_real_escape_string($address,$this->db->link)."%'".$depthStr.")";
 	 	}
  		
+  		//what address is this?
+		if(isset($origAddress)) $eventAddress=$origAddress;
+		elseif($address!=='/') $eventAddress=substr($address,0,-1);
+		else $eventAddress='/';
  		//perform validation event
   		if($suppressEvents===false){
-  			//what address is this?
-  			if(isset($origAddress)) $eventAddress=$origAddress;
-  			elseif($address!=='/') $eventAddress=substr($address,0,-1);
-  			else $eventAddress='/';
-  			
   			$isRange=!isset($origAddress);
   			
   			$eventValidate=$this->event($eventAddress,'r','validate',array($depth, $isRange));
@@ -524,7 +523,11 @@ class Node_record_tree2 {
   		}
 	 	//print_r($where);
 	 	$items=$this->db->select($this->table,'*',$where,'ORDER BY `order` ASC, `created` ASC');
-	 	$tree=$this->organize_flat($items,$address,$suppressPermissions);
+
+	 	if($suppressPermissions===false) $itemPerms=$this->load_user_perms($eventAddress,false,true,$depth);
+	 	else $itemPerms=false;
+	 	
+	 	$tree=$this->organize_flat($items,$address,$suppressPermissions,$itemPerms);
 	 	if($suppressPermissions===false) $tree=$this->unset_unreadable($tree);
 	 	//perform complete event
 	 	if($suppressEvents===false){
@@ -756,29 +759,29 @@ class Node_record_tree2 {
     	return $all_good;
     }
     
- 	//FUNCTION: $node->record_tree2->mode([String $address],[Integer $userId=false])
- 	//$address=address to get permission mode of
- 	//$userId=which user id, use default (false) for current user, 0 for all items
-    public function mode($address="/",$userId=false,$knowExists=false){
-    	if($userId===false) $userId=$this->parent->user_user->currentId;
+    public function load_user_perms($address="/",$userId=false,$knowExists=false,$depth=false){
+    	$userId=$this->parent->user_user->currentId;
     	$address=$this->filter_address($address);
     	if($address!=='/' && $knowExists!==true){
 			//make sure this is just a single item
 			$curItem=pull_item($this->get($address,false,true,true));
 			if($curItem===false) return false;
     	}
-    	
-    	if($userId!==0){
-			//determine this item's ancestors
-			$itemAddress=explode('/',$address);
-			$lineage=array();
-			while(count($itemAddress)>=1){
-				$thisAddress=implode('/',$itemAddress);
-				$lineage[]=$thisAddress==='' ? '/' : $thisAddress;
-				array_pop($itemAddress);
-			}
-    	}else{$lineage=$address;}
-    	$where=array('address'=>$lineage);
+	
+		//determine this item's ancestors
+		$itemAddress=explode('/',$address);
+		$addrDepth=count($itemAddress);
+		$lineage=array();
+		while(count($itemAddress)>=1){
+			$thisAddress=implode('/',$itemAddress);
+			$lineage[]=mysql_real_escape_string($thisAddress==='' ? '/' : $thisAddress);
+			array_pop($itemAddress);
+		}
+		if($depth===false) $depth=0;
+		$lineageStr="((`address` like '".mysql_real_escape_string($lineage[0]).($lineage[0]!=='/' ? '/' : '')."%' OR `address`='".implode("' OR `address`='",$lineage)."')".($depth!==true ? " and (length(`address`)-length(replace(`address`,'/',''))<".($addrDepth+$depth+1).")": "").")";
+		//return $lineageStr;
+		
+    	$where=array('@str'=>$lineageStr);
     	$accessId=array();
     	if($userId!==false){
 			//determine this user's groups
@@ -793,9 +796,12 @@ class Node_record_tree2 {
 	    	$accessId[]=0; //use 0 for global permissions
 	    	$where['access_id']=$accessId;
     	}
+    	
 		$current=$this->db->select($this->tablePerms,array('mode','address','access_id','owner'),$where);
-		if($userId===0) return $current;
+/*
+TODO: make happen in one step!!!
 		//add any ancestors that this user owns
+		//select unique `owner` where `address` like '%'
 		foreach($lineage as $parentAddress){
 			if(strlen($parentAddress)>1){
 				if(isset($this->cache[$parentAddress])){
@@ -810,6 +816,78 @@ class Node_record_tree2 {
 									'address'=>$parentAddress,
 									'access_id'=>$userId);
     		}
+		}
+*/
+
+		return $current;
+	}
+
+ 	//FUNCTION: $node->record_tree2->mode([String $address],[Integer $userId=false])
+ 	//$address=address to get permission mode of
+ 	//$userId=which user id, use default (false) for current user, 0 for all items
+    public function mode($address="/",$userId=false,$knowExists=false,$providedPerms=false){
+    	if($userId===false) $userId=$this->parent->user_user->currentId;
+    	$address=$this->filter_address($address);
+    	if($address!=='/' && $knowExists!==true){
+			//make sure this is just a single item
+			$curItem=pull_item($this->get($address,false,true,true));
+			if($curItem===false) return false;
+    	}
+    	
+		if($userId!==0){
+			//determine this item's ancestors
+			$itemAddress=explode('/',$address);
+			$lineage=array();
+			while(count($itemAddress)>=1){
+				$thisAddress=implode('/',$itemAddress);
+				$lineage[]=$thisAddress==='' ? '/' : $thisAddress;
+				array_pop($itemAddress);
+			}
+		}else{$lineage=$address;}
+		
+    	if($providedPerms===false){
+			
+			$where=array('address'=>$lineage);
+			$accessId=array();
+			if($userId!==false){
+				//determine this user's groups
+				$groups=isset($this->parent->user_user->groups['by_user_id'][$userId]) ? 
+							$this->parent->user_user->groups['by_user_id'][$userId] : array();
+				//find all the items that this item matches
+				$accessId=array_map(function($e){return ($e*-1)-($e!==0 ? 100 : 0);},$groups); //groups use negative ids
+				$accessId[]=$userId; //load current user
+				$accessId[]=-1; //all logged in users
+			}
+			if($userId!==0){
+				$accessId[]=0; //use 0 for global permissions
+				$where['access_id']=$accessId;
+			}
+			$current=$this->db->select($this->tablePerms,array('mode','address','access_id','owner'),$where);
+			if($userId===0) return $current;
+		}elseif(is_array($providedPerms)){
+			$current=array();
+			foreach($providedPerms as $cPerm){
+				if(strlen($cPerm['address'])<strlen($address) && substr($address,0,strlen($cPerm['address']))===$cPerm['address']){
+					$current[]=$cPerm;
+				}
+			}
+		}
+		
+		//add any ancestors that this user owns
+		foreach($lineage as $parentAddress){
+			if(strlen($parentAddress)>1){
+				if(isset($this->cache[$parentAddress])){
+					$parentItem=$this->cache[$parentAddress];
+				}else{
+					$parentItem=pull_item($this->get($parentAddress,false,true,true));
+					if($parentItem===false) return false;
+					$this->cache[$parentAddress]=$parentItem;
+				}
+				if((int)$parentItem['node:owner']===(int)$userId) 
+					$current[]=array('mode'=>array_sum($this->modes),
+									'address'=>$parentAddress,
+									'access_id'=>$userId);
+			}
 		}
 		//determine the final mode
 		$mode=0; $modeAddress=''; $modeAccessor=false;
@@ -1091,7 +1169,7 @@ class Node_record_tree2 {
     }
     
     //turn a flat set of db rows into a tree array
- 	private function organize_flat($items,$address,$noPermissions=false){
+ 	private function organize_flat($items,$address,$noPermissions=false,$itemPerms=false){
  		$output=array();
 		foreach($items as $item){
  			if($item['address']===$address){
@@ -1108,7 +1186,7 @@ class Node_record_tree2 {
 	 					$output[$item['name']]['node:owner']=$item['owner'];
 	 					$output[$item['name']]['node:address']=$item['address'].$item['name'];
 	 					if($noPermissions!==true && !isset($output[$item['name']]['node:mode'])){
-	 						$output[$item['name']]['node:mode']=$this->mode($output[$item['name']]['node:address']);
+	 						$output[$item['name']]['node:mode']=$this->mode($output[$item['name']]['node:address'],false,true,$itemPerms);
 	 						$output[$item['name']]['node:modeString']=$this->mode_to_string($output[$item['name']]['node:mode']);
 	 						$output[$item['name']]['node:roles']=$this->mode_to_roles($output[$item['name']]['node:mode']);
 	 					}
@@ -1117,7 +1195,7 @@ class Node_record_tree2 {
  				//work the children
  				if(!isset($output[$item['name']]['node:children']))
  					$output[$item['name']]['node:children']=
- 						$this->organize_flat($items,$address.$item['name'].'/',$noPermissions);
+ 						$this->organize_flat($items,$address.$item['name'].'/',$noPermissions,$itemPerms);
  			}
  		}
  		return $output;

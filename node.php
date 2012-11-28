@@ -153,9 +153,12 @@ class Node {
 				$this->ini['front']=array_merge_recursive($this->ini['front'],$dir_ini['front']);
 		}
 		//merge path sections
-		if(isset($dir_ini['path'])){
-			if(!isset($this->ini['path'])) $this->ini['path']=array();
-			$this->ini['path']=array_replace($this->ini['path'],$dir_ini['path']);
+		$toMergeSimple=array('path','db');
+		foreach($toMergeSimple as $section){
+			if(isset($dir_ini[$section])){
+				if(!isset($this->ini[$section])) $this->ini[$section]=array();
+				$this->ini[$section]=array_replace($this->ini[$section],$dir_ini[$section]);
+			}
 		}
 		//merge init sections
 		if(isset($dir_ini['init']))
