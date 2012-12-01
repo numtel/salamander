@@ -84,7 +84,7 @@ class Node_admin_install {
  	}
  	
  	public function generate_docsdata($outfile=false){
- 		$out="<? \$docsPattern=array('patterns'=>".var_export($this->tree->filter_for_insert($this->tree->get('/patterns/documentation',true)),true).");\n\n\$docsData=".var_export($this->tree->filter_for_insert($this->tree->get('/docs',true)),true).";";
+ 		$out="<? \$docsPattern=array('patterns'=>array('admin:icon'=>'th','node:children'=>".var_export($this->tree->filter_for_insert($this->tree->get('/patterns/documentation',true)),true)."));\n\n\$docsData=".var_export($this->tree->filter_for_insert($this->tree->get('/docs',true)),true).";";
  		if($outfile===false) return $out;
  		return file_put_contents($outfile,$out)!==false;
  	}

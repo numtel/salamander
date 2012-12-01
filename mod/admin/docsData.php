@@ -1,4 +1,4 @@
-<? $docsPattern=array('patterns'=>array (
+<? $docsPattern=array('patterns'=>array('admin:icon'=>'th','node:children'=>array (
   'documentation' => 
   array (
     'label' => 'Documentation Site',
@@ -267,7 +267,7 @@
     ),
     'page-read-depth' => '1',
   ),
-));
+)));
 
 $docsData=array (
   'docs' => 

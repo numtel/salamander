@@ -41,7 +41,6 @@ class Node_record_tree2 {
 	public $tablePerms='tree2_perms';
 	public $addressFilters=array();
 	public $events=array();
-	public $cache=array();
 	
 	//[r]ead,[w]rite,[i]nsert into,[d]elete,[s]ort,[m]ove,set [o]wner,set [p]ermissions
 	public $modes=array('r'=>1,'w'=>2,'i'=>4,'d'=>8,'s'=>16,'m'=>32,'o'=>64,'p'=>128);

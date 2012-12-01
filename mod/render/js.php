@@ -30,10 +30,16 @@ class Node_render_js {
 		if(!is_dir($node->ini['front']['cache_dir'])&& !mkdir($node->ini['front']['cache_dir'])) die('<h1>No cache directory available!</h1> <p>Please create '.$node->ini['front']['cache_dir'].' with mode 0777.</p>');
 		$min_file=$node->ini['front']['cache_dir'].$node->ini['front']['js_min'];
 		$re_minify=false;
-		if(file_exists($min_file) && isset($node->ini['front']['js']) && is_array($node->ini['front']['js'])){
+		if(!file_exists($min_file)){
+			if(!$node->ini['front']['debug_js']) $re_minify=true;
+			$min_file_mtime=0;
+		}else{
+			$min_file_mtime=filemtime($min_file);
+		}
+		if(isset($node->ini['front']['js']) && is_array($node->ini['front']['js'])){
 			foreach($node->ini['front']['js'] as $file){
 				if(substr($file,0,2)!=='//' && !$node->ini['front']['debug_js']){
-					if(file_exists($file) && filemtime($file) > filemtime($min_file)) 
+					if(file_exists($file) && filemtime($file) > $min_file_mtime) 
 						$re_minify=true;
 				}else $this->js[]=$file;
 					

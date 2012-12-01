@@ -67,7 +67,7 @@ class Node {
 		$_SESSION['sessionid'] = session_id();
 
 		//LOAD CONFIGURATION
-		$this->ini=parse_ini_file($this->config_name,true);
+		$this->ini=parse_ini_string(file_get_contents($this->config_name),true);
 
 		//determine which page to view
 		$this->page=array('uri'=>$this->ini['front']['default'],'params'=>array(),'template'=>false);
@@ -115,7 +115,7 @@ class Node {
 	}
 	
 	public function load_cfg($extra_config){
-		$dir_ini=parse_ini_file($extra_config,true);
+		$dir_ini=parse_ini_string(file_get_contents($extra_config),true);
 		$iniVars=array('#thisdir#'=>substr($extra_config,0,-strlen($this->config_name)-1));
 		$iniVars['#thistpl#']=substr($iniVars['#thisdir#'],strlen($this->ini['front']['template_dir']));
 		$iniVars['#thisuri#']=$this->root_http_path.$iniVars['#thistpl#'];
