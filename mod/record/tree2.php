@@ -472,10 +472,13 @@ class Node_record_tree2 {
  	//$suppressPermissions=used privately to get items for checking permissions
  	public function get($address='/',$depth=false,$suppressPermissions=false,$suppressEvents=false){
  		$address=$this->filter_address($address);
+ 		/*
+ 		TODO: determine new method of blocking useres!!!
  		if($suppressPermissions===false){
  			 $rootRoles=$this->mode_to_roles($this->mode('/'));
  			 if(!$rootRoles['r']) return false;
  		}
+ 		*/
  		$where=array();
  		if(substr($address,-1)!=='/'){
 	 		if(strlen($address)<=1) return false;
@@ -488,7 +491,7 @@ class Node_record_tree2 {
 	 			$addrDepth=substr_count($origAddress,'/')-1;
 	 			if($depth===true){ $depthStr=''; }
 		 		else{
-		 			$depthStr=" AND `depth`>='".mysql_real_escape_string($addrDepth,$this->db->link)."' AND `depth`<='".mysql_real_escape_string($addrDepth+$depth,$this->db->link)."'";
+		 			$depthStr=" AND `depth`<'".($addrDepth+$depth+1)."'";
 		 		}
 		 		$where['@str']="((`address`='".mysql_real_escape_string($address,$this->db->link)."' AND `name`='".mysql_real_escape_string($itemName,$this->db->link)."') OR (`address` LIKE '".mysql_real_escape_string($origAddress,$this->db->link)."/%'".$depthStr."))";
 	 		}else{
@@ -502,7 +505,7 @@ class Node_record_tree2 {
 	 		if($depth===true){ $depthStr=''; }
 	 		else{
 	 			if($depth===false) $depth=0;
-	 			$depthStr=" AND `depth`>='".mysql_real_escape_string($addrDepth,$this->db->link)."' AND `depth`<='".mysql_real_escape_string($addrDepth+$depth,$this->db->link)."'";
+	 			$depthStr=" AND `depth`<'".($addrDepth+$depth+1)."'";
 	 		}
 	 		$where['@str']="(`address` LIKE '".mysql_real_escape_string($address,$this->db->link)."%'".$depthStr.")";
 	 	}
@@ -511,10 +514,10 @@ class Node_record_tree2 {
 		if(isset($origAddress)) $eventAddress=$origAddress;
 		elseif($address!=='/') $eventAddress=substr($address,0,-1);
 		else $eventAddress='/';
+		$isRange=!isset($origAddress);
+		
  		//perform validation event
   		if($suppressEvents===false){
-  			$isRange=!isset($origAddress);
-  			
   			$eventValidate=$this->event($eventAddress,'r','validate',array($depth, $isRange));
   			//if event returns array return as replaced data
   			if(is_array($eventValidate)) return $eventValidate;
@@ -524,7 +527,9 @@ class Node_record_tree2 {
 	 	//print_r($where);
 	 	$items=$this->db->select($this->table,'*',$where,'ORDER BY `order` ASC, `created` ASC');
 
-	 	if($suppressPermissions===false) $itemPerms=$this->load_user_perms($eventAddress,false,true,$depth);
+		//depth for ranges includes the first level when loading the permissions!!!
+	 	if($suppressPermissions===false) $itemPerms=$this->load_user_perms($eventAddress,false,true,
+	 				$isRange ? $depth===false ? 1 : is_numeric($depth) ? $depth+1 : $depth : $depth );
 	 	else $itemPerms=false;
 	 	
 	 	$tree=$this->organize_flat($items,$address,$suppressPermissions,$itemPerms);
@@ -759,69 +764,6 @@ class Node_record_tree2 {
     	return $all_good;
     }
     
-    public function load_user_perms($address="/",$userId=false,$knowExists=false,$depth=false){
-    	$userId=$this->parent->user_user->currentId;
-    	$address=$this->filter_address($address);
-    	if($address!=='/' && $knowExists!==true){
-			//make sure this is just a single item
-			$curItem=pull_item($this->get($address,false,true,true));
-			if($curItem===false) return false;
-    	}
-	
-		//determine this item's ancestors
-		$itemAddress=explode('/',$address);
-		$addrDepth=count($itemAddress);
-		$lineage=array();
-		while(count($itemAddress)>=1){
-			$thisAddress=implode('/',$itemAddress);
-			$lineage[]=mysql_real_escape_string($thisAddress==='' ? '/' : $thisAddress);
-			array_pop($itemAddress);
-		}
-		if($depth===false) $depth=0;
-		$lineageStr="((`address` like '".mysql_real_escape_string($lineage[0]).($lineage[0]!=='/' ? '/' : '')."%' OR `address`='".implode("' OR `address`='",$lineage)."')".($depth!==true ? " and (length(`address`)-length(replace(`address`,'/',''))<".($addrDepth+$depth+1).")": "").")";
-		//return $lineageStr;
-		
-    	$where=array('@str'=>$lineageStr);
-    	$accessId=array();
-    	if($userId!==false){
-			//determine this user's groups
-			$groups=isset($this->parent->user_user->groups['by_user_id'][$userId]) ? 
-						$this->parent->user_user->groups['by_user_id'][$userId] : array();
-			//find all the items that this item matches
-			$accessId=array_map(function($e){return ($e*-1)-($e!==0 ? 100 : 0);},$groups); //groups use negative ids
-			$accessId[]=$userId; //load current user
-			$accessId[]=-1; //all logged in users
-    	}
-    	if($userId!==0){
-	    	$accessId[]=0; //use 0 for global permissions
-	    	$where['access_id']=$accessId;
-    	}
-    	
-		$current=$this->db->select($this->tablePerms,array('mode','address','access_id','owner'),$where);
-/*
-TODO: make happen in one step!!!
-		//add any ancestors that this user owns
-		//select unique `owner` where `address` like '%'
-		foreach($lineage as $parentAddress){
-			if(strlen($parentAddress)>1){
-				if(isset($this->cache[$parentAddress])){
-					$parentItem=$this->cache[$parentAddress];
-				}else{
-					$parentItem=pull_item($this->get($parentAddress,false,true,true));
-					if($parentItem===false) return false;
-					$this->cache[$parentAddress]=$parentItem;
-				}
-				if((int)$parentItem['node:owner']===(int)$userId) 
-					$current[]=array('mode'=>array_sum($this->modes),
-									'address'=>$parentAddress,
-									'access_id'=>$userId);
-    		}
-		}
-*/
-
-		return $current;
-	}
-
  	//FUNCTION: $node->record_tree2->mode([String $address],[Integer $userId=false])
  	//$address=address to get permission mode of
  	//$userId=which user id, use default (false) for current user, 0 for all items
@@ -834,61 +776,20 @@ TODO: make happen in one step!!!
 			if($curItem===false) return false;
     	}
     	
-		if($userId!==0){
-			//determine this item's ancestors
-			$itemAddress=explode('/',$address);
-			$lineage=array();
-			while(count($itemAddress)>=1){
-				$thisAddress=implode('/',$itemAddress);
-				$lineage[]=$thisAddress==='' ? '/' : $thisAddress;
-				array_pop($itemAddress);
-			}
-		}else{$lineage=$address;}
 		
     	if($providedPerms===false){
-			
-			$where=array('address'=>$lineage);
-			$accessId=array();
-			if($userId!==false){
-				//determine this user's groups
-				$groups=isset($this->parent->user_user->groups['by_user_id'][$userId]) ? 
-							$this->parent->user_user->groups['by_user_id'][$userId] : array();
-				//find all the items that this item matches
-				$accessId=array_map(function($e){return ($e*-1)-($e!==0 ? 100 : 0);},$groups); //groups use negative ids
-				$accessId[]=$userId; //load current user
-				$accessId[]=-1; //all logged in users
-			}
-			if($userId!==0){
-				$accessId[]=0; //use 0 for global permissions
-				$where['access_id']=$accessId;
-			}
-			$current=$this->db->select($this->tablePerms,array('mode','address','access_id','owner'),$where);
-			if($userId===0) return $current;
+    		$current=$this->load_user_perms($address,$userId,true);
 		}elseif(is_array($providedPerms)){
 			$current=array();
+			//provided Permissions will be for many items possibly, so sort it out!
 			foreach($providedPerms as $cPerm){
 				if(strlen($cPerm['address'])<strlen($address) && substr($address,0,strlen($cPerm['address']))===$cPerm['address']){
 					$current[]=$cPerm;
 				}
 			}
 		}
+		if($userId===0) return $current;
 		
-		//add any ancestors that this user owns
-		foreach($lineage as $parentAddress){
-			if(strlen($parentAddress)>1){
-				if(isset($this->cache[$parentAddress])){
-					$parentItem=$this->cache[$parentAddress];
-				}else{
-					$parentItem=pull_item($this->get($parentAddress,false,true,true));
-					if($parentItem===false) return false;
-					$this->cache[$parentAddress]=$parentItem;
-				}
-				if((int)$parentItem['node:owner']===(int)$userId) 
-					$current[]=array('mode'=>array_sum($this->modes),
-									'address'=>$parentAddress,
-									'access_id'=>$userId);
-			}
-		}
 		//determine the final mode
 		$mode=0; $modeAddress=''; $modeAccessor=false;
 		//sort by depth
@@ -1046,6 +947,101 @@ TODO: make happen in one step!!!
     //-------------------------------------------------------------------------------------
 	//BEGIN private helper functions:
     //-------------------------------------------------------------------------------------
+    public function load_user_perms($address="/",$userId=false,$knowExists=false,$depth=false){
+    	if($userId===false) $userId=$this->parent->user_user->currentId;
+    	$address=$this->filter_address($address);
+    	if($address!=='/' && $knowExists!==true){
+			//make sure this is just a single item
+			$curItem=pull_item($this->get($address,false,true,true));
+			if($curItem===false) return false;
+    	}
+	
+		//determine this item's ancestors
+		if($address==='/'){
+			$lineage=array('/');
+			$addrDepth=0;
+		}else{
+			$itemAddress=explode('/',substr($address,1));
+			$addrDepth=count($itemAddress);
+			$lineage=array();
+			while(count($itemAddress)>=1){
+				$thisAddress=implode('/',$itemAddress);
+				$lineage[]='/'.mysql_real_escape_string($thisAddress);
+				array_pop($itemAddress);
+			}
+			$lineage[]='/';
+		}
+		if($depth===false) $depth=0;
+		
+		//determine query to find permission rules for this item, its specified depth of children, and its ancestors
+		if($userId===0){
+			$where=array('address'=>$address);
+		}else{
+			$lineageStr="((";
+			if($depth>0) $lineageStr.="`address` like '".$lineage[0].($lineage[0]!=='/' ? '/' : '')."%' OR ";
+			$lineageStr.="`address`='".implode("' OR `address`='",$lineage)."')";
+			if($depth!==true && $depth>0) $lineageStr.=" and (length(`address`)-length(replace(`address`,'/',''))<".($addrDepth+$depth+1).")";
+		
+			$lineageStr.=")";
+			//echo '['. $lineageStr."]\n";
+		
+			$where=array('@str'=>$lineageStr);
+    	}
+    	$accessId=array();
+    	if($userId!==false){
+			//determine this user's groups
+			$groups=isset($this->parent->user_user->groups['by_user_id'][$userId]) ? 
+						$this->parent->user_user->groups['by_user_id'][$userId] : array();
+			//find all the items that this item matches
+			$accessId=array_map(function($e){return ($e*-1)-($e!==0 ? 100 : 0);},$groups); //groups use negative ids
+			$accessId[]=$userId; //load current user
+			$accessId[]=-1; //all logged in users
+    	}
+    	if($userId!==0){
+	    	$accessId[]=0; //use 0 for global permissions
+	    	$where['access_id']=$accessId;
+    	}
+    	
+		$current=$this->db->select($this->tablePerms,array('mode','address','access_id','owner'),$where);
+
+
+		if($userId!==false && $userId!==0){
+			//ancestors and children that are owned by this user have full access
+			if($depth===0){
+				$lineageStr="((";
+			}else{
+				$lineageStr="((`address` like '".mysql_real_escape_string($lineage[0]).($lineage[0]!=='/' ? '/' : '')."%'";
+			}
+			foreach($lineage as $ancestor){
+				if($ancestor==='/') continue;
+				$ancAddr=mysql_real_escape_string(substr($ancestor,0,strrpos($ancestor,'/')+1));
+				$ancName=mysql_real_escape_string(substr($ancestor,strrpos($ancestor,'/')+1));
+				if(strlen($lineageStr)>2) $lineageStr.=" OR ";
+				$lineageStr.="(`address`='".$ancAddr."' AND `name`='".$ancName."')";
+			}
+		
+			$lineageStr.=")";
+			if($depth!==true && $depth!==0){
+				$lineageStr.=" and (length(`address`)-length(replace(`address`,'/',''))<".($addrDepth+$depth+1).")";
+			}
+			$lineageStr.=")";
+			$tableId=$this->db->adjust_table_name($this->table).'_id';
+
+			if($lineageStr!=='(())'){
+				$ownedAncestors=array_keys($this->db->select($this->table,"DISTINCT CONCAT(`address`, `name`) AS '".$tableId."', `owner`, `parent_id`",array('@str'=>$lineageStr,'owner'=>$userId)));
+
+
+				foreach($ownedAncestors as $ownedAddr){
+					$current[]=array('mode'=>array_sum($this->modes),
+									'address'=>$ownedAddr,
+									'access_id'=>$userId);
+				}
+			}
+		}
+
+		return $current;
+	}
+
 	private function create_insert_items($data,$address,$depth,$owner=false,$order=0){
 		if($owner===false) $owner=$this->parent->user_user->currentId;
 		$output=array();

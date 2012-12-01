@@ -44,6 +44,6 @@
 				%p Peak memory usage:
 					=' '.convert(memory_get_peak_usage(true))
 				%p Included files:
-				%pre=print_r(get_included_files())
+					=' '.count(get_included_files())
 				%p SQL Queries:
 					=' '.$node->db->count
