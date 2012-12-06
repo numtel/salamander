@@ -10,7 +10,7 @@ jQuery(function($){
 
 	admin.initModeChoose=function(element){
 		element.each(function(){
-			var input=$(this).addClass('hide'),
+			var input=$(this).css({'display':'none'}),
 				selector=$('<div class="btn-group" data-toggle="buttons-checkbox" />'),
 				roles=$('#permissions').attr('data-roles');
 			for(var i=0;i<perms.length;++i){

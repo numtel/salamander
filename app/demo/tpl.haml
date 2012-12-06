@@ -1,0 +1,24 @@
+!!! 5
+%html
+	%head
+		%meta{:charset=>'utf-8'}
+		%title=(isset($pageTitle) ? $pageTitle.' - ' : '')."Salamander PHP Framework"
+		=$headerHTML
+	%body
+		#header
+			%a.scroll-pos#fork{:data-min-scroll=>"-1",:data-max-scroll=>"200",:data-formula-y=>"sP",:href=>"https://github.com/numtel/salamander"} Fork Me on Github!
+			.body
+				%h1.logo.scroll-pos{:data-min-scroll=>"-1",:data-max-scroll=>"192",:data-formula-y=>"0.7*sP"} Salamander PHP Framework
+		#contents
+			.body
+				=$content
+		#footer
+			.body
+				%p 
+					Designed and built by 
+					%a{:href=>'mailto:bgreen787@gmail.com'} bgreen787@gmail.com
+				%p
+					Code licensed under 
+					%a{:href=>'http://www.gnu.org/licenses/'} GPL v3
+					, documentation under 
+					%a{:href=>'http://creativecommons.org/licenses/by/3.0/'} CC BY 3.0

@@ -72,6 +72,7 @@ class Node_record_tree2 {
 		
 		foreach($this->modes as $role=>$val){
 			$this->events[$role]=array('validate'=>array(),'complete'=>array());
+			if($role==='r') $this->events[$role]['item']=array();
 		}
 		
 		//add filter hook for relative paths
@@ -531,10 +532,19 @@ class Node_record_tree2 {
 	 				$isRange ? $depth===false ? 1 : is_numeric($depth) ? $depth+1 : $depth : $depth );
 	 	else $itemPerms=false;
 	 	
-	 	$tree=$this->organize_flat($items,$address,$suppressPermissions,$itemPerms);
+	 	$tree=$this->organize_flat($items,$address,$suppressPermissions,$itemPerms,$suppressEvents);
 	 	if($suppressPermissions===false) $tree=$this->unset_unreadable($tree);
 	 	//perform complete event
 	 	if($suppressEvents===false){
+	 		/*TODO:virtual data
+	 		if($isRange===true && $eventAddress!=='/'){
+	 			$rangeParentItem=pull_item($this->get($eventAddress));
+	 			if($rangeParentItem!==false && 
+	 				isset($rangeParentItem['node:children']) && 
+	 				count($rangeParentItem['node:children'])){
+	 					$tree+=$rangeParentItem['node:children'];
+	 			}
+	 		}*/
 	 		$eventComplete=$this->event($eventAddress,'r','complete',array($tree, $isRange));
   			//if event returns array return as replaced data
   			if(is_array($eventComplete)) return $eventComplete;
@@ -918,7 +928,7 @@ class Node_record_tree2 {
  	//FUNCTION: $node->record_tree2->bind([String $address],[String $modeString],[String $type],[Callback $function])
  	//$address=address to get permission mode of
  	//$modeString=string containing which roles to bind to
- 	//$type=which type of event to bind to ('validate','complete')
+ 	//$type=which type of event to bind to ('validate','complete','item' [only for read])
  	//$function=function to call
  	public function bind($address,$modeString,$type,$function){
  		for($i=0;$i<strlen($modeString);++$i){
@@ -1164,7 +1174,7 @@ class Node_record_tree2 {
     }
     
     //turn a flat set of db rows into a tree array
- 	private function organize_flat($items,$address,$noPermissions=false,$itemPerms=false){
+ 	private function organize_flat($items,$address,$noPermissions=false,$itemPerms=false,$suppressEvents=false){
  		$output=array();
 		foreach($items as $item){
  			if($item['address']===$address){
@@ -1191,8 +1201,21 @@ class Node_record_tree2 {
  				if(!isset($output[$item['name']]['node:children']))
  					$output[$item['name']]['node:children']=
  						$this->organize_flat($items,$address.$item['name'].'/',$noPermissions,$itemPerms);
+ 				
  			}
  		}
+ 		/*TODO:virtual data
+		//perform item events
+  		if($suppressEvents===false){
+  			foreach($output as $name=>$item){
+	  			$eventItem=$this->event($item['node:address'],'r','item',array($item));
+	  			//if event returns array return as replaced data
+	  			if(is_array($eventItem)) $output[$name]=$eventItem;
+	  			//if event says get out, do it!
+	  			elseif($eventItem===false) unset($output[$name]);
+  			}
+  		}
+  		*/
  		return $output;
  	}
  	

@@ -41,6 +41,27 @@ class Node_tree_link {
 													''=>'INDEX (`address`)'));
 		}
 		
+		/*
+		$this->tree->bind('/node:wild-recursive','r','item',function($address,$node,$item){
+			if(isset($item['link-enabled'])){
+				$item['link-working']='hello';
+				
+				$childMode=1;
+				
+				$item['node:children']['hello']=
+					array('label'=>'choss is goss',
+						'node:name'=>'hello',
+						'node:owner'=>0,
+						'node:address'=>$address.'/hello',
+						'node:mode'=>$childMode,
+						'node:modeString'=>$node->record_tree2->mode_to_string($childMode),
+						'node:roles'=>$node->record_tree2->mode_to_roles($childMode),
+						'node:children'=>array());
+						
+				return $item;
+			}
+		});
+		*/
 		/* 
 		$this->tree->bind('/node:wild-recursive','r','validate',function($address,$node,$depth,$isRange){
 			$addrSplit=explode('/',$address);

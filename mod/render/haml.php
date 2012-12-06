@@ -58,8 +58,9 @@ class Node_render_haml {
 				$page_filename=$node->ini['front']['template_dir'].$page;
 				ob_start();
 				$page_haml_cache=$tplCacheDir.'/'.preg_replace(array('/^.\//','/\//','/.haml/'),array('','-',''),$page_filename).'.php';
-				if(file_exists($page_haml_cache) && (@filemtime($page_haml_cache) > filemtime($page_filename.'.haml'))){
-					include $page_haml_cache; 
+				if(file_exists($page_haml_cache) && file_exists($page_filename.'.haml') && 
+					(@filemtime($page_haml_cache) > filemtime($page_filename.'.haml'))){
+						include $page_haml_cache; 
 				}elseif(file_exists($page_filename.'.haml')){
 					require_once $this->parent->fs_path.'lib/haml/HamlParser.php';
 					if(!isset($haml)) $haml = new HamlParser($hamlOpts);

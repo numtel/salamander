@@ -92,40 +92,36 @@
 					%h5.padding
 						%i.icon-lock
 						Set Permission
-					.span6
-						.control-group
-							%select.select-users.span5{:multiple=>"multiple",:name=>"fields[accessors][]"}
-								%optgroup{:label=>'Special Groups'}
-									%option{:value=>"#{0}"} World
-									%option{:value=>"#{-1}"} All Logged In Users
-								%optgroup{:label=>'Groups'}
-									-foreach($node->record_group->list_groups($node->user_user->table) as $groupId=>$group)
-										%option{:value=>"#{($groupId*-1)-100}"}=$group['name']
-								%optgroup{:label=>'Users'}
-									-foreach($node->db->select($node->user_user->table,array('name')) as $userId=>$user)
-										%option{:value=>"#{$userId}"}=$user['name']
-						.control-group
-							%input.select-mode.span5{:type=>"text",:name=>"fields[mode]",:value=>"#{0}"}
-					.span2
+					.control-group
+						%select.select-users{:multiple=>"multiple",:name=>"fields[accessors][]"}
+							%optgroup{:label=>'Special Groups'}
+								%option{:value=>"#{0}"} World
+								%option{:value=>"#{-1}"} All Logged In Users
+							%optgroup{:label=>'Groups'}
+								-foreach($node->record_group->list_groups($node->user_user->table) as $groupId=>$group)
+									%option{:value=>"#{($groupId*-1)-100}"}=$group['name']
+							%optgroup{:label=>'Users'}
+								-foreach($node->db->select($node->user_user->table,array('name')) as $userId=>$user)
+									%option{:value=>"#{$userId}"}=$user['name']
 						%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/chmod"}
 						%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}"}
 						%button.btn{:type=>"submit"} 
 							Set Permissions
+					.control-group
+						%input.select-mode{:type=>"text",:name=>"fields[mode]",:value=>"#{0}"}
 			-if($item['node:roles']['o'] && !$isRoot)
 				%form.well.clearfix#set-owner
 					%h5.padding
 						%i.icon-flag
 						Set Owner
-					.span6
-						.control-group
-							%select.select-users.span5{:name=>"fields[user]",:value=>"#{$item['node:owner']}"}
-								%option{:value=>"#{0}"} No Owner
-								-foreach($node->db->select($node->user_user->table,array('name')) as $userId=>$user)
-									-if($item['node:owner']*1===$userId*1)
-										%option{:value=>"#{$userId}",:selected=>"selected"}=$user['name']
-									-else
-										%option{:value=>"#{$userId}"}=$user['name']
-					.span2
+					.control-group
+						%select.select-users{:name=>"fields[user]",:value=>"#{$item['node:owner']}"}
+							%option{:value=>"#{0}"} No Owner
+							-foreach($node->db->select($node->user_user->table,array('name')) as $userId=>$user)
+								-if($item['node:owner']*1===$userId*1)
+									%option{:value=>"#{$userId}",:selected=>"selected"}=$user['name']
+								-else
+									%option{:value=>"#{$userId}"}=$user['name']
 						%input{:type=>"hidden",:name=>"action",:value=>"record_tree2/chown"}
 						%input{:type=>"hidden",:name=>"fields[address]",:value=>"#{$item['node:address']}"}
 						%button.btn{:type=>"submit"} 

@@ -1,0 +1,81 @@
+<h2>How to make a simple blog</h2>
+<ul class="features">
+	<li class="clearfix">
+		<div class="image"><img src="/salamander/app/demo/ui/content/data.png" /></div>
+		<div class="desc">
+			<h4>Create your application's data structure in the shell or using a command.</h4>
+			<p>Copy this code snippet into the terminal to perform this step. Change the insert address to another address if desired. Addreseses on the insert function must always end in a slash, denoting a range of items.</p>
+		</div>
+		<pre class="code">var_dump($node->record_tree2->insert('/patterns/',array (
+  'blog' => array (
+    'label' => 'Simple Blog',
+    'node:children' => array (
+      'category' => array (
+        'label' => 'Category',
+        'type' => 'recursive',
+        'node:children' => array (
+          'title' => array (
+            'label' => 'Title',
+          ),
+        ),
+      ),
+      'post' => array (
+        'label' => 'Post',
+        'type' => 'array',
+        'set-permission' => '0:5',
+        'node:children' => array (
+          'title' => array (
+            'label' => 'Title',
+          ),
+          'content' =>  array (
+            'label' => 'Content',
+            'type' => 'richtext',
+          ),
+          'comment' => array (
+            'label' => 'Comments',
+            'type' => 'array',
+            'enable-insert' => '0',
+            'node:children' => array (
+              'comment' => array (
+                'label' => 'Comment',
+                'type' => 'textarea',
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+)));</pre>
+	</li>
+	<li class="clearfix">
+		<div class="image"><img src="/salamander/app/demo/ui/content/pattern.png" /></div>
+		<div class="desc">
+			<h4>Specify pattern information for validation and other site configuration.</h4>
+			<p>Some pattern fields are validated by the tree_pattern module on data events.</p>
+			<p>Field patterns can be added to tell a site how to display specific types of data.</p>
+		</div>
+	</li>
+	<li class="clearfix">
+		<div class="image"><img src="/salamander/app/demo/ui/content/perms.png" /></div>
+		<div class="desc">
+			<h4>Set permissions on each item.</h4>
+			<p>Only those with ownership permissions can overwrite permissions already set by another user.</p>
+		</div>
+	</li>
+	<li class="clearfix">
+		<div class="image"><img src="/salamander/app/demo/ui/content/function.png" /></div>
+		<div class="desc">
+			<h4>Use simple functions to retrieve and manipulate data.</h4>
+			<p>Permission settings are automatically applied to all data operations.</p>
+		</div>
+	</li>
+	<li class="clearfix">
+		<div class="image"><img src="/salamander/app/demo/ui/content/tools.png" /></div>
+		<div class="desc">
+			<h4>Quickly apply drop-down item management using supplied tools.</h4>
+			<p>Only displays relevant tools for permissions.</p>
+			<p>Edit/Insert automatically generate fields from the pattern.</p>
+		</div>
+	</li>
+</ul>

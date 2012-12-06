@@ -1,0 +1,26 @@
+body { background:url(layout/header-gradient.png) repeat-x 0 0 #aaa; font-family:Ubuntu, sans-serif; line-height:1.5em; }
+
+.body { width:980px; margin:0 auto; }
+
+#fork { position:absolute; top:0px; right:0px; padding:141px 144px 0 0; background:url(layout/github.png) no-repeat 0 0; width:0px; height:0px; overflow:hidden; }
+
+
+#header { height:309px; overflow:hidden; margin-bottom:91px; position:relative; 
+	.logo { padding:308px 743px 0 0; margin:0 auto; background:url(layout/logo.png) no-repeat 0 0; width:0px; height:0px; overflow:hidden; position:relative; }
+}
+#footer { background:#555; color:#eee; font-size:80%; padding:30px 0; 
+	a { color:#ccc; }
+}
+
+
+ul.features {
+	li {clear:both; padding:50px 0;}
+	.image {float:left; width:70%;
+		img { border:2px solid #555; border-radius:2px; box-shadow: 0 11px 35px rgba(0,0,0,0.5); display:block; margin:0 auto; }
+	}
+	
+	.desc {float:left; width:30%;}
+	h4, p { padding-bottom:10px; }
+}
+
+pre.code { padding:10px; font-family:Ubuntu Mono, monospace; border:1px solid #999; background:#444; color:#f89406; border-radius:5px; clear:both; margin:20px 0;}

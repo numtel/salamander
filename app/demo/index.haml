@@ -1,0 +1,37 @@
+-$pageTitle="Overview"
+%h2 Overview of Possible Application Configuration
+%ul.features
+	%li.clearfix
+		.image
+			%img{:src=>"#{$rel}ui/content/data.png"}
+		.desc
+			%h4 Create your application's data structure in the shell.
+			%p Data key=>value pairs can contain any length string, number or array.
+	%li.clearfix
+		.image
+			%img{:src=>"#{$rel}ui/content/pattern.png"}
+		.desc
+			%h4 Specify pattern information for validation and other site configuration.
+			%p Some pattern fields are validated by the tree_pattern module on data events.
+			%p Field patterns can be added to tell a site how to display specific types of data.
+	%li.clearfix
+		.image
+			%img{:src=>"#{$rel}ui/content/perms.png"}
+		.desc
+			%h4 Set permissions on each item.
+			%p Only those with ownership permissions can overwrite permissions already set by another user.
+	%li.clearfix
+		.image
+			%img{:src=>"#{$rel}ui/content/function.png"}
+		.desc
+			%h4 Use simple functions to retrieve and manipulate data.
+			%p Permission settings are automatically applied to all data operations.
+	%li.clearfix
+		.image
+			%img{:src=>"#{$rel}ui/content/tools.png"}
+		.desc
+			%h4 Quickly apply drop-down item management using supplied tools.
+			%p Only displays relevant tools for permissions.
+			%p Edit/Insert automatically generate fields from the pattern.
+			
+
