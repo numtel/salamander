@@ -58,12 +58,14 @@ class Node_render_scss {
 					if (!file_exists($output) || (@filemtime($input) > filemtime($output))) {
 						if (!is_dir($cssCacheDir)) @mkdir($cssCacheDir);
 						if(isset($scss)){
+							//scssphp parser
 							$parsed=$scss->compile(file_get_contents($input));
 						}else{
+							//phamlp parser
 							$parsed=$sass->toCss($input);
 						}
 						//adjust src values relative to the cache dir
-						$relative=str_repeat('../',count(explode('/',$node->query['page']))).substr($input,0,strrpos($input,'/')+1);
+						$relative=str_repeat('../',count(explode('/',$cssCacheDir))).substr($input,0,strrpos($input,'/')+1);
 						$parsed=explode('url(',$parsed);
 						for($i=1;$i<count($parsed);$i++){
 							//don't get rid of quote marks
