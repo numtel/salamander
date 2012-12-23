@@ -1965,6 +1965,78 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 </ul>
 ',
                   ),
+                  'comment-evbzrvlvyv' => 
+                  array (
+                    'comment' => 'whahaha',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
+                  ),
+                  'comment-nqzddtmkqk' => 
+                  array (
+                    'comment' => 'hawhf',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
+                  ),
+                  'comment-ievwqpmujw' => 
+                  array (
+                    'comment' => 'asdfjah',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
+                  ),
+                  'comment-hpdusyjsms' => 
+                  array (
+                    'comment' => 'number4',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
+                  ),
+                  'comment-jmnlhofdau' => 
+                  array (
+                    'comment' => 'number5',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
+                  ),
+                  'comment-vazztobffb' => 
+                  array (
+                    'comment' => 'number6',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
+                  ),
+                  'comment-unjwuyncmc' => 
+                  array (
+                    'comment' => 'number7',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
+                  ),
+                  'comment-fufddgjfaa' => 
+                  array (
+                    'comment' => 'number8',
+                    'node:owner' => '1',
+                    'node:children' => 
+                    array (
+                    ),
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
+                  ),
                 ),
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
                 'name' => 'access_id_load($accessId)',
@@ -3661,8 +3733,6 @@ function($address,$node,$curItem,$data){
 	Keyboard Shortcuts</h3>
 <ul>
 	<li>
-		<code>escape</code> - Toggle Browser</li>
-	<li>
 		<code>backspace</code> - Up One Level</li>
 	<li>
 		<code>ctrl+i</code> - Insert Into</li>
@@ -3671,7 +3741,7 @@ function($address,$node,$curItem,$data){
 	<li>
 		<code>f2</code> - Rename</li>
 	<li>
-		<code>f4</code>&nbsp;- Focus Address Bar</li>
+		<code>f4</code>&nbsp;- Focus Address Bar (Use arrow keys and Home/End keys to navigate the tree browser)</li>
 	<li>
 		<code>ctrl+m</code> - Move/Copy</li>
 </ul>

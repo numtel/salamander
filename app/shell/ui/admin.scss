@@ -31,10 +31,11 @@
 .address-bar {position:relative; z-index:5; width:370px; float:left; }
 #main-tree {margin-top:4px; padding:0 10px 5px;}
 #tree-browser { position:relative;
-	.tree-sel { height:280px; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+	.tree-sel { height:280px; width:100%; top:5px; box-shadow:0 10px 30px rgba(0,0,0,0.2); position:absolute; }
 	&.loading .tree-sel {  background-image:url(img/load-bar.gif); background-repeat:no-repeat; background-position:50% 50%; 
 		* { visibility:hidden; }
 	}
+	.nomoreused-tree-item.focused a { border-width:1px 0; border-style:solid; border-color: rgba(255,255,255,0.3); padding:2px 15px; box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #f89406; background-color:#f89406; }
 }
 /*.tab-content { overflow:initial; }*/
 

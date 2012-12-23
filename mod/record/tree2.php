@@ -647,79 +647,111 @@ class Node_record_tree2 {
  	//$rootAddress=address range to begin the query from
  	//$args=array('somekey'=>array('value'=>'33','operator'=>'>'),'otherkey'=>'someval','query:mode'=>'and|or|not')
  	//		arguments can contain nested arrays without the key set to perform complex boolean operations
- 	public function query($rootAddress='/',$args=array(),$depth=true,$suppressEvents=false,$onlySearch=false){
+ 	//$depth=true (for all levels) or integer [0+] (for specific number of levels)
+ 	public function query($rootAddress='/',$args=array(),$depth=true,$suppressEvents=false,$pageSize=0,$pageNum=1,$onlySearch=false){
  		$validOperators=array('>','<','>=','<=','=','!=','like');
  		if(is_string($args)) $args=$this->parse_attribute_query_string($args);
- 		//force trailing slash
- 		$rootAddress=$this->filter_address($rootAddress);
- 		if(substr($rootAddress,-1)!=='/') $rootAddress.='/';
- 		foreach($args as $key=>$arg){
- 			if(substr($key,0,6)==='query:') continue;
- 			//numeric (assigned) keys as parenthetical separators
- 			if(is_int($key)){
- 				$args[$key]=$this->query($rootAddress,$arg,$depth,$suppressEvents,true);
- 				continue;
+ 		$serialArgs=serialize($args);
+ 		if($pageSize>0 && $pageNum>1){
+ 			//check to see if the query's possible addresses exist in the users's session
+ 			if(isset($_SESSION['treeQueries']) && isset($_SESSION['treeQueries'][$serialArgs])){
+ 				$found=$_SESSION['treeQueries'][$serialArgs]['found'];
  			}
- 			//find addresses that contain this argument
- 			$where=array();
- 			
- 			//determine depth for sql query
- 			if($depth===true){ $depthStr=''; }
-	 		else{
- 				$addrDepth=substr_count($rootAddress,'/')-1;
-	 			$depthStr=" AND (`depth`>='".mysql_real_escape_string($addrDepth,$this->db->link)."' AND `depth`<='".mysql_real_escape_string($addrDepth+$depth,$this->db->link)."')";
-	 		}
+ 		}
+ 		if(!isset($found)){
+	 		//force trailing slash
+	 		$rootAddress=$this->filter_address($rootAddress);
+	 		if(substr($rootAddress,-1)!=='/') $rootAddress.='/';
+	 		foreach($args as $key=>$arg){
+	 			if(substr($key,0,6)==='query:') continue;
+	 			//numeric (assigned) keys as parenthetical separators
+	 			if(is_int($key)){
+	 				$args[$key]=$this->query($rootAddress,$arg,$depth,$suppressEvents,$pageSize,$pageNum,true);
+	 				continue;
+	 			}
+	 			//find addresses that contain this argument
+	 			$where=array();
+	 			
+	 			//determine depth for sql query
+	 			if($depth===true){ $depthStr=''; }
+		 		else{
+	 				$addrDepth=substr_count($rootAddress,'/')-1;
+		 			$depthStr=" AND (`depth`>='".mysql_real_escape_string($addrDepth,$this->db->link)."' AND `depth`<='".mysql_real_escape_string($addrDepth+$depth,$this->db->link)."')";
+		 		}
 			
-			//determine if exact key is used
- 			if(strpos($key,'%')===false){
- 				$where['key']=mysql_real_escape_string($key,$this->db->link);
- 			}else{
- 				$depthStr.=" AND (`key` LIKE '".mysql_real_escape_string($key,$this->db->link)."')";
- 			}
-
-			//determine which operator and value to use
- 			if(is_array($arg)) $argVal=$arg['value'];
- 			else $argVal=$arg;
- 			$argVal=mysql_real_escape_string($argVal,$this->db->link);
- 			if(is_array($arg)){
- 				if(!in_array($arg['operator'],$validOperators)) return false;
- 				$argOperator=$arg['operator'];
- 			}else{
- 				$argOperator='=';
- 				$args[$key]=array('value'=>$arg,'operator'=>'=');
- 			}
- 			
- 			if(is_numeric($argVal) && is_int($argVal*1)){
- 				//match only the integer field
-				$where['@str']="(`value_int` ".$argOperator." '".$argVal."') AND (`address` LIKE '".mysql_real_escape_string($rootAddress,$this->db->link)."%')".$depthStr;
- 			}else{
-	 			if(is_numeric($argVal)){
-	 				$argValInt=" OR `value_int` ".$argOperator." '".$argVal."'";
+				//determine if exact key is used
+	 			if(strpos($key,'%')===false){
+	 				$where['key']=mysql_real_escape_string($key,$this->db->link);
 	 			}else{
-	 				$argValInt="";
+	 				$depthStr.=" AND (`key` LIKE '".mysql_real_escape_string($key,$this->db->link)."')";
+	 			}
+
+				//determine which operator and value to use
+	 			if(is_array($arg)) $argVal=$arg['value'];
+	 			else $argVal=$arg;
+	 			$argVal=mysql_real_escape_string($argVal,$this->db->link);
+	 			if(is_array($arg)){
+	 				if(!in_array($arg['operator'],$validOperators)) return false;
+	 				$argOperator=$arg['operator'];
+	 			}else{
+	 				$argOperator='=';
+	 				$args[$key]=array('value'=>$arg,'operator'=>'=');
 	 			}
 	 			
-	 			//match any of the attribute fields
-				$where['@str']="(`value` ".$argOperator." '".$argVal."'".$argValInt." OR `value_text` ".$argOperator." '".$argVal."' OR `value_long` ".$argOperator." '".$argVal."') AND (`address` LIKE '".mysql_real_escape_string($rootAddress,$this->db->link)."%')".$depthStr;
-			}
+	 			if(is_numeric($argVal) && is_int($argVal*1)){
+	 				//match only the integer field
+					$where['@str']="(`value_int` ".$argOperator." '".$argVal."') AND (`address` LIKE '".mysql_real_escape_string($rootAddress,$this->db->link)."%')".$depthStr;
+	 			}else{
+		 			if(is_numeric($argVal)){
+		 				$argValInt=" OR `value_int` ".$argOperator." '".$argVal."'";
+		 			}else{
+		 				$argValInt="";
+		 			}
+		 			
+		 			//match any of the attribute fields
+					$where['@str']="(`value` ".$argOperator." '".$argVal."'".$argValInt." OR `value_text` ".$argOperator." '".$argVal."' OR `value_long` ".$argOperator." '".$argVal."') AND (`address` LIKE '".mysql_real_escape_string($rootAddress,$this->db->link)."%')".$depthStr;
+				}
 			
- 			$args[$key]['where']=$where;
- 			$argFound=$this->db->select($this->table,array('address','name'),$where);
- 			$args[$key]['found']=array();
- 			foreach($argFound as $foundItem){
- 				$args[$key]['found'][]=$foundItem['address'].$foundItem['name'];
- 			}
- 		}
- 		if($onlySearch===true) return $args;
- 		//determine boolean seperations
- 		$found=$this->query_boolean_sort($args);
+	 			$args[$key]['where']=$where;
+	 			$argFound=$this->db->select($this->table,array('address','name'),$where);
+	 			$args[$key]['found']=array();
+	 			foreach($argFound as $foundItem){
+	 				$itemRoles=$this->mode_to_roles($this->mode($foundItem['address'].$foundItem['name'],false,true));
+	 				if($itemRoles['r']===true) $args[$key]['found'][]=$foundItem['address'].$foundItem['name'];
+	 			}
+	 		}
+	 		if($onlySearch===true) return $args;
+	 		//determine boolean seperations
+	 		$found=$this->query_boolean_sort($args);
+	 	}
  		//load items
  		$results=array();
- 		foreach($found as $cAddress){
- 			$cItem=pull_item($this->get($cAddress,false,false,$suppressEvents));
- 			if($cItem!==false) $results[$cAddress]=$cItem;
+ 		
+ 		//load only a few items if paging
+ 		if($pageSize>0){
+			$curStart=$pageSize*($pageNum-1);
+			$curEnd=$pageSize*$pageNum;
+		}else{
+ 			$curStart=0; 
+ 			$curEnd=count($found)-1;
  		}
  		
+ 		for($i=$curStart;$i<$curEnd;++$i){
+ 			if(isset($found[$i])){
+	 			$cAddress=$found[$i];
+	 			$cItem=pull_item($this->get($cAddress,false,false,$suppressEvents));
+	 			if($cItem!==false){
+	 				$results[$cAddress]=$cItem;
+			  	}
+		  	}
+		}
+		$this->lastQueryFoundCount=count($found);
+		//update session var for pagination
+ 		if($pageSize>0){
+ 			if(!isset($_SESSION['treeQueries'])) $_SESSION['treeQueries']=array();
+ 			if(!isset($_SESSION['treeQueries'][$serialArgs])) $_SESSION['treeQueries'][$serialArgs]=$found;
+ 			
+ 		}
  		return $results;
  	}
  	 	

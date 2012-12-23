@@ -41,7 +41,10 @@ jQuery(function($){
 							.find('input').keydown(function(e){
 								switch(e.which){
 									case 13:
-										setAddress($(this).val(),true);
+										if($(this).val()===address || $(this).val()+'/'===address){
+											$(this).blur();
+											details.focus();
+										}else setAddress($(this).val(),true);
 										return false;
 									case 27:
 										this.value=ctrl.attr('data-item-address');
@@ -54,48 +57,23 @@ jQuery(function($){
 											.removeClass('icon-repeat')
 											.addClass('icon-chevron-right');
 								};
+							}).bind('focus blur',function(){
+								/*console.log(document.activeElement);
+								if($(document.activeElement).closest('#tree-browser').length>0) console.log('hello');*/
+								$('#toggle-display-browser').toggleClass('active'); 
+								$('#tree-browser').toggleClass('hide');
+								dataDiv.children().trigger('update');
+							}).keyup('f4',function(){
+								$(this).blur();
+								details.focus();
 							}).next().click(function(){
 								setAddress($(this).parent().children('input.tree-address').val(),true);
 							}).parent().parent(),
 			tools=$('<div class="tree-tools btn-group" />').appendTo(ctrl),
-			dataDiv=$('<div class="margin-vertical hide" id="tree-browser" />').appendTo(ctrl),
+			dataDiv=$('<div class="hide" id="tree-browser" />').appendTo(ctrl),
 			reload=function(){
 					ctrl.addClass('loading');
-					var reloadChildren=function(){
-								//NOTE: NO LONGER USED!, see tree-item-sel.js instead!
-								//load children
-								$.post(appPath+'terminal/command',
-									{'action':'record_tree2/get',
-									'template':appDir+'/blocks/list',
-									'fields[address]':address,
-									'fields[depth]':0},
-									function(data){
-										ctrl.removeClass('loading');
-										dataDiv.html(data).find('li.tree-item>a').click(function(){
-											setAddress($(this).parent().attr('data-address'));
-										});
-										if(curMode.roles.s){
-											//enable sorting
-											dataDiv.find('ul').sortable({
-												cancel: '.nav-header',
-												delay: 100,
-												update: function(event, ui) {
-													ctrl.addClass('loading');
-													var itemOrderString='';
-													$(this).children().each(function(){
-														itemOrderString+='&fields[data][]='+$(this).attr('data-address');
-													});
-													$.post(appPath+'terminal/command','action=record_tree2/sort&fields[address]='+ctrl.attr('data-item-address')+itemOrderString,function(data){
-															ctrl.removeClass('loading');
-															if(data.toLowerCase().indexOf('success')<0) 
-																admin.addMessage("Item sort failure!",true);
-														});
-													}
-											});
-										};
-									});
-							},
-						reloadDetails=function(){
+					var reloadDetails=function(){
 								//load item
 								var itemAddress=address.substr(-1)==='/' && address.length>1 ? 
 										address.substr(0,address.length-1) : address,
@@ -131,7 +109,7 @@ jQuery(function($){
 										'available': function(roles,address){return roles['r'] && address!=='/'; },
 										'click': function(){ setAddress(itemAddress.substr(0,itemAddress.lastIndexOf('/')),true); }
 									},
-									{
+									/*{
 										'title':'Display Browser (ESC)',
 										'icon':'folder-open',
 										'key':'esc',
@@ -146,7 +124,7 @@ jQuery(function($){
 										'insert': function() {
 											$(this).toggleClass('active', !$('#tree-browser').hasClass('hide'));
 										}
-									},
+									},*/
 									{
 										'title':'Home',
 										'icon':'home',
@@ -279,7 +257,11 @@ jQuery(function($){
 				};
 		//construction code
 		$(document).bind('keyup', 'f4', function(){
-			addressBar.find('input').select().focus();
+			var addrInput=addressBar.find('input');
+			addrInput.select().focus();
+			$('#toggle-display-browser').toggleClass('active'); 
+			$('#tree-browser').toggleClass('hide');
+			dataDiv.children().trigger('update');
 		});
 		ctrl.bind('reload',reload);
 		ctrl.bind('loadbrowser',loadBrowser);
