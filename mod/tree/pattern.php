@@ -40,17 +40,26 @@ class Node_tree_pattern {
 			'i', 'validate', function($address,$node,$curItem,$data){
 				//load the pattern match specified
 				foreach($data as $name=>$attr){
-					if(!isset($attr['pattern:match'])) return false;
+					if(!isset($attr['pattern:match'])){
+						$node->tree_pattern->error_message('No "pattern:match" defined!'); 
+						return false;
+					}
 					$pattern=pull_item($node->record_tree2->get($attr['pattern:match']));
-					if($pattern===false) return false;
+					if($pattern===false){
+						$node->tree_pattern->error_message('Pattern match not found!'); 
+						return false;
+					}
 					
 					//make sure that this pattern match fits hierarchically
 					$parent=pull_item($node->record_tree2->get($address));
 					if($parent===false) { 
-						$this->error_message('Parent not found!'); 
+						$node->tree_pattern->error_message('Parent not found!'); 
 						return false;
 					}
-					if($node->tree_pattern->validate_structure($attr,$parent,$pattern)===false) return false;
+					if($node->tree_pattern->validate_structure($attr,$parent,$pattern)===false){
+						$node->tree_pattern->error_message('Invalid structure!'); 
+						return false;
+					}
 					
 					if(!isset($pattern['enable-insert'])) continue;
 					$inserters=explode(',',$pattern['enable-insert']);
@@ -73,7 +82,7 @@ class Node_tree_pattern {
 						if(in_array(trim($cId)*1,$accessId)) $foundMatch=true;
 					}
 					if($foundMatch===false){
-						$this->error_message('User not member of available inserters!'); 
+						$node->tree_pattern->error_message('User not member of available inserters!'); 
 						return false;
 					}
 				}
@@ -135,7 +144,10 @@ class Node_tree_pattern {
 			return false;
 		}
 		
-		if($this->validate_structure($data,$parent,$match)===false) return false;
+		if($this->validate_structure($data,$parent,$match)===false){
+			$this->error_message('Invalid structure!'); 
+			return false;
+		}
 		
 		
 		//allow anything if specificity is vague

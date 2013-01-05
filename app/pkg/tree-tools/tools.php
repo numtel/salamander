@@ -43,12 +43,24 @@ switch($tool){
 					$accessId[]=-1; //all logged in users
 				}
 				$accessId[]=0; //use 0 for global permissions
-
-
-				$patternData=$tree->get($thisItem['pattern:match'],2);
-				$patternItem=pull_item($patternData);
-				$patternFlat=flatten_tree($patternData);
-				if(isset($patternItem['type']) && $patternItem['type']==='recursive') $childTypes[$patternItem['node:name']]=$patternItem;
+				if(isset($thisItem['pattern:match'])){
+					$patternData=$tree->get($thisItem['pattern:match'],2);
+					$patternItem=pull_item($patternData);
+					$patternFlat=flatten_tree($patternData);
+					if(isset($patternItem['type']) && $patternItem['type']==='recursive') $childTypes[$patternItem['node:name']]=$patternItem;
+				}elseif(isset($thisItem['pattern:children'])){
+					if(substr($thisItem['pattern:children'],-1)!=='/'){
+						//1 pattern type insertable
+						$patternChildren=$tree->get($thisItem['pattern:children'],2);
+						$patternItem=array('node:children'=>$patternChildren);
+						$patternFlat=flatten_tree($patternChildren);
+					}else{
+						//multiple pattern types
+						$patternData=$tree->get($thisItem['pattern:children'],2);
+						$patternItem=array('node:children'=>$patternData);
+						$patternFlat=flatten_tree($patternData);
+					}
+				}
 				foreach($patternItem['node:children'] as $patKey=>$patVal){
 					if(isset($patVal['type']) && in_array($patVal['type'],array('array','recursive'))){
 						if(!isset($patVal['enable-insert'])){

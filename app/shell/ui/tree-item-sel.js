@@ -27,13 +27,15 @@ jQuery(function($){
 
 							// put sorted results back on page
 							box.append(lists);
-							lists.filter(':has(.active)').scrollTo('.active');
+							setTimeout(function(){
+								lists.filter(':has(.active)').scrollTo('.active');
+								},10);
 							//set wrapper width
 							var fullWidth=lists.length*box.children(':eq(0)').outerWidth(true);
 							box.css('width',fullWidth).parent().scrollLeft(fullWidth);
-							/*//set all heights equal
-							box.children().css({'min-height':''});
-							box.children().css({'min-height':box.innerHeight()});*/
+							//set all heights equal
+							box.children().css({'height':''});
+							box.children().css({'height':box.innerHeight() < 260 ? box.innerHeight() : 260});
 						},
 				loadList=function(address,column,active){
 						//remove any lists in this column or after
@@ -69,7 +71,7 @@ jQuery(function($){
 											});
 										}
 								});
-								thisCol.find('li.tree-item>a').click(itemClick);
+								thisCol.find('li.tree-item>a').mousedown(itemClick);
 								if(active) thisCol.find('li[data-address$="/'+active+'"]').addClass('active');
 								
 								box.append(thisCol);
@@ -79,7 +81,8 @@ jQuery(function($){
 								if(box.closest('body').length) updateDisplay();
 							});
 					},
-				itemClick=function(){
+				itemClick=function(e){
+						if(e!==undefined && e.preventDefault!==undefined) e.preventDefault();
 						var li=$(this);
 						//move up if the <a> is passed
 						if(!li.hasClass('tree-item')) li=li.parent();
@@ -90,6 +93,7 @@ jQuery(function($){
 						loadList(newAddr,columns);
 						input.val(newAddr);
 						if(callback) callback.call(this,newAddr);
+						return false;
 					},
 				initList=function(address){
 						var addressSplit=address.split('/'),
@@ -171,6 +175,39 @@ jQuery(function($){
 					var firstItem=box.find('li.tree-item.focused').parent().children('.tree-item').first();
 				}
 				if(firstItem.length) itemClick.call(firstItem);
+				return false;
+			}).bind('keydown.tree-item-sel','pagedown',function(e){
+				e.preventDefault();
+				var itemsPerPage=11; /*why not?!*/
+				if(this.value==='/'){
+					var selItem=box.find('li.tree-item:eq('+itemsPerPage+')');
+				}else{
+					var cItem=box.find('li.tree-item.focused'),
+						cIndex=cItem.index(),
+						siblingCount=cItem.parent().children().length,
+						nextPageIndex=cIndex+itemsPerPage;
+					if(nextPageIndex>siblingCount-1) nextPageIndex=siblingCount-1;
+					
+					var selItem=cItem.parent().children().eq(nextPageIndex);
+					
+				}
+				if(selItem.length) itemClick.call(selItem);
+				return false;
+			}).bind('keydown.tree-item-sel','pageup',function(e){
+				e.preventDefault();
+				var itemsPerPage=11; /*why not?!*/
+				if(this.value==='/'){
+					var selItem=[];
+				}else{
+					var cItem=box.find('li.tree-item.focused'),
+						cIndex=cItem.index(),
+						prevPageIndex=cIndex-itemsPerPage;
+					if(prevPageIndex<0) prevPageIndex=0;
+					
+					var selItem=cItem.parent().children().eq(prevPageIndex);
+					
+				}
+				if(selItem.length) itemClick.call(selItem);
 				return false;
 			});
 		});

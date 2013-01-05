@@ -185,105 +185,118 @@ nodeTools.ajaxMsg=function(data){
 	});
 };
 
+nodeTools.itemInsert=function(address){
+	nodeTools.modal('insert', address, 'tool-insert-item', 'Insert Item', function(){
+		var typeSelector=$('#tool-insert-item select.pattern-match');
+		typeSelector.change(function(){
+			$('#tool-insert-item .pattern-type').addClass('hide')
+				.filter('[data-address="'+typeSelector.val()+'"]').removeClass('hide');
+		}).change();
+		nodeTools.initCKEditors();
+		nodeTools.initAjaxForm($('#tool-insert-item'),function(data){
+			nodeTools.ajaxMsg(data);
+			nodeTools.refreshItem(address);
+		},function(){
+			$('#tool-insert-item .pattern-type.hide').remove();
+		});
+
+	});
+};
+
+nodeTools.itemEdit=function(address){
+	nodeTools.modal('edit', address, 'tool-edit-item', 'Edit Item', function(){
+		nodeTools.initCKEditors();
+		nodeTools.initAjaxForm($('#tool-edit-item'),function(data){
+			nodeTools.ajaxMsg(data);
+			nodeTools.refreshItem(address);
+		});
+	});
+};
+
+nodeTools.itemMove=function(address){
+	nodeTools.modal('move', address, 'tool-move-item', 'Move Item', function(){
+		nodeTools.initAjaxForm($('#tool-move-item'),function(data){
+			nodeTools.ajaxMsg(data);
+		});
+		$('#make-copy-not-move').change(function(){
+			$('#tool-move-item input[name="action"]').val('record_tree2/'+($(this).is(':checked') ? 'copy' : 'move'));
+		}).change();
+		nodeTools.initTreeItemSel($('#tool-move-item .new-address'),'well span5 tree-sel')
+	});
+};
+
+nodeTools.itemRename=function(address){
+	nodeTools.modal('rename', address, 'tool-rename-item', 'Rename Item', function(){
+		nodeTools.initAjaxForm($('#tool-rename-item'),function(data){
+			nodeTools.ajaxMsg(data);
+		});
+	});
+};
+nodeTools.itemDelete=function(address){
+	nodeTools.modal('delete', address, 'tool-delete-item', 'Delete Item', function(){
+		nodeTools.initAjaxForm($('#tool-delete-item'),function(data){
+			nodeTools.ajaxMsg(data);
+			toolButton.detach().appendTo('body');
+			$("li.item[data-item-address='"+address+"']").remove();
+
+		});
+	});
+};
+nodeTools.itemSetOwner=function(address){
+	nodeTools.modal('owner', address, 'tool-item-owner', 'Set Item Owner', function(){
+		nodeTools.initAjaxForm($('#tool-item-owner'),function(data){
+			nodeTools.ajaxMsg(data);
+		});
+		$('#tool-item-owner select.select-users').chosen();
+	},true);
+};
+nodeTools.itemSetPermission=function(address){
+	nodeTools.modal('permission', address, 'tool-item-permission', 'Set Item Permission', function(){
+		nodeTools.initAjaxForm($('#tool-item-permission'),function(data){
+			nodeTools.ajaxMsg(data);
+		});
+		$('#tool-item-permission select.select-users').chosen();
+		nodeTools.initModeChoose($('#tool-item-permission .select-mode'));
+		$('#tool-item-permission .delete-permission a').click(function(){
+			var cThis=$(this).parent(),
+				cAddress=cThis.attr('data-address'),
+				cAccessors=cThis.attr('data-accessors');
+			$.post(nodeToolsDir+'tools',{
+				'ajax':'true',
+				'action':'record_tree2/chmod',
+				'fields[address]':cAddress,
+				'fields[mode]':'delete',
+				'fields[accessors][]':cAccessors
+			},
+			function(data){
+				var error=data.toLowerCase().indexOf('success')===-1;
+				if(error===false) cThis.closest('tr').remove();
+			});
+		});
+	},true);
+};
+
 jQuery(function($){
 	//tool button handlers
 	var toolButton=$('<div id="tool-dropdown-button" class="hide" />').appendTo('body'),
 		tools=[
-			{mode:'w',name:'edit-item',label:'Edit Item&hellip;',click:function(){
-				nodeTools.modal('edit', toolButton.attr('data-item-address'), 'tool-edit-item', 'Edit Item', function(){
-					nodeTools.initCKEditors();
-					nodeTools.initAjaxForm($('#tool-edit-item'),function(data){
-						nodeTools.ajaxMsg(data);
-						nodeTools.refreshItem(toolButton.attr('data-item-address'));
-					});
-				});
-			}},
-			{mode:'i',name:'insert-item',label:'Insert Into&hellip;',click:function(){
-				nodeTools.modal('insert', toolButton.attr('data-item-address'), 'tool-insert-item', 'Insert Item', function(){
-					var typeSelector=$('#tool-insert-item select.pattern-match');
-					typeSelector.change(function(){
-						$('#tool-insert-item .pattern-type').addClass('hide')
-							.filter('[data-address="'+typeSelector.val()+'"]').removeClass('hide');
-					}).change();
-					nodeTools.initCKEditors();
-					nodeTools.initAjaxForm($('#tool-insert-item'),function(data){
-						nodeTools.ajaxMsg(data);
-						nodeTools.refreshItem(toolButton.attr('data-item-address'));
-					},function(){
-						$('#tool-insert-item .pattern-type.hide').remove();
-					});
-	
-				});
-			}},
-			{mode:'m',name:'move-item',label:'Move or Copy&hellip;',click:function(){
-				nodeTools.modal('move', toolButton.attr('data-item-address'), 'tool-move-item', 'Move Item', function(){
-					nodeTools.initAjaxForm($('#tool-move-item'),function(data){
-						nodeTools.ajaxMsg(data);
-					});
-					$('#make-copy-not-move').change(function(){
-						$('#tool-move-item input[name="action"]').val('record_tree2/'+($(this).is(':checked') ? 'copy' : 'move'));
-					}).change();
-					nodeTools.initTreeItemSel($('#tool-move-item .new-address'),'well span5 tree-sel')
-				});
-			}},
-			{mode:'m',name:'rename-item',label:'Rename&hellip;',click:function(){
-				nodeTools.modal('rename', toolButton.attr('data-item-address'), 'tool-rename-item', 'Rename Item', function(){
-					nodeTools.initAjaxForm($('#tool-rename-item'),function(data){
-						nodeTools.ajaxMsg(data);
-					});
-				});
-			}},
-			{mode:'d',name:'delete-item',label:'Delete&hellip;',click:function(){
-				nodeTools.modal('delete', toolButton.attr('data-item-address'), 'tool-delete-item', 'Delete Item', function(){
-					nodeTools.initAjaxForm($('#tool-delete-item'),function(data){
-						nodeTools.ajaxMsg(data);
-						toolButton.detach().appendTo('body');
-						$("li.item[data-item-address='"+toolButton.attr('data-item-address')+"']").remove();
-
-					});
-				});
-			}},
-			{mode:'o',name:'set-item-owner',label:'Set Owner&hellip;',click:function(){
-				nodeTools.modal('owner', toolButton.attr('data-item-address'), 'tool-item-owner', 'Set Item Owner', function(){
-					nodeTools.initAjaxForm($('#tool-item-owner'),function(data){
-						nodeTools.ajaxMsg(data);
-					});
-					$('#tool-item-owner select.select-users').chosen();
-				},true);
-			}},
-			{mode:'p',name:'set-item-permission',label:'Set Permission&hellip;',click:function(){
-				nodeTools.modal('permission', toolButton.attr('data-item-address'), 'tool-item-permission', 'Set Item Permission', function(){
-					nodeTools.initAjaxForm($('#tool-item-permission'),function(data){
-						nodeTools.ajaxMsg(data);
-					});
-					$('#tool-item-permission select.select-users').chosen();
-					nodeTools.initModeChoose($('#tool-item-permission .select-mode'));
-					$('#tool-item-permission .delete-permission a').click(function(){
-						var cThis=$(this).parent(),
-							cAddress=cThis.attr('data-address'),
-							cAccessors=cThis.attr('data-accessors');
-						$.post(nodeToolsDir+'tools',{
-							'ajax':'true',
-							'action':'record_tree2/chmod',
-							'fields[address]':cAddress,
-							'fields[mode]':'delete',
-							'fields[accessors][]':cAccessors
-						},
-						function(data){
-							var error=data.toLowerCase().indexOf('success')===-1;
-							if(error===false) cThis.closest('tr').remove();
-						});
-					});
-				},true);
-			}}
+			{mode:'w',name:'itemEdit',label:'Edit Item&hellip;'},
+			{mode:'i',name:'itemInsert',label:'Insert Into&hellip;'},
+			{mode:'m',name:'itemMove',label:'Move or Copy&hellip;'},
+			{mode:'m',name:'itemRename',label:'Rename&hellip;'},
+			{mode:'d',name:'itemDelete',label:'Delete&hellip;'},
+			{mode:'o',name:'itemSetOwner',label:'Set Owner&hellip;'},
+			{mode:'p',name:'itemSetPermission',label:'Set Permission&hellip;'}
 		];
 	//build the button	
 	toolButton.html('<div class="btn-group"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-pencil" /><span class="caret"></span></a><ul class="dropdown-menu pull-right"></ul></div>');
 	for(var i=0;i<tools.length;++i){
 		toolButton.find('ul').append(
 			'<li data-mode="'+tools[i].mode+'">'+
-			'<a class="'+tools[i].name+'" href="javascript:">'+tools[i].label+'</a></li>');
-		toolButton.find('a.'+tools[i].name).click(tools[i].click);
+			'<a data-tool="'+tools[i].name+'" href="javascript:">'+tools[i].label+'</a></li>');
+		toolButton.find('a[data-tool="'+tools[i].name+'"]').click(function(){
+			nodeTools[$(this).attr('data-tool')].call(this,toolButton.attr('data-item-address'));
+		});
 	}
 	
 

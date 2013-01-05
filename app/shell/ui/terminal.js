@@ -13,11 +13,12 @@ new function($) {
 }(jQuery);
 
 jQuery(function($){
-	var term=$("#terminal"),promptVal='> ',commands=[],cCommand=false,promptPos=0,trunk='';
+	var term=$("#terminal"),promptVal='> ',commands=[],cCommand=false,promptPos=0,trunk='',pauseInput=false;
 	if(term.length){
 		var prompt=function(){
 						promptPos=term.val().length+promptVal.length;
 						write(promptVal,false);
+						pauseInput=false;
 					},
 			write=function(str,wrap){
 						if(wrap===undefined) wrap='\n';
@@ -29,6 +30,7 @@ jQuery(function($){
 						$('body')[0].scrollTop=$('body')[0].scrollHeight;
 					};
 		term.keyup(function(e){
+			if(pauseInput===true) return false;
 			var val=term.val(), nl='\n'.length;
 			//console.log(e.which);
 			if(e.which===13){
@@ -39,6 +41,8 @@ jQuery(function($){
 					term.val('');
 					prompt();
 				}else{
+					//write(nl);
+					pauseInput=true;
 					$.post(appPath+'terminal/command',{'action':'admin_terminal/command',
 									'fields[command]':lastLine},function(data){
 										write(data);
@@ -48,6 +52,7 @@ jQuery(function($){
 				
 			};
 		}).keydown(function(e){
+			if(pauseInput===true) return false;
 			var val=term.val(), nl='\n'.length;
 			trunk=val.substr(0,promptPos);
 			if(e.which===8){

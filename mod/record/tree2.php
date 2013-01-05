@@ -75,29 +75,7 @@ class Node_record_tree2 {
 			if($role==='r') $this->events[$role]['item']=array();
 		}
 		
-		//add filter hook for relative paths
-		$this->addressFilters[]=function($address,$node){
-			if(is_array($address)) var_export($address);
-			if(strstr($address,'/../')!==false){
-				while(strstr($address,'/../')!==false){
-					$curBack=strpos($address,'/../');
-					$lastSlash=strpos(strrev($address),'/',strlen($address)-$curBack);
-					if($lastSlash===false) return '/'.substr($address,$curBack+4);
-					$lastSlash=strlen($address)-$lastSlash;
-					$address=substr($address,0,$lastSlash).substr($address,$curBack+4);
-				}
-			}
-			if(substr($address,-3)==='/..'){
-				$address=substr($address,0,-3);
-				$lastSlash=strpos(strrev($address),'/');
-				if($lastSlash===false) return '/';
-				$lastSlash=strlen($address)-$lastSlash;
-				$address=substr($address,0,$lastSlash-1);
-				if($address==='') return '/';
-			}
-			return $address;
-		};
-	
+
 		
  	}
  	
@@ -121,7 +99,6 @@ class Node_record_tree2 {
 							'node:address'=>'/');
 			if(!$curItem['node:roles']['i']) return false; 
 		}
- 		
   		if($suppressEvents===false){
  			//perform insert validation event
   			$eventValidate=$this->event($curItem['node:address'],'i','validate',array($curItem,$data));
@@ -135,7 +112,6 @@ class Node_record_tree2 {
   			//if event says get out, do it!
   			if($data===false) return false;
   		}
-
 
 		//find highest ordered item
 		$maxOrder=array_values($this->db->select($this->table,array('order'),array('address'=>$address),'ORDER BY `order` DESC LIMIT 1'));
@@ -163,7 +139,6 @@ class Node_record_tree2 {
 			$allGood=$this->db->insert($this->table,$item);
 			if($allGood===false) break;
 		}
-		
  		if($allGood===true && $suppressEvents===false){
  			$itemAddress=$address==='/' ? '/' : substr($address,0,-1);
  			$dataMod=$this->inserted_items($dataMod,$itemAddress);
@@ -332,7 +307,7 @@ class Node_record_tree2 {
  		//make sure this address exists and user can edit it
  		$whereItem=array();
  		$curItem=pull_item($this->get($itemAddress,false,false,true));
- 		if($curItem===false || $curItem['node:roles']['w']===false) return false;
+ 		if($curItem===false || $curItem['node:roles']['m']===false) return false;
 
   		//prepare the query
 		$addressSplit=explode('/',$itemAddress);
@@ -655,7 +630,7 @@ class Node_record_tree2 {
  		if($pageSize>0 && $pageNum>1){
  			//check to see if the query's possible addresses exist in the users's session
  			if(isset($_SESSION['treeQueries']) && isset($_SESSION['treeQueries'][$serialArgs])){
- 				$found=$_SESSION['treeQueries'][$serialArgs]['found'];
+ 				$found=$_SESSION['treeQueries'][$serialArgs];
  			}
  		}
  		if(!isset($found)){
@@ -824,7 +799,7 @@ class Node_record_tree2 {
 			$current=array();
 			//provided Permissions will be for many items possibly, so sort it out!
 			foreach($providedPerms as $cPerm){
-				if(strlen($cPerm['address'])<strlen($address) && substr($address,0,strlen($cPerm['address']))===$cPerm['address']){
+				if(strlen($cPerm['address'])<=strlen($address) && substr($address,0,strlen($cPerm['address']))===$cPerm['address']){
 					$current[]=$cPerm;
 				}
 			}
@@ -974,7 +949,7 @@ class Node_record_tree2 {
     //-------------------------------------------------------------------------------------
 	//BEGIN derivative operation functions:
     //-------------------------------------------------------------------------------------
-    public function copy($address, $newParent,$suppressEvents=false){
+    public function copy($address, $newParent,$suppressEvents=false,$preserveOwner=false){
     	$data=$this->get($address,true,false,$suppressEvents);
     	if($data===false) return false;
     	//if copying a single item to same parent item, use random name!
@@ -982,7 +957,7 @@ class Node_record_tree2 {
     		$data=array_values($data);
     		$data=array(random_string()=>$data[0]);
     	}
-    	return $this->insert($newParent,$this->filter_for_insert($data),$suppressEvents);
+    	return $this->insert($newParent,$this->filter_for_insert($data,!$preserveOwner),$suppressEvents);
     }
  	
     //-------------------------------------------------------------------------------------
@@ -1271,13 +1246,23 @@ class Node_record_tree2 {
     }
     
     public function filter_for_insert($data,$noMeta=false){
+    	$allowMetaKeys=array('children');
+    	if($noMeta===true) $allowMetaKeys[]='owner';
     	foreach($data as $key=>$val){
-    		if(substr($key,0,5)==="node:" && (!in_array(substr($key,5),array('owner','children')) || $noMeta)){
+    		if(substr($key,0,5)==="node:" && !in_array(substr($key,5),$allowMetaKeys)){
     			unset($data[$key]);
     			continue;
     		}
     		//go recursive if kids or the root of a get result
+    		//TODO:could cause problems with arrays in data?
     		if($key==='node:children' || is_array($val)) $data[$key]=$this->filter_for_insert($val);
+    		if($key==='node:children' && is_array($val) && count($val)===0) unset($data[$key]);
+    	}
+    	if(isset($data['node:children'])){
+    		//move children to end
+    		$children=$data['node:children'];
+    		unset($data['node:children']);
+    		$data['node:children']=$children;
     	}
     	return $data;
     }

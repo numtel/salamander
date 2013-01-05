@@ -1,0 +1,5 @@
+%ul.posts
+	-foreach($blogPosts as $postAddr=>$post)
+		%li{:data-item-address=>"#{$post['node:address']}", :data-item-roles=>"#{$post['node:modeString']}",:data-pattern-match=>"#{$post['pattern:match']}"}
+			%h1=$post['title']
+			.content=$post['content']
