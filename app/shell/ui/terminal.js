@@ -13,7 +13,14 @@ new function($) {
 }(jQuery);
 
 jQuery(function($){
-	var term=$("#terminal"),promptVal='> ',commands=[],cCommand=false,promptPos=0,trunk='',pauseInput=false;
+	var term=$("#terminal"),
+		promptVal='> ',
+		commands=[],
+		cCommand=false,
+		promptPos=0,
+		trunk='',
+		pauseInput=false,
+		displayStats=false;
 	if(term.length){
 		var prompt=function(){
 						promptPos=term.val().length+promptVal.length;
@@ -40,12 +47,25 @@ jQuery(function($){
 				if(lastLine==='clear'){
 					term.val('');
 					prompt();
+				}else if(lastLine==='toggleStats'){
+					displayStats=!displayStats;
+					write('Stats: '+(displayStats ? 'On' : 'Off'));
+					prompt();
 				}else{
 					//write(nl);
 					pauseInput=true;
-					$.post(appPath+'terminal/command',{'action':'admin_terminal/command',
+					var cmd=$.post(appPath+'terminal/command',{'action':'admin_terminal/command',
 									'fields[command]':lastLine},function(data){
 										write(data);
+										if(displayStats){
+											var headers=cmd.getAllResponseHeaders().split('\n');
+											for(var i=0;i<headers.length;++i){
+												var headerName=headers[i].substr(0,headers[i].indexOf(':')),
+													headerValue=headers[i].substr(headers[i].indexOf(':')+2);
+												if(headerName==='DB-Count') write('^ QUERY:'+headerValue+'  ',false);
+												if(headerName==='Memory-Usage') write('MEM:'+bytesToSize(headerValue)+' ',false);
+											}
+										}
 										prompt();
 									});
 				}

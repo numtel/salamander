@@ -2,6 +2,8 @@
 $viewingPage='terminal';
 $overwriteTitle='Salamander Terminal';
 $params=$node->page['params'];
+header('Memory-Usage: '.memory_get_peak_usage(true));
+header('DB-Count: '.$node->db->count);
 if(count($params) && $params[0]==='command'){
 	//allow a request to suggest a template
 	/*if($node->user_user->currentId===false){

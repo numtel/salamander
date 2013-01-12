@@ -33,17 +33,6 @@ class Node_render_scss {
 		$scsscCacheDir=$node->ini['front']['cache_dir'].'scss';
 		$cssCacheDir=$node->ini['front']['cache_dir'].'css';
 		
-		if(!isset($node->ini['front']['scss_compiler']) || $node->ini['front']['scss_compiler']==='scssphp'){
-			require_once $node->fs_path.'lib/scssphp/scss.inc.php';
-			$scss = new scssc();
-		}elseif($node->ini['front']['scss_compiler']==='phamlp'){
-			require_once $node->fs_path.'lib/sass/SassParser.php';
-			$sass = new SassParser(array('cache_location'=>$scsscCacheDir,
-										 'css_location'=>$cssCacheDir,
-										 'style'=>'compact',
-										 'vendor_properties'=>true));
-		}		
-		
 		//load css fields
 		$this->css=isset($node->ini['front']['css']) && 
 				    is_array($node->ini['front']['css']) ? 
@@ -57,13 +46,25 @@ class Node_render_scss {
 				try {
 					if (!file_exists($output) || (@filemtime($input) > filemtime($output))) {
 						if (!is_dir($cssCacheDir)) @mkdir($cssCacheDir);
-						if(isset($scss)){
+	
+						if(!isset($node->ini['front']['scss_compiler']) || $node->ini['front']['scss_compiler']==='scssphp'){
 							//scssphp parser
+							if(!isset($scss)){
+								require_once $node->fs_path.'lib/scssphp/scss.inc.php';
+								$scss = new scssc();
+							}
 							$parsed=$scss->compile(file_get_contents($input));
-						}else{
+						}elseif($node->ini['front']['scss_compiler']==='phamlp'){
 							//phamlp parser
+							if(!isset($sass)){
+								require_once $node->fs_path.'lib/sass/SassParser.php';
+								$sass = new SassParser(array('cache_location'=>$scsscCacheDir,
+															 'css_location'=>$cssCacheDir,
+															 'style'=>'compact',
+															 'vendor_properties'=>true));
+							}
 							$parsed=$sass->toCss($input);
-						}
+						}		
 						//adjust src values relative to the cache dir
 						$relative=str_repeat('../',count(explode('/',$cssCacheDir))).substr($input,0,strrpos($input,'/')+1);
 						$parsed=explode('url(',$parsed);

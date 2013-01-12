@@ -42,7 +42,7 @@ Only users with owner permission on the root of the data tree can access this te
 
 NOTICE: Be very careful using this terminal without backing up data!
 
-Command 'clear' to clear the text area.
+Command 'clear' to clear the text area, 'toggleStats' to switch memory usage and query counter on each command.
 
 Common functions for returning data include: 'echo', 'print_r', 'var_export', and 'var_dump'.
 
@@ -104,7 +104,9 @@ Example - Clear your saved terminal commands and variables.
  							}
  						}
  						while(count($_SESSION['terminalHistory'])>$this->saveCmdCount) array_shift($_SESSION['terminalHistory']);
+ 						ob_start();
  						$retval=eval($fields['command']);
+ 						$outputted=ob_get_clean();
  						
  						if($_SESSION['terminalVars']==='clear'){
  							$_SESSION['terminalVars']=array();
@@ -121,7 +123,7 @@ Example - Clear your saved terminal commands and variables.
 						 								array('cmd'=>$_SESSION['terminalHistory'],
 						 									  'data'=>$_SESSION['terminalVars'])));
 						}
- 						return $retval;
+ 						return $outputted;
  					}else{ return 'Access Denied!'; }
  			}
  		}

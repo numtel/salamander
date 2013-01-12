@@ -1,8 +1,10 @@
 <?
 
-include_once('json.php');
-$GLOBALS['JSON_OBJECT'] = new Services_JSON(SERVICES_JSON_IN_ARR);
 function json_encode_ex($value){
+	if(!isset($GLOBALS['JSON_OBJECT'])){
+		include_once('json.php');
+		$GLOBALS['JSON_OBJECT'] = new Services_JSON(SERVICES_JSON_IN_ARR);
+	}
 	return $GLOBALS['JSON_OBJECT']->encode($value); 
 }
 
@@ -11,6 +13,10 @@ function json_decode_ex($value){
 	if(function_exists('json_decode'))
 		return json_decode($value,true);
 	//else (although this fails...);
+	if(!isset($GLOBALS['JSON_OBJECT'])){
+		include_once('json.php');
+		$GLOBALS['JSON_OBJECT'] = new Services_JSON(SERVICES_JSON_IN_ARR);
+	}
 	return $GLOBALS['JSON_OBJECT']->decode($value); 
 }
 
