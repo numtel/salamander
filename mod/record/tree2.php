@@ -86,6 +86,7 @@ class Node_record_tree2 {
 		$address=$this->filter_address($address);
 		//check address validity and correct any trailing slash action
 		if($address!=='/'){
+			if(substr($address,-1)!=='/') $address.='/';
 			$curItem=pull_item($this->get(substr($address,0,-1),false,false,true));
 			if($curItem===false || $curItem['node:roles']['i']===false) return false;
 			$addressSplit=explode('/',substr($address,0,-1));
@@ -119,6 +120,7 @@ class Node_record_tree2 {
 		else $maxOrder=0;
 
 		$dataMod=$this->adjust_addresses($data);
+		//TODO:rewrite function so each item can be modified by a write validate event as it inserts print_r($dataMod);
 		$depth=substr_count($address,'/')-1;
 		
 		$insRows=$this->create_insert_items($dataMod,$address,$depth,false,$maxOrder);
@@ -1409,6 +1411,37 @@ class Node_record_tree2 {
 			}
 		}
 		return $items;
+	}
+	
+	private function insert_write_event($data,$relAddr='',$prefix='',$complete=false){
+		$relAddr=explode('/',$relAddr);
+		$relCur=array_shift($relAddr);
+ 		foreach($data as $key=>$val){
+ 			if($key===$relCur){
+	 			if(isset($val['node:children']) && count($relAddr)){
+	 				$children=$this->insert_write_event($val['node:children'],implode('/',$relAddr),$prefix.$key.'/',$complete);
+	 				if($children===false) return false;
+	 			}else{$children=false;}
+	 			if(isset($val['node:owner'])){
+	 				$owner=$val['node:owner'];
+	 				unset($val['node:owner']);
+	 			}else{$owner=false;}
+	 			if(count($relAddr)===0){
+		 			if($complete){
+		 				$this->event($prefix.$key,'w','complete');
+		 			}else{
+			 			$eventValidate=$this->event($prefix.$key,'w','validate',array(array(),$val));
+			 			if($eventValidate===false) return false;
+			  			//if event returns array use as replaced data
+			  			$extraAttr=array();
+			  			if($children!==false) $extraAttr['node:children']=$children;
+			  			if($owner!==false) $extraAttr['node:owner']=$owner;
+			  			if(is_array($eventValidate)) $data[$key]=$eventValidate+$extraAttr;
+		  			}
+	  			}
+  			}
+ 		}
+ 		return $data;
 	}
 
  	private function each_write_event($data,$prefix='',$complete=false){

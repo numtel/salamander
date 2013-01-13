@@ -64,7 +64,7 @@ form.delete-permission { float:right; }
 
 .tree-sel { margin-left:0px; overflow:auto; padding:0px; 
 	.tree-sel-wrapper {}
-	.sel-column {float:left; width:150px; max-height:260px; overflow:auto; border-right:1px solid #ddd; padding:10px 0px; }
+	.sel-column {float:left; width:150px; max-height:260px; min-height:100px; overflow:auto; border-right:1px solid #ddd; padding:10px 0px; }
 	.sel-column:nth-child(even) { background-color:rgba(255,255,255,0.4); }
 /*	.sel-column:last-child { border-right:0px; }*/
 }

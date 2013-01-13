@@ -262,12 +262,20 @@ class Node_tree_pattern {
 			}
 		}elseif(isset($parent['pattern:match'])){
 			if(isset($match['type'])){
+				$matchParentAddr=substr($data['pattern:match'],0,strrpos($data['pattern:match'],'/'));
+				$parentMatchParentAddr=substr($parent['pattern:match'],0,strrpos($parent['pattern:match'],'/'));
+				//load the parent's pattern match for recursive-level checking
+				$parentMatch=pull_item($this->tree->get($parent['pattern:match']));
+				if($parentMatch===false){ $this->error_message('Parent pattern match not found!'); return false; }
 				//make sure parent matches the parent type if array
-				if($match['type']==='array' && $parent['pattern:match']!==substr($data['pattern:match'],0,strrpos($data['pattern:match'],'/'))){ $this->error_message('Array type incorrect.'); return false;}
+				if($match['type']==='array' && $parent['pattern:match']!==$matchParentAddr &&
+					!($parentMatch['type']==='recursive' && isset($parentMatch['recursive-level']) && $parentMatch['recursive-level'] && 
+							$parentMatchParentAddr===$matchParentAddr))
+					{ $this->error_message($parent['pattern:match'].': '.$matchParentAddr.', Array type incorrect.'); return false; }
 				//if recursive, make sure same as parent or if the parent matches up
-				if($match['type']==='recursive' && 
-						!($parent['pattern:match']===$data['pattern:match'] || 
-							$parent['pattern:match']===substr($data['pattern:match'],0,strrpos($data['pattern:match'],'/'))))
+				if(($match['type']==='recursive' && 
+					!($parent['pattern:match']===$data['pattern:match'] || 
+						$parent['pattern:match']===$matchParentAddr)))
 					{ $this->error_message('Recursive type incorrect.'); return false; }
 			}
 		}else{ $this->error_message('No pattern info!'); return false; }

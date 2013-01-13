@@ -2,22 +2,20 @@
   'documentation' => 
   array (
     'label' => 'Documentation Site',
-    'node:owner' => '1',
+    'page-read-depth' => '1',
     'node:children' => 
     array (
       'page' => 
       array (
         'type' => 'recursive',
-        'node:owner' => '1',
+        'label' => 'Page',
+        'page-read-depth' => '5',
+        'hide-on-page' => '/patterns/documentation/page',
         'node:children' => 
         array (
           'title' => 
           array (
             'label' => 'Title',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'wrapper-element' => 'h1',
             'wrapper-element-class' => 'padding-vertical',
             'no-wrapper-on-page' => '/patterns/documentation',
@@ -26,246 +24,163 @@
           'description' => 
           array (
             'label' => 'Description',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'type' => 'textarea',
             'hide-on-page' => '/patterns/documentation/page',
           ),
           'content' => 
           array (
             'type' => 'richtext',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'label' => 'Content',
             'hide-on-page' => '/patterns/documentation',
           ),
           'section' => 
           array (
             'type' => 'recursive',
-            'node:owner' => '1',
+            'label' => 'Section',
+            'hide-on-page' => '/patterns/documentation',
             'node:children' => 
             array (
               'title' => 
               array (
                 'wrapper-element' => 'h2',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
                 'label' => 'Title',
               ),
               'section' => 
               array (
                 'label' => 'Content',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
                 'type' => 'richtext',
               ),
             ),
-            'label' => 'Section',
-            'hide-on-page' => '/patterns/documentation',
           ),
           'hide-menu' => 
           array (
             'label' => 'Hide Dropdown Menu on Frontend',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'type' => 'checkbox',
             'hide-on-page' => '/patterns/documentation,/patterns/documentation/page',
           ),
         ),
-        'label' => 'Page',
-        'page-read-depth' => '5',
-        'hide-on-page' => '/patterns/documentation/page',
       ),
       'module-list' => 
       array (
         'type' => 'array',
-        'node:owner' => '1',
+        'page-read-depth' => '1',
+        'label' => 'Module List',
         'node:children' => 
         array (
           'module' => 
           array (
             'label' => 'Module Documentation',
-            'node:owner' => '1',
+            'page-read-depth' => '1',
+            'type' => 'array',
             'node:children' => 
             array (
               'name' => 
               array (
                 'label' => 'Class',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
                 'display-as-link' => '/patterns/documentation,/patterns/documentation/module-list',
               ),
               'description' => 
               array (
                 'type' => 'textarea',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
                 'label' => 'Description',
               ),
               'function' => 
               array (
                 'type' => 'array',
-                'node:owner' => '1',
+                'label' => 'Function',
+                'page-read-depth' => '5',
+                'set-permission' => '0:5',
                 'node:children' => 
                 array (
                   'name' => 
                   array (
                     'display-as-link' => '/patterns/documentation/module-list/module',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'label' => 'Name',
                   ),
                   'description' => 
                   array (
                     'type' => 'richtext',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'label' => 'Description',
                   ),
                   'return' => 
                   array (
                     'label' => 'Return Value',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                   ),
                   'parameter' => 
                   array (
                     'type' => 'array',
-                    'node:owner' => '1',
+                    'label' => 'Parameter',
+                    'set-permission' => '0:1',
+                    'enable-insert' => '-101',
                     'node:children' => 
                     array (
                       'name' => 
                       array (
                         'label' => 'Variable Name',
-                        'node:owner' => '1',
-                        'node:children' => 
-                        array (
-                        ),
                       ),
                       'type' => 
                       array (
                         'label' => 'Data Type',
-                        'node:owner' => '1',
-                        'node:children' => 
-                        array (
-                        ),
                       ),
                       'description' => 
                       array (
                         'type' => 'richtext',
-                        'node:owner' => '1',
-                        'node:children' => 
-                        array (
-                        ),
                         'label' => 'Description',
                       ),
                     ),
-                    'label' => 'Parameter',
-                    'set-permission' => '0:1',
-                    'enable-insert' => '-101',
                   ),
                   'example' => 
                   array (
                     'type' => 'array',
-                    'node:owner' => '1',
+                    'label' => 'Example',
+                    'set-permission' => '0:1',
+                    'enable-insert' => '-101',
                     'node:children' => 
                     array (
                       'description' => 
                       array (
                         'label' => 'Description',
-                        'node:owner' => '1',
-                        'node:children' => 
-                        array (
-                        ),
                       ),
                       'code' => 
                       array (
                         'label' => 'Code',
-                        'node:owner' => '1',
-                        'node:children' => 
-                        array (
-                        ),
                         'type' => 'textarea',
                       ),
                     ),
-                    'label' => 'Example',
-                    'set-permission' => '0:1',
-                    'enable-insert' => '-101',
                   ),
                   'comment' => 
                   array (
                     'type' => 'recursive',
-                    'node:owner' => '1',
+                    'label' => 'Comment',
+                    'enable-insert' => '0',
                     'node:children' => 
                     array (
                       'comment' => 
                       array (
                         'label' => 'Comment',
-                        'node:owner' => '1',
-                        'node:children' => 
-                        array (
-                        ),
                         'type' => 'textarea',
                         'min-length' => '5',
                         'max-length' => '100000',
                       ),
                     ),
-                    'label' => 'Comment',
-                    'enable-insert' => '0',
                   ),
                 ),
-                'label' => 'Function',
-                'page-read-depth' => '5',
-                'set-permission' => '0:5',
               ),
             ),
-            'page-read-depth' => '1',
-            'type' => 'array',
           ),
           'title' => 
           array (
             'display-as-link' => '/patterns/documentation',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'label' => 'Title',
           ),
           'description' => 
           array (
             'label' => 'Description',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'type' => 'textarea',
           ),
         ),
-        'page-read-depth' => '1',
-        'label' => 'Module List',
       ),
     ),
-    'page-read-depth' => '1',
   ),
 )));
 
@@ -273,22 +188,27 @@ $docsData=array (
   'docs' => 
   array (
     'pattern:children' => '/patterns/documentation/',
-    'node:owner' => '1',
+    'admin:icon' => 'book',
     'node:children' => 
     array (
       'overview' => 
       array (
         'hide-menu' => '1',
-        'node:owner' => '1',
+        'description' => 'Get started with the basic concepts of the framework',
+        'pattern:match' => '/patterns/documentation/page',
+        'title' => 'Overview',
+        'content' => '<p>
+	Building an application with the node php framework is much simpler than a standard MVC framework. By implementing a data tree class on top of MySQL, data is placed in a system that combines a key=&gt;value storage with rule based access control.</p>
+<p>
+	The scope of this framework is to provide the PHP/MySQL developer with a standard set of tools for user authentication, organized data storage and templating. This leaves only coding front end views using HAML/HTML, SCSS/CSS, and JavaScript.</p>
+<p>
+	Traditional controllers have been divided into operations, events and post rules. Rules over which operations can be used on given pages can be specified in the configuration files.&nbsp;Events hook application logic directly to the data instead being tied to specific views.</p>
+',
         'node:children' => 
         array (
           'gqstscuuoj' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Directory Structure',
             'section' => '<p>
 	URL routing takes place very simply based on the directory structure inside of the template directory.</p>
@@ -303,10 +223,6 @@ Directory/Directory/Template/Parameter/Parameter?QueryOptional=Bar</pre>
           'models' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Models',
             'section' => '<p>
 	Specify hierarchical models of data patterns for which to validate inserted data. The pattern array below defines for the module documentation on this site. These outlines create rules for data manipulation in parts of the data tree while being parts of the data tree themselves.&nbsp;<a href="%%toroot%%modules/tree_pattern">More information on the tree_pattern module</a></p>
@@ -392,10 +308,6 @@ Array(
           'operations' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Operations',
             'section' => '<p>
 	Operations on data are all validated based on data patterns and access rules which can be defined in the shell. Read, write, insert, delete, move, sort, set owner and set permissions rules can be placed on users, groups, all users and the entire world. Each item has an owner that has full permissions to that item and its children. Administrators naturally have ownership permission on the root, allowing full access.</p>
@@ -406,10 +318,6 @@ Array(
           'views' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Views',
             'section' => '<p>
 	Code views using HAML (thanks to Google&#39;s pHAMLp) or HTML without having to worry about writing any controller code. The operation is all taking place in a module. Of course, controller files can be placed alongside a view for extra manipulation. Getting started writing less HTML and CSS is easy now, <a href="%%toroot%%haml-sass">learn how to use HAML and SCSS</a> to speed up front end coding.</p>
@@ -427,10 +335,6 @@ Array(
           'events' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Events',
             'section' => '<p>
 	Events can be bound to your data tree using a simple query. <a href="%%toroot%%modules/record_tree2/bind">Learn more about events on the bind documentation page.</a></p>
@@ -467,30 +371,21 @@ $this-&gt;tree-&gt;bind(&#39;~/node:wild-recursive-or-nothing&#39;,&#39;w&#39;,&
 ',
           ),
         ),
-        'description' => 'Get started with the basic concepts of the framework',
-        'pattern:match' => '/patterns/documentation/page',
-        'title' => 'Overview',
-        'content' => '<p>
-	Building an application with the node php framework is much simpler than a standard MVC framework. By implementing a data tree class on top of MySQL, data is placed in a system that combines a key=&gt;value storage with rule based access control.</p>
-<p>
-	The scope of this framework is to provide the PHP/MySQL developer with a standard set of tools for user authentication, organized data storage and templating. This leaves only coding front end views using HAML/HTML, SCSS/CSS, and JavaScript.</p>
-<p>
-	Traditional controllers have been divided into operations, events and post rules. Rules over which operations can be used on given pages can be specified in the configuration files.&nbsp;Events hook application logic directly to the data instead being tied to specific views.</p>
-',
       ),
       'config' => 
       array (
         'hide-menu' => '1',
-        'node:owner' => '1',
+        'pattern:match' => '/patterns/documentation/page',
+        'title' => 'Configuration',
+        'content' => '<p>
+	In the same directory as the node.php file, a root config.ini file defines basic site definitions. In each directory inside the template directory, cascading config.ini files can define settings for individual applications.</p>
+',
+        'description' => 'Loading modules, setting form post rules and specifying frontend variables on your site is made simple using cascading configuration files.',
         'node:children' => 
         array (
           'init' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Module Initialization',
             'section' => '<p>
 	The<em> [init]</em> section of the config.ini file defines which modules to load. Keys do not matter and even matching keys in different cascading config.ini files will be merged. Modules are loaded with the keys sorted.</p>
@@ -514,10 +409,6 @@ post[]=&quot;render/post.php&quot;
           'post' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Form Post Operation Validation',
             'section' => '<p>
 	The <em>[post]</em> section of the config.ini file allows form posts to require validation using a module method call as well as individual field and page parameters specified per action.</p>
@@ -543,10 +434,6 @@ check_admin_admin[]=&quot;user_user/in_group/Administrators&quot;
           'db' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Database Configuration',
             'section' => '<p>
 	The <em>[db]</em> section of the root config.ini file defines which class to use for the database module and then any parameters it requires.</p>
@@ -570,10 +457,6 @@ install=true
           'path' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Basic Directory Structure',
             'section' => '<p>
 	The<em> [path] </em>section of the root config.ini file defines the most basic module loading settings.</p>
@@ -587,10 +470,6 @@ module_suffix=&quot;.php&quot;
           'front' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Frontend Configuration',
             'section' => '<p>
 	The <em>[front]</em> section of the config.ini file determines the general space for frontend variables to be used with modules or within the applications running in templates. Its keys are merged with each cascading config.ini file unless a <code>replace_front=true</code> is encountered, in which the entire section will be replaced.</p>
@@ -626,26 +505,21 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
           ),
         ),
-        'pattern:match' => '/patterns/documentation/page',
-        'title' => 'Configuration',
-        'content' => '<p>
-	In the same directory as the node.php file, a root config.ini file defines basic site definitions. In each directory inside the template directory, cascading config.ini files can define settings for individual applications.</p>
-',
-        'description' => 'Loading modules, setting form post rules and specifying frontend variables on your site is made simple using cascading configuration files.',
       ),
       'root-object' => 
       array (
         'pattern:match' => '/patterns/documentation/page',
-        'node:owner' => '1',
+        'title' => 'Root Object',
+        'description' => 'Every application relies on a root object to provide a namespace.',
+        'content' => '<p>
+	The root object contains the code for determining which page to view, loading applicable configuration files, and loads the used modules.</p>
+',
+        'hide-menu' => '1',
         'node:children' => 
         array (
           'mbmryyquvw' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Public Members',
             'section' => '<ul>
 	<li>
@@ -670,38 +544,34 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
           ),
         ),
-        'title' => 'Root Object',
-        'description' => 'Every application relies on a root object to provide a namespace.',
-        'content' => '<p>
-	The root object contains the code for determining which page to view, loading applicable configuration files, and loads the used modules.</p>
-',
-        'hide-menu' => '1',
       ),
       'modules' => 
       array (
         'pattern:match' => '/patterns/documentation/module-list',
-        'node:owner' => '1',
+        'title' => 'Modules',
+        'description' => 'All code is organized into modules which interact with each other using the root $node object.',
         'node:children' => 
         array (
           'db_mysql' => 
           array (
             'name' => 'db_mysql',
-            'node:owner' => '1',
+            'description' => 'Abstraction of basic MySQL functions for use in modules. This is the description.',
+            'pattern:match' => '/patterns/documentation/module-list/module',
             'node:children' => 
             array (
               'count' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'count($table_name,$field=\'*\',$where=array())',
+                'description' => '<p>
+	Return the number of items in a table or a field, possibly specifying extra conditions.</p>
+',
+                'return' => 'Integer on success, False on failure',
                 'node:children' => 
                 array (
                   'bhfzganxwf' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table_name',
                     'type' => 'String',
                     'description' => '<p>
@@ -711,10 +581,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'zsscgbxtik' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$field',
                     'type' => 'String',
                     'description' => '<p>
@@ -724,10 +590,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'fhoykrhgrl' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$where',
                     'type' => 'Array',
                     'description' => '<p>
@@ -735,25 +597,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'count($table_name,$field=\'*\',$where=array())',
-                'description' => '<p>
-	Return the number of items in a table or a field, possibly specifying extra conditions.</p>
-',
-                'return' => 'Integer on success, False on failure',
               ),
               'delete' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'delete($table_name,$where,$reallyDelete=false,$reallyDeleteVersions=false,$limit=\'\')',
+                'description' => '<p>
+	Delete records from a table</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'avwiwnjfkh' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table_name',
                     'type' => 'String',
                     'description' => '<p>
@@ -763,10 +620,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'dqbmiwjcje' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$where',
                     'type' => 'Array',
                     'description' => '<p>
@@ -776,10 +629,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'ulmhbczysl' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$reallyDelete',
                     'type' => 'Boolean',
                     'description' => '<p>
@@ -789,10 +638,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'kvpyswojco' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$reallyDeleteVersions',
                     'type' => 'Boolean',
                     'description' => '<p>
@@ -802,10 +647,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'qjqcmfzhve' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$limit',
                     'type' => 'String',
                     'description' => '<p>
@@ -813,25 +654,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'delete($table_name,$where,$reallyDelete=false,$reallyDeleteVersions=false,$limit=\'\')',
-                'description' => '<p>
-	Delete records from a table</p>
-',
-                'return' => 'True on success, False on failure',
               ),
               'init_table' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'init_table($name,$fields)',
+                'description' => '<p>
+	Create a database table with the given fields</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'vyukbvxlzm' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$name',
                     'type' => 'String',
                     'description' => '<p>
@@ -841,10 +677,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'dzrdxouzlx' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$fields',
                     'type' => 'Array',
                     'description' => '<p>
@@ -852,25 +684,17 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'init_table($name,$fields)',
-                'description' => '<p>
-	Create a database table with the given fields</p>
-',
-                'return' => 'True on success, False on failure',
               ),
               'insert' => 
               array (
                 'name' => 'insert($table_name, $fields=array(), $return_index=false)',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'return' => 'False on failure, True on success or integer containing the new record\'s ID if the $return_index parameter is True.',
                 'node:children' => 
                 array (
                   'param:table_name' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table_name',
                     'type' => 'String',
                     'description' => 'The table to insert into',
@@ -878,10 +702,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'param:fields' => 
                   array (
                     'name' => '$fields',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'type' => 'Array',
                     'description' => 'Key=>Value pairs corresponding to Column Name and Value',
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
@@ -889,10 +709,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'param:return_index' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$return_index',
                     'type' => 'Boolean',
                     'description' => '<p>
@@ -902,30 +718,24 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'lhsemhhrfp' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Insert an item into a table',
                     'code' => '$node->db_mysql->insert(\'myTable\',array(\'field1\'=>\'myval\', \'field2\'=>\'another value\'));',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'return' => 'False on failure, True on success or integer containing the new record\'s ID if the $return_index parameter is True.',
               ),
               'select' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'select($table_name,$fields=\'*\',$where=array(),$limit=\'\')',
+                'description' => '<p>
+	Select data from a table</p>
+',
+                'return' => 'Array on success, False on failure',
                 'node:children' => 
                 array (
                   'esnqiwehno' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table_name',
                     'type' => 'String',
                     'description' => '<p>
@@ -935,10 +745,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'ktvcdpbmha' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$fields',
                     'type' => 'String',
                     'description' => '<p>
@@ -948,10 +754,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'hjogxisyah' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$limit',
                     'type' => 'String/Array',
                     'description' => '<p>
@@ -959,25 +761,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'select($table_name,$fields=\'*\',$where=array(),$limit=\'\')',
-                'description' => '<p>
-	Select data from a table</p>
-',
-                'return' => 'Array on success, False on failure',
               ),
               'update' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'update($table_name,$where,$fields,$versioning=false)',
+                'description' => '<p>
+	Update records in a table</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'lnkqcypryk' => 
                   array (
                     'type' => 'String',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => '<p>
 	Table to update rows in</p>
 ',
@@ -987,10 +784,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'brubsthywd' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$where',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1000,10 +793,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'nxmwisrxji' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$fields',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1013,10 +802,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'dclwbfggss' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$versioning',
                     'type' => 'Boolean',
                     'description' => '<p>
@@ -1026,35 +811,29 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'update($table_name,$where,$fields,$versioning=false)',
-                'description' => '<p>
-	Update records in a table</p>
-',
-                'return' => 'True on success, False on failure',
               ),
             ),
-            'description' => 'Abstraction of basic MySQL functions for use in modules. This is the description.',
-            'pattern:match' => '/patterns/documentation/module-list/module',
           ),
           'img_resize' => 
           array (
             'name' => 'img_resize',
-            'node:owner' => '1',
+            'description' => 'Use installed ImageMagick to resize/crop images for display',
+            'pattern:match' => '/patterns/documentation/module-list/module',
             'node:children' => 
             array (
               'load' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'load($file,$width,$height,$center=false)',
+                'description' => '<p>
+	Create a thumbnail for the specified cached image and return the new filename</p>
+',
+                'return' => 'String filename',
                 'node:children' => 
                 array (
                   'zmytbgfbwd' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$file',
                     'type' => 'String',
                     'description' => '<p>
@@ -1064,10 +843,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'lbioprzjoi' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$width',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -1077,10 +852,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'zisaowrsdu' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$height',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -1090,10 +861,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'pvsotwndqq' => 
                   array (
                     'type' => 'Boolean',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => '<p>
 	False to fit the image to the dimensions or true to crop the image to fill the dimensions given (default: false)</p>
 ',
@@ -1101,35 +868,29 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                     'name' => '$center',
                   ),
                 ),
-                'name' => 'load($file,$width,$height,$center=false)',
-                'description' => '<p>
-	Create a thumbnail for the specified cached image and return the new filename</p>
-',
-                'return' => 'String filename',
               ),
             ),
-            'description' => 'Use installed ImageMagick to resize/crop images for display',
-            'pattern:match' => '/patterns/documentation/module-list/module',
           ),
           'record_attribute' => 
           array (
             'pattern:match' => '/patterns/documentation/module-list/module',
-            'node:owner' => '1',
+            'name' => 'record_attribute',
+            'description' => 'Apply key=>value attributes to other tables\' items. Originally separate from the data tree but integrated in record_tree2.',
             'node:children' => 
             array (
               'attach' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'attach($table,$input_array)',
+                'description' => '<p>
+	Load attributes for an array with keys of ids in a specified table, typically a selection of rows.</p>
+',
+                'return' => 'Array',
                 'node:children' => 
                 array (
                   'aesaxbwsaw' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1139,10 +900,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'ehcmqgzcvv' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$input_array',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1152,34 +909,25 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'mrxutmxdgw' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Load attributes on all users',
                     'code' => 'print_r($node->record_attribute->attach($node->user_user->table, $node->db->select($node->user_user->table, array(\'name\'))));
 ',
                   ),
                 ),
-                'name' => 'attach($table,$input_array)',
-                'description' => '<p>
-	Load attributes for an array with keys of ids in a specified table, typically a selection of rows.</p>
-',
-                'return' => 'Array',
               ),
               'delete' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'delete($table,$id,$key=\'\')',
+                'description' => '<p>
+	Delete attributes from an item or aray of items</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'htooaolnhe' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1189,10 +937,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'nhqvwneusn' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$id',
                     'type' => 'Integer/Array',
                     'description' => '<p>
@@ -1202,10 +946,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'nggqszktbk' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$key',
                     'type' => 'String/Array',
                     'description' => '<ul>
@@ -1217,25 +957,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'delete($table,$id,$key=\'\')',
-                'description' => '<p>
-	Delete attributes from an item or aray of items</p>
-',
-                'return' => 'True on success, False on failure',
               ),
               'get' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'get($table,$id,$key=\'\')',
+                'description' => '<p>
+	Retrieve attribute(s) for an item</p>
+',
+                'return' => 'Array on success, False on failure',
                 'node:children' => 
                 array (
                   'csyvgktxgt' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1245,10 +980,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'xsxrpfjujf' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$id',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -1258,10 +989,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'ljjygjtyhx' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$key',
                     'type' => 'String/Array',
                     'description' => '<ul>
@@ -1273,25 +1000,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'get($table,$id,$key=\'\')',
-                'description' => '<p>
-	Retrieve attribute(s) for an item</p>
-',
-                'return' => 'Array on success, False on failure',
               ),
               'post' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'post($fields)',
+                'description' => '<p>
+	Post handler for item attribute operations</p>
+',
+                'return' => 'String status message',
                 'node:children' => 
                 array (
                   'ndsbpiqqiv' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$fields',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1312,10 +1034,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'jtopuzqrle' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Update the \'requirements\' and \'description\' attributes on item 34629 in the \'tree_items\' table. Notice how attribute keys and values are separate fields that must remain in order.',
                     'code' => '&lt;input name="fields[attr][key][]" type="hidden" value="requirements"&gt;
 &lt;textarea name="fields[attr][value][]"&gt;&lt;/textarea&gt;
@@ -1326,25 +1044,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 &lt;input name="action" type="hidden" value="record_attribute/set"&gt;',
                   ),
                 ),
-                'name' => 'post($fields)',
-                'description' => '<p>
-	Post handler for item attribute operations</p>
-',
-                'return' => 'String status message',
               ),
               'set' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'set($table,$id,$attributes,$versioning=false)',
+                'description' => '<p>
+	Set attribute(s) on items</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'irbfrpoqof' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1354,10 +1067,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'uoytmgulry' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$id',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -1367,10 +1076,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'hjbepqskbv' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$attributes',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1380,10 +1085,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'ykdhhpccnm' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$versioning',
                     'type' => 'Boolean',
                     'description' => '<p>
@@ -1391,35 +1092,29 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'set($table,$id,$attributes,$versioning=false)',
-                'description' => '<p>
-	Set attribute(s) on items</p>
-',
-                'return' => 'True on success, False on failure',
               ),
             ),
-            'name' => 'record_attribute',
-            'description' => 'Apply key=>value attributes to other tables\' items. Originally separate from the data tree but integrated in record_tree2.',
           ),
           'record_group' => 
           array (
             'pattern:match' => '/patterns/documentation/module-list/module',
-            'node:owner' => '1',
+            'name' => 'record_group',
+            'description' => 'Class to manage groups of items in other tables',
             'node:children' => 
             array (
               'associate' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'associate($table,$groups,$items)',
+                'description' => '<p>
+	Associate item(s) with group(s)</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'faqbivpvvn' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1429,10 +1124,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'rmbkmqfhyw' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$groups',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1442,10 +1133,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'bsobjrfxzr' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$items',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1453,25 +1140,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'associate($table,$groups,$items)',
-                'description' => '<p>
-	Associate item(s) with group(s)</p>
-',
-                'return' => 'True on success, False on failure',
               ),
               'create' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'create($table,$names=array())',
+                'description' => '<p>
+	Create groups in a table based on an array of group names</p>
+',
+                'return' => 'True on success, False on Failure',
                 'node:children' => 
                 array (
                   'rywskjgohy' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1481,10 +1163,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'gygfociyqu' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$names',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1492,25 +1170,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'create($table,$names=array())',
-                'description' => '<p>
-	Create groups in a table based on an array of group names</p>
-',
-                'return' => 'True on success, False on Failure',
               ),
               'delete' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'delete($table,$group=\'\')',
+                'description' => '<p>
+	Delete a group or range of groups</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'opabzygaqn' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1520,10 +1193,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'mzcmtyoeiv' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$group',
                     'type' => 'String/Integer/Array',
                     'description' => '<ul>
@@ -1539,25 +1208,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'delete($table,$group=\'\')',
-                'description' => '<p>
-	Delete a group or range of groups</p>
-',
-                'return' => 'True on success, False on failure',
               ),
               'disassociate' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'disassociate($table,$group=\'\',$items=\'\')',
+                'description' => '<p>
+	Disassociate item(s) from group(s)</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'upogeozxdp' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1567,10 +1231,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'vmilgrtrgx' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$group',
                     'type' => 'String/Integer/Array',
                     'description' => '<ul>
@@ -1586,10 +1246,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'vvghbcmmgz' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$items',
                     'type' => 'Integer/Array',
                     'description' => '<ul>
@@ -1601,25 +1257,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'disassociate($table,$group=\'\',$items=\'\')',
-                'description' => '<p>
-	Disassociate item(s) from group(s)</p>
-',
-                'return' => 'True on success, False on failure',
               ),
               'list_groups' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'list_groups($table,$group=\'\')',
+                'description' => '<p>
+	List the groups available for a table or specific which groups to check for existence</p>
+',
+                'return' => 'Array on success, False on failure',
                 'node:children' => 
                 array (
                   'flagcvxfoc' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1629,10 +1280,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'aznhmepbhk' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$group',
                     'type' => 'String/Integer/Array',
                     'description' => '<ul>
@@ -1646,25 +1293,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'list_groups($table,$group=\'\')',
-                'description' => '<p>
-	List the groups available for a table or specific which groups to check for existence</p>
-',
-                'return' => 'Array on success, False on failure',
               ),
               'list_members' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'list_members($table,$group=\'\',$item_id=\'\')',
+                'description' => '<p>
+	List the members of groups in a table, optionally filtering by group, item ID or both.</p>
+',
+                'return' => 'Array on success, False on failure',
                 'node:children' => 
                 array (
                   'ephhxzvpcc' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1674,10 +1316,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'wtpnyfmbft' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$group',
                     'type' => 'String/Integer/Array',
                     'description' => '<ul>
@@ -1691,10 +1329,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'hwxonldmka' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$item_id',
                     'type' => 'Integer/Array',
                     'description' => '<ul>
@@ -1706,25 +1340,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'list_members($table,$group=\'\',$item_id=\'\')',
-                'description' => '<p>
-	List the members of groups in a table, optionally filtering by group, item ID or both.</p>
-',
-                'return' => 'Array on success, False on failure',
               ),
               'load_list' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'load_list($list,$fields=\'*\')',
+                'description' => '<p>
+	Populate a loaded list of group members with fields from their table and organize them based on group ID</p>
+',
+                'return' => 'Array on success, False on failure',
                 'node:children' => 
                 array (
                   'aficsbwbbr' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$list',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1734,10 +1363,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'ysgjnsjftu' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$fields',
                     'type' => 'String/Array',
                     'description' => '<p>
@@ -1747,43 +1372,30 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'gztkklsyhe' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Display all the user associations with their groups',
                     'code' => 'print_r($node->record_group->load_list($node->record_group->list_members(\'users\')));',
                   ),
                   'qcduwghamy' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Load out user associations for the \'Administrators\' group.',
                     'code' => 'print_r($node->record_group->load_list($node->record_group->list_members(\'users\',\'Administrators\')));',
                   ),
                 ),
-                'name' => 'load_list($list,$fields=\'*\')',
-                'description' => '<p>
-	Populate a loaded list of group members with fields from their table and organize them based on group ID</p>
-',
-                'return' => 'Array on success, False on failure',
               ),
               'post' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'post($fields)',
+                'description' => '<p>
+	Post handler for group operations</p>
+',
+                'return' => 'String status message',
                 'node:children' => 
                 array (
                   'vvbipdqsnr' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$fields',
                     'type' => 'Array',
                     'description' => '<p>
@@ -1805,10 +1417,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'owsbztiing' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Simplified form data for disassociating a user from a group',
                     'code' => '&lt;input name="action" value="record_group/disassociate" /&gt;
 &lt;input name="fields[table] value="users" /&gt;
@@ -1818,10 +1426,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'ynivuqauhy' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Simplified form data for deleting a group',
                     'code' => '&lt;input name="action" value="record_group/delete" /&gt;
 &lt;input name="fields[table]" value="users" /&gt;
@@ -1829,25 +1433,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'post($fields)',
-                'description' => '<p>
-	Post handler for group operations</p>
-',
-                'return' => 'String status message',
               ),
               'rename' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'rename($table,$group,$new_name)',
+                'description' => '<p>
+	Rename a group</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'wngguwlahs' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1857,10 +1456,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'bqcycxgqlx' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$group',
                     'type' => 'String/Integer',
                     'description' => '<p>
@@ -1870,10 +1465,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'xpxgqezfuc' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$new_name',
                     'type' => 'String',
                     'description' => '<p>
@@ -1881,25 +1472,20 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'rename($table,$group,$new_name)',
-                'description' => '<p>
-	Rename a group</p>
-',
-                'return' => 'True on success, False on failure',
               ),
               'translate_to_id' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'translate_to_id($table,$group)',
+                'description' => '<p>
+	Convert a group name or array of names into group ID numbers</p>
+',
+                'return' => 'Integer if string passed for $group, Array if array',
                 'node:children' => 
                 array (
                   'pjcvxrikok' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$table',
                     'type' => 'String',
                     'description' => '<p>
@@ -1909,10 +1495,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'eowwmyqmgs' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$group',
                     'type' => 'String/Array',
                     'description' => '<p>
@@ -1920,20 +1502,14 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 ',
                   ),
                 ),
-                'name' => 'translate_to_id($table,$group)',
-                'description' => '<p>
-	Convert a group name or array of names into group ID numbers</p>
-',
-                'return' => 'Integer if string passed for $group, Array if array',
               ),
             ),
-            'name' => 'record_group',
-            'description' => 'Class to manage groups of items in other tables',
           ),
           'record_tree2' => 
           array (
             'pattern:match' => '/patterns/documentation/module-list/module',
-            'node:owner' => '1',
+            'name' => 'record_tree2',
+            'description' => 'Data tree class with integrated user access controls',
             'node:children' => 
             array (
               'access_id_load' => 
@@ -1941,16 +1517,14 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                 'description' => '<p>
 	Retrieve the label of an access group, either the user&#39;s name if greater than 0, the group name if less than -100 or the special group name otherwise.</p>
 ',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'access_id_load($accessId)',
+                'return' => 'Array containing display information of a permission rule accessor',
                 'node:children' => 
                 array (
                   'twngcacijv' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$accessId',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -1968,95 +1542,58 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'comment-evbzrvlvyv' => 
                   array (
                     'comment' => 'whahaha',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
                   ),
                   'comment-nqzddtmkqk' => 
                   array (
                     'comment' => 'hawhf',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
                   ),
                   'comment-ievwqpmujw' => 
                   array (
                     'comment' => 'asdfjah',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
                   ),
                   'comment-hpdusyjsms' => 
                   array (
                     'comment' => 'number4',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
                   ),
                   'comment-jmnlhofdau' => 
                   array (
                     'comment' => 'number5',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
                   ),
                   'comment-vazztobffb' => 
                   array (
                     'comment' => 'number6',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
                   ),
                   'comment-unjwuyncmc' => 
                   array (
                     'comment' => 'number7',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
                   ),
                   'comment-fufddgjfaa' => 
                   array (
                     'comment' => 'number8',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'access_id_load($accessId)',
-                'return' => 'Array containing display information of a permission rule accessor',
               ),
               'bind' => 
               array (
                 'description' => '<p>
 	Bind an event to an action on a query of tree items</p>
 ',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'bind($address,$modeString,$type,$function)',
+                'return' => 'Undefined',
                 'node:children' => 
                 array (
                   'ruapmrbhqq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => '<p>
@@ -2066,10 +1603,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'vouabxzmrb' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$modeString',
                     'type' => 'String',
                     'description' => '<p>
@@ -2085,10 +1618,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                     'description' => '<p>
 	Accepted values: &#39;validate&#39;, &#39;complete&#39;</p>
 ',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
                     'name' => '$type',
                     'type' => 'String',
@@ -2096,10 +1625,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'tmdklrooat' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$function',
                     'type' => 'Anonymous function to call',
                     'description' => '<p>
@@ -2201,10 +1726,6 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   'vogzejaevx' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Make items with attribute &#39;admin:locked&#39; set to true unable to be written, sorted, inserted or moved in your home directory',
                     'code' => '$this->tree->bind(&#34;~/node:wild-recursive-or-nothing/node:attributes(`admin:locked`=&#39;true&#39;)&#34;, &#39;wsim&#39;, &#39;validate&#39;, 
 function($address,$node,$curItem,$data){
@@ -2212,23 +1733,20 @@ function($address,$node,$curItem,$data){
 });',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'bind($address,$modeString,$type,$function)',
-                'return' => 'Undefined',
               ),
               'chmod' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'chmod($address="/",$mode=0,$accessors=array(),$suppressEvents=false)',
+                'return' => 'True on success, False on failure',
+                'description' => '<p>
+	Change the mode of an item for a specific access group</p>
+',
                 'node:children' => 
                 array (
                   'hvemuamomt' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => '<p>
@@ -2238,10 +1756,6 @@ function($address,$node,$curItem,$data){
                   'uudbqlqgyt' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$mode',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -2251,10 +1765,6 @@ function($address,$node,$curItem,$data){
                   'syjafbqdip' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$accessors',
                     'type' => 'Array',
                     'description' => '<p>
@@ -2272,36 +1782,25 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
                 ),
-                'name' => 'chmod($address="/",$mode=0,$accessors=array(),$suppressEvents=false)',
-                'return' => 'True on success, False on failure',
-                'description' => '<p>
-	Change the mode of an item for a specific access group</p>
-',
               ),
               'chown' => 
               array (
                 'description' => '<p>
 	Change of the owner of an item</p>
 ',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'chown($address,$userId,$propagate=true,$suppressEvents=false)',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'wfedzrumvi' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => 'Item address to change owner of',
@@ -2309,10 +1808,6 @@ function($address,$node,$curItem,$data){
                   'ugdofcfobc' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$userId',
                     'type' => 'Integer',
                     'description' => 'ID of item from module User_user',
@@ -2320,10 +1815,6 @@ function($address,$node,$curItem,$data){
                   'cteptstiom' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$propagate',
                     'type' => 'Boolean',
                     'description' => 'Perform this operation on the children (required for any action if address is a range, default: true)',
@@ -2331,32 +1822,25 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'chown($address,$userId,$propagate=true,$suppressEvents=false)',
-                'return' => 'True on success, False on failure',
               ),
               'copy' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'copy($itemAddress,$newAddress,$suppressEvents=false)',
+                'return' => 'True on success, False on failure',
+                'description' => '<p>
+	Copy one item into another. If copying one item to the same parent, it will be renamed with a random value. If copying to different parent, it will fail if the item name already exists.</p>
+',
                 'node:children' => 
                 array (
                   'crtsersxfi' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => 'Address of item or range to copy',
@@ -2364,10 +1848,6 @@ function($address,$node,$curItem,$data){
                   'sdpxnnknei' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$newAddress',
                     'type' => 'String',
                     'description' => 'Address range to move item to',
@@ -2375,36 +1855,25 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
                 ),
-                'name' => 'copy($itemAddress,$newAddress,$suppressEvents=false)',
-                'return' => 'True on success, False on failure',
-                'description' => '<p>
-	Copy one item into another. If copying one item to the same parent, it will be renamed with a random value. If copying to different parent, it will fail if the item name already exists.</p>
-',
               ),
               'delete' => 
               array (
                 'description' => '<p>
 	Delete an item or a single attribute from an item</p>
 ',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'delete($address,$attribute=false,$suppressEvents=false)',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'sjzuhpimcj' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => 'Address of item to delete',
@@ -2412,10 +1881,6 @@ function($address,$node,$curItem,$data){
                   'jycwemxngi' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$attribute',
                     'type' => 'String',
                     'description' => 'Key of attribute to delete if not whole item (default: false)',
@@ -2423,34 +1888,25 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'delete($address,$attribute=false,$suppressEvents=false)',
-                'return' => 'True on success, False on failure',
               ),
               'edit' => 
               array (
                 'description' => '<p>
 	Edit an already existing item</p>
 ',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'edit($address,$data,$suppressEvents=false)',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'tosuyirhvo' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => 'Item address to write to',
@@ -2458,10 +1914,6 @@ function($address,$node,$curItem,$data){
                   'amabbglmui' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$data',
                     'type' => 'Array',
                     'description' => 'Key=>Value pairs to set on this item',
@@ -2469,10 +1921,6 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
@@ -2480,33 +1928,24 @@ function($address,$node,$curItem,$data){
                   'rnilyarokl' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '0',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Some code',
                     'code' => 'You\'ve just been farked around!',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'edit($address,$data,$suppressEvents=false)',
-                'return' => 'True on success, False on failure',
               ),
               'filter_address' => 
               array (
                 'description' => '<p>
 	Perform any loaded address modifiers on an address</p>
 ',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'filter_address($address)',
+                'return' => 'String containing modified address',
                 'node:children' => 
                 array (
                   'apeemmwdkk' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => '<p>
@@ -2514,25 +1953,20 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'filter_address($address)',
-                'return' => 'String containing modified address',
               ),
               'event' => 
               array (
                 'description' => '<p>
 	Call an event on an item</p>
 ',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'event($address,$role,$type,$extraArgs=array())',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'eccrsyaapt' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => '<p>
@@ -2542,10 +1976,6 @@ function($address,$node,$curItem,$data){
                   'eyvmjzknre' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$role',
                     'type' => 'String',
                     'description' => '<p>
@@ -2555,10 +1985,6 @@ function($address,$node,$curItem,$data){
                   'ohsoolmqoc' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$type',
                     'type' => 'String',
                     'description' => '<p>
@@ -2568,10 +1994,6 @@ function($address,$node,$curItem,$data){
                   'lbgmyrqezc' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$extraArgs',
                     'type' => 'Array',
                     'description' => '<p>
@@ -2579,23 +2001,20 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'event($address,$role,$type,$extraArgs=array())',
-                'return' => 'True on success, False on failure',
               ),
               'get' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'get($address=\'/\',$depth=false,$suppressPermissions=false,$suppressEvents=false)',
+                'return' => 'Array on success, False on failure',
+                'description' => '<p>
+	Retrieve data from the tree</p>
+',
                 'node:children' => 
                 array (
                   'teqbsbbgeh' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => '<p>
@@ -2605,10 +2024,6 @@ function($address,$node,$curItem,$data){
                   'iodtrwqgot' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$depth',
                     'type' => 'Boolean/Integer',
                     'description' => '<ul>
@@ -2624,10 +2039,6 @@ function($address,$node,$curItem,$data){
                   'jqpaqmsmvk' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressPermissions',
                     'type' => 'Boolean',
                     'description' => 'Suppress the validation of read permissions (default:false)',
@@ -2635,34 +2046,25 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
                 ),
-                'name' => 'get($address=\'/\',$depth=false,$suppressPermissions=false,$suppressEvents=false)',
-                'return' => 'Array on success, False on failure',
-                'description' => '<p>
-	Retrieve data from the tree</p>
-',
               ),
               'get_wild' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'get_wild($address,$onlyAddresses=false,$suppressEvents=false)',
+                'return' => 'Array on success, False on failure',
+                'description' => '<p>
+	Retrieve data from the tree with a complex data query address</p>
+',
                 'node:children' => 
                 array (
                   'xusjouxvld' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => '<p>
@@ -2674,10 +2076,6 @@ function($address,$node,$curItem,$data){
                   'eeurcxtavr' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$onlyAddresses',
                     'type' => 'Boolean',
                     'description' => 'Return only an array of possible addresses instead of items loaded fully (default: false)',
@@ -2685,10 +2083,6 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
@@ -2696,43 +2090,30 @@ function($address,$node,$curItem,$data){
                   'heuxnvihjn' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Print all home item addresses with attribute \'admin:edit-count\' greater than 10.',
                     'code' => 'print_r(array_keys($node->record_tree2->get_wild("/home/node:attributes(`admin:edit-count` > \'10\')")));',
                   ),
                   'mflqfqimmz' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Print item addresses of items in current user\'s home item with a name that starts with \'horse\'',
                     'code' => 'print_r(array_keys($node->record_tree2->get_wild("~/node:starts-with(horse)")));',
                   ),
                 ),
-                'name' => 'get_wild($address,$onlyAddresses=false,$suppressEvents=false)',
-                'return' => 'Array on success, False on failure',
-                'description' => '<p>
-	Retrieve data from the tree with a complex data query address</p>
-',
               ),
               'has_role' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'has_role()',
+                'return' => 'Boolean',
+                'description' => '<p>
+	On form posts, check if the current user has a role available on an item</p>
+',
                 'node:children' => 
                 array (
                   'nvusdpdpuw' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => 'Arguments',
                     'type' => 'Array',
                     'description' => '<p>
@@ -2748,25 +2129,20 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'has_role()',
-                'return' => 'Boolean',
-                'description' => '<p>
-	On form posts, check if the current user has a role available on an item</p>
-',
               ),
               'insert' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'insert($address=\'/\', $data=array(), $suppressEvents=false)',
+                'return' => 'True on success, False on failure',
+                'description' => '<p>
+	Insert item(s) into the tree</p>
+',
                 'node:children' => 
                 array (
                   'baaaoiwwbe' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => '<p>
@@ -2776,10 +2152,6 @@ function($address,$node,$curItem,$data){
                   'lfsrhauufs' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$data',
                     'type' => 'Array',
                     'description' => 'Items to be inserted',
@@ -2787,10 +2159,6 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
@@ -2798,10 +2166,6 @@ function($address,$node,$curItem,$data){
                   'kcobmuhzsk' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Insert Multiple Items into the Root. Notice the item with the partial randomization in the name.',
                     'code' => '$node->record_tree2->insert(&#39;/&#39;, 
 	array(
@@ -2824,25 +2188,20 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'insert($address=\'/\', $data=array(), $suppressEvents=false)',
-                'return' => 'True on success, False on failure',
-                'description' => '<p>
-	Insert item(s) into the tree</p>
-',
               ),
               'mode' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'mode($address="/",$userId=false,$knowExists=false)',
+                'return' => 'Integer on success, False on failure',
+                'description' => '<p>
+	Retrieve the mode an item</p>
+',
                 'node:children' => 
                 array (
                   'icjvedsoxh' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$address',
                     'type' => 'String',
                     'description' => '<p>
@@ -2852,10 +2211,6 @@ function($address,$node,$curItem,$data){
                   'zfzojvmylq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$userId',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -2865,10 +2220,6 @@ function($address,$node,$curItem,$data){
                   'ylhfrgnkoa' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$knowExists',
                     'type' => 'Boolean',
                     'description' => '<p>
@@ -2876,27 +2227,20 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'mode($address="/",$userId=false,$knowExists=false)',
-                'return' => 'Integer on success, False on failure',
-                'description' => '<p>
-	Retrieve the mode an item</p>
-',
               ),
               'mode_to_roles' => 
               array (
                 'description' => '<p>
 	Convert an integer mode value into an array of booleans for each role</p>
 ',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'mode_to_roles($mode)',
+                'return' => 'Array of \'Role Character\'=>\'True/False\'',
                 'node:children' => 
                 array (
                   'cwxsuejoaz' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$mode',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -2904,23 +2248,20 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'mode_to_roles($mode)',
-                'return' => 'Array of \'Role Character\'=>\'True/False\'',
               ),
               'move' => 
               array (
                 'name' => 'move($itemAddress,$newAddress,$suppressEvents=false)',
-                'node:owner' => '1',
+                'return' => 'True on success, False on failure',
+                'description' => '<p>
+	Move an item to another parent</p>
+',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
                 'node:children' => 
                 array (
                   'crtsersxfi' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$itemAddress',
                     'type' => 'String',
                     'description' => 'Address of item to move',
@@ -2928,10 +2269,6 @@ function($address,$node,$curItem,$data){
                   'sdpxnnknei' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$newAddress',
                     'type' => 'String',
                     'description' => 'Address range to move item to',
@@ -2939,36 +2276,25 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
                 ),
-                'return' => 'True on success, False on failure',
-                'description' => '<p>
-	Move an item to another parent</p>
-',
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
               ),
               'post' => 
               array (
                 'description' => '<p>
 	Post handler for tree operations</p>
 ',
-                'node:owner' => '1',
+                'return' => 'String status message',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'post($fields)',
                 'node:children' => 
                 array (
                   'xzbpiinxcs' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$fields',
                     'type' => 'Array',
                     'description' => '<p>
@@ -3000,23 +2326,20 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'return' => 'String status message',
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'post($fields)',
               ),
               'query' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'query($rootAddress=\'/\',$args=array(),$depth=true,$suppressEvents=false,$pageSize=0,$pageNum=1,$onlySearch=false)',
+                'return' => 'Array on success, False on failure',
+                'description' => '<p>
+	Perform a query for a specific pattern of attributes</p>
+',
                 'node:children' => 
                 array (
                   'vabevwfoug' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$rootAddress',
                     'type' => 'String',
                     'description' => '<p>
@@ -3026,10 +2349,6 @@ function($address,$node,$curItem,$data){
                   'pagbuhjioi' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$args',
                     'type' => 'Array/String',
                     'description' => '<p>
@@ -3047,21 +2366,33 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
+                  'kaptzgkbdm' => 
+                  array (
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
+                    'name' => '$pageSize',
+                    'type' => 'Integer',
+                    'description' => '<p>
+	Specify the maximum number of items to return. (Default: 0 All Items)</p>
+',
+                  ),
+                  'uqgqoypthf' => 
+                  array (
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
+                    'name' => '$pageNum',
+                    'type' => 'Integer',
+                    'description' => '<p>
+	Specify which page to load of results from a query. (Default: 1 First Page)</p>
+<p>
+	After performing a query, the total number of items found is available on $node-&gt;record_tree2-&gt;lastQueryFoundCount.</p>
+',
+                  ),
                   'yruolaforg' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$onlySearch',
                     'type' => 'Boolean',
                     'description' => '<p>
@@ -3071,55 +2402,43 @@ function($address,$node,$curItem,$data){
                   'jxxryseeua' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Load all nodes which contain \'horse\' somewhere in any field.',
                     'code' => 'print_r($node->record_tree2->query(\'/\',"`%` like \'%horse%\'"));',
                   ),
                   'ddugmrpdwa' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Print all home item attributes with attribute \'admin:edit-count\' greater than 10.',
                     'code' => 'print_r(array_keys($node->record_tree2->query(\'~/..\', "`admin:edit-count` > \'10\'", 1)));',
                   ),
                   'srtifozhco' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Load all the comments that match the documentation\'s comment pattern.',
                     'code' => '$comments=$node->record_tree2->query(\'/\',"`pattern:match`=\'/patterns/documentation/module-list/module/function/comment\'");',
                   ),
+                  'pawwakywdd' => 
+                  array (
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/example',
+                    'description' => 'Retrieve the second page of 10 items from a query and echo the total number of items found in the query.',
+                    'code' => '$page2 = $node->record_tree2->query(\'~/blog/bfmmzuvqit/\',"`foo`!=\'\'",true,false,10,2); 
+echo $node->record_tree2->lastQueryFoundCount;',
+                  ),
                 ),
-                'name' => 'query($rootAddress=\'/\',$args=array(),$depth=true,$suppressEvents=false,$onlySearch=false)',
-                'return' => 'Array on success, False on failure',
-                'description' => '<p>
-	Perform a query for a specific pattern of attributes</p>
-',
               ),
               'rename' => 
               array (
                 'description' => '<p>
-	Rename an item</p>
+	Rename an item, requires &#39;move&#39; privileges.</p>
 ',
-                'node:owner' => '1',
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'rename($itemAddress,$newName,$suppressEvents=false)',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'vhthebwflr' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$itemAddress',
                     'type' => 'String',
                     'description' => 'Address of item to rename',
@@ -3127,10 +2446,6 @@ function($address,$node,$curItem,$data){
                   'svtlpsswxk' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$newName',
                     'type' => 'String',
                     'description' => 'New value for the name of item',
@@ -3138,32 +2453,25 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
                 ),
-                'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'rename($itemAddress,$newName,$suppressEvents=false)',
-                'return' => 'True on success, False on failure',
               ),
               'sort' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'sort($parentAddress,$ordered,$suppressEvents=false)',
+                'return' => 'True on success, False on failure',
+                'description' => '<p>
+	Update the sort order of an array of items</p>
+',
                 'node:children' => 
                 array (
                   'hmgybzxaqb' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$parentAddress',
                     'type' => 'String',
                     'description' => 'Address of parent item in order to check permissions',
@@ -3171,10 +2479,6 @@ function($address,$node,$curItem,$data){
                   'ajtqzizzjg' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$ordered',
                     'type' => 'Array',
                     'description' => 'Array values of addresses of items to be placed into order',
@@ -3182,44 +2486,34 @@ function($address,$node,$curItem,$data){
                   'vviqzvnnpq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
                 ),
-                'name' => 'sort($parentAddress,$ordered,$suppressEvents=false)',
-                'return' => 'True on success, False on failure',
-                'description' => '<p>
-	Update the sort order of an array of items</p>
-',
               ),
             ),
-            'name' => 'record_tree2',
-            'description' => 'Data tree class with integrated user access controls',
           ),
           'render_haml' => 
           array (
             'pattern:match' => '/patterns/documentation/module-list/module',
-            'node:owner' => '1',
+            'name' => 'render_haml',
+            'description' => 'Parse HAML templates and render them with associated templates',
             'node:children' => 
             array (
               'render' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'render($page=\'\',$render_params=array(),$template=\'\',$return=false)',
+                'description' => '<p>
+	Render a page</p>
+',
+                'return' => 'Undefined unless $return parameter is True, then HTML as string',
                 'node:children' => 
                 array (
                   'mjpimtqdsb' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$page',
                     'type' => 'String',
                     'description' => '<p>
@@ -3231,10 +2525,6 @@ function($address,$node,$curItem,$data){
                   'tpgqnnbprt' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$render_params',
                     'type' => 'Array',
                     'description' => '<p>
@@ -3244,10 +2534,6 @@ function($address,$node,$curItem,$data){
                   'lnluvfazru' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$template',
                     'type' => 'String/False',
                     'description' => '<ul>
@@ -3261,10 +2547,6 @@ function($address,$node,$curItem,$data){
                   'ufqvraaepe' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$return',
                     'type' => 'Boolean',
                     'description' => '<p>
@@ -3272,45 +2554,35 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'render($page=\'\',$render_params=array(),$template=\'\',$return=false)',
-                'description' => '<p>
-	Render a page</p>
-',
-                'return' => 'Undefined unless $return parameter is True, then HTML as string',
               ),
             ),
-            'name' => 'render_haml',
-            'description' => 'Parse HAML templates and render them with associated templates',
           ),
           'tree_home' => 
           array (
             'pattern:match' => '/patterns/documentation/module-list/module',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'name' => 'tree_home',
             'description' => 'Create a space in the data tree for each user to store personal data',
           ),
           'tree_pattern' => 
           array (
             'pattern:match' => '/patterns/documentation/module-list/module',
-            'node:owner' => '1',
+            'name' => 'tree_pattern',
+            'description' => 'Apply patterns to data trees',
             'node:children' => 
             array (
               'validate' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'validate($address,$data)',
+                'description' => '<p>
+	Determine if a write or insert at the specified address with the given data is valid according to any pattern attributes in place.</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'qgumvjujfh' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$data',
                     'type' => 'Array',
                     'description' => '<p>
@@ -3336,6 +2608,8 @@ function($address,$node,$curItem,$data){
 		<strong>min-value</strong> - Minimum value for field</li>
 	<li>
 		<strong>type</strong> - &#39;<em>array</em>&#39;, &#39;<em>recursive</em>&#39; to allow child definitions, otherwise field assumed</li>
+	<li>
+		<strong>recursive-level</strong> - Set to &#39;<em>true</em>&#39; to enable other child types from the parent of this recursive item.</li>
 	<li>
 		<strong>data-type</strong> - Set data type for validation:
 		<ul>
@@ -3370,19 +2644,10 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'validate($address,$data)',
-                'description' => '<p>
-	Determine if a write or insert at the specified address with the given data is valid according to any pattern attributes in place.</p>
-',
-                'return' => 'True on success, False on failure',
               ),
               'rebuild_permissions' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
                 'name' => 'rebuild_permissions($address=\'/\',$depth=true)',
                 'description' => '<p>
 	Process any &#39;set-permissions&#39; attributes in found items.</p>
@@ -3390,28 +2655,27 @@ function($address,$node,$curItem,$data){
                 'return' => 'True on success, False on failure.',
               ),
             ),
-            'name' => 'tree_pattern',
-            'description' => 'Apply patterns to data trees',
           ),
           'user_user' => 
           array (
             'pattern:match' => '/patterns/documentation/module-list/module',
-            'node:owner' => '1',
+            'name' => 'user_user',
+            'description' => 'Manage users and their passwords',
             'node:children' => 
             array (
               'change_pw' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'change_pw($id,$old_pw,$new_pw)',
+                'description' => '<p>
+	Change a user&#39;s password, optionally validating the old password</p>
+',
+                'return' => 'True on success, False on failure',
                 'node:children' => 
                 array (
                   'eapmqoeonp' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$id',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -3421,10 +2685,6 @@ function($address,$node,$curItem,$data){
                   'cxylrcsdyz' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$old_pw',
                     'type' => 'String/False',
                     'description' => '<p>
@@ -3434,10 +2694,6 @@ function($address,$node,$curItem,$data){
                   'okeufiyzzq' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$new_pw',
                     'type' => 'String',
                     'description' => '<p>
@@ -3445,19 +2701,10 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'change_pw($id,$old_pw,$new_pw)',
-                'description' => '<p>
-	Change a user&#39;s password, optionally validating the old password</p>
-',
-                'return' => 'True on success, False on failure',
               ),
               'find_group_id' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
                 'name' => 'find_group_id($groupName)',
                 'description' => '<p>
 	Find the ID based on a group name</p>
@@ -3467,16 +2714,16 @@ function($address,$node,$curItem,$data){
               'find_id' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'find_id($name)',
+                'description' => '<p>
+	Get the id for a given user name</p>
+',
+                'return' => 'Integer on success, false on failure',
                 'node:children' => 
                 array (
                   'xvlqeoyfrt' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$name',
                     'type' => 'String',
                     'description' => '<p>
@@ -3484,25 +2731,20 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'find_id($name)',
-                'description' => '<p>
-	Get the id for a given user name</p>
-',
-                'return' => 'Integer on success, false on failure',
               ),
               'find_name' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'find_name($id=false)',
+                'description' => '<p>
+	Find the name of a user based on the ID</p>
+',
+                'return' => 'String on success, False on failure',
                 'node:children' => 
                 array (
                   'fxjahaacnp' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$id',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -3510,25 +2752,20 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'find_name($id=false)',
-                'description' => '<p>
-	Find the name of a user based on the ID</p>
-',
-                'return' => 'String on success, False on failure',
               ),
               'in_group' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'in_group($groupName,$userId=false)',
+                'description' => '<p>
+	Determine if user is in a group, useful for config.ini post sections</p>
+',
+                'return' => 'True/False',
                 'node:children' => 
                 array (
                   'pztqotzsxc' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$groupName',
                     'type' => 'String',
                     'description' => '<p>
@@ -3538,10 +2775,6 @@ function($address,$node,$curItem,$data){
                   'dnrkegnjyb' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$userId',
                     'type' => 'Integer',
                     'description' => '<p>
@@ -3551,33 +2784,24 @@ function($address,$node,$curItem,$data){
                   'uejveoqyyh' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'description' => 'Place in a config.ini [post] section to check if the current user is a member of the \'Administrators\' group',
                     'code' => 'check_admin[]="user_user/in_group/Administrators"',
                   ),
                 ),
-                'name' => 'in_group($groupName,$userId=false)',
-                'description' => '<p>
-	Determine if user is in a group, useful for config.ini post sections</p>
-',
-                'return' => 'True/False',
               ),
               'load_groups' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'load_groups($attach=false)',
+                'description' => '<p>
+	Load the user groups and organize them into arrays. Not required, use $this-&gt;groups variable instead to prevent extra queries and processing.</p>
+',
+                'return' => 'Array on success, False on Failure',
                 'node:children' => 
                 array (
                   'efaipmhufv' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$attach',
                     'type' => 'Boolean',
                     'description' => '<p>
@@ -3585,48 +2809,38 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'load_groups($attach=false)',
-                'description' => '<p>
-	Load the user groups and organize them into arrays. Not required, use $this-&gt;groups variable instead to prevent extra queries and processing.</p>
-',
-                'return' => 'Array on success, False on Failure',
               ),
               'logged_in' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                  'uejveoqyyh' => 
-                  array (
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
-                    'description' => 'Place in a config.ini [post] section to check if user is logged in',
-                    'code' => 'check_logged_in[]="user_user/logged_in"',
-                  ),
-                ),
                 'name' => 'logged_in()',
                 'description' => '<p>
 	Used for form post validation to check if the browser is logged in</p>
 ',
                 'return' => 'True/False',
+                'node:children' => 
+                array (
+                  'uejveoqyyh' => 
+                  array (
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/example',
+                    'description' => 'Place in a config.ini [post] section to check if user is logged in',
+                    'code' => 'check_logged_in[]="user_user/logged_in"',
+                  ),
+                ),
               ),
               'login' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'login($name,$pw)',
+                'description' => '<p>
+	Login as a specific user and return the user ID</p>
+',
+                'return' => 'Integer on success, False on failure',
                 'node:children' => 
                 array (
                   'nqdvfzrtfw' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$name',
                     'type' => 'String',
                     'description' => '<p>
@@ -3636,10 +2850,6 @@ function($address,$node,$curItem,$data){
                   'pnsveqitob' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$pw',
                     'type' => 'String',
                     'description' => '<p>
@@ -3647,19 +2857,10 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'login($name,$pw)',
-                'description' => '<p>
-	Login as a specific user and return the user ID</p>
-',
-                'return' => 'Integer on success, False on failure',
               ),
               'logout' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
-                'node:children' => 
-                array (
-                ),
                 'name' => 'logout()',
                 'description' => '<p>
 	Logout of current user session</p>
@@ -3669,16 +2870,16 @@ function($address,$node,$curItem,$data){
               'signup' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'node:owner' => '1',
+                'name' => 'signup($name,$pw)',
+                'description' => '<p>
+	Create a new user and return the user ID</p>
+',
+                'return' => 'Integer on success, False on failure',
                 'node:children' => 
                 array (
                   'nqdvfzrtfw' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$name',
                     'type' => 'String',
                     'description' => '<p>
@@ -3688,10 +2889,6 @@ function($address,$node,$curItem,$data){
                   'pnsveqitob' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'node:owner' => '1',
-                    'node:children' => 
-                    array (
-                    ),
                     'name' => '$pw',
                     'type' => 'String',
                     'description' => '<p>
@@ -3699,33 +2896,25 @@ function($address,$node,$curItem,$data){
 ',
                   ),
                 ),
-                'name' => 'signup($name,$pw)',
-                'description' => '<p>
-	Create a new user and return the user ID</p>
-',
-                'return' => 'Integer on success, False on failure',
               ),
             ),
-            'name' => 'user_user',
-            'description' => 'Manage users and their passwords',
           ),
         ),
-        'title' => 'Modules',
-        'description' => 'All code is organized into modules which interact with each other using the root $node object.',
       ),
       'shell' => 
       array (
         'hide-menu' => '1',
-        'node:owner' => '1',
+        'pattern:match' => '/patterns/documentation/page',
+        'title' => 'Shell',
+        'description' => 'Access data trees, modify users, permissions, and groups, and interact directly with the terminal.',
+        'content' => '<p>
+	This application included with the framework provides the basis for interacting with your site. Only users with ownership on the root have the ability to edit users/groups and use the terminal in the shell.</p>
+',
         'node:children' => 
         array (
           'dpoixxojpy' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Data Manager',
             'section' => '<p>
 	Like a typical file explorer, the data manager allows you to set key=&gt;values on items as well as their access rules. This display is cusomized based on the available permissions per item.</p>
@@ -3741,7 +2930,7 @@ function($address,$node,$curItem,$data){
 	<li>
 		<code>f2</code> - Rename</li>
 	<li>
-		<code>f4</code>&nbsp;- Focus Address Bar (Use arrow keys and Home/End keys to navigate the tree browser)</li>
+		<code>f4</code>&nbsp;- Focus Address Bar (Use arrow keys and Home/End/PgUp/PgDn keys to navigate the tree browser)</li>
 	<li>
 		<code>ctrl+m</code> - Move/Copy</li>
 </ul>
@@ -3750,10 +2939,6 @@ function($address,$node,$curItem,$data){
           'isiybcqsbr' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'User Manager',
             'section' => '<p>
 	Manage users and groups using simple tools</p>
@@ -3762,10 +2947,6 @@ function($address,$node,$curItem,$data){
           'wqxbfdnscv' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'node:owner' => '1',
-            'node:children' => 
-            array (
-            ),
             'title' => 'Terminal',
             'section' => '<p>
 	Directly run PHP commands through a terminal interface in the browser.</p>
@@ -3780,7 +2961,7 @@ print_r($this-&gt;tree-&gt;get(&#39;/&#39;,0));</pre>
 <pre>
 [front]
 ;save terminal history to user&#39;s home item instead of just session
-save_terminal_history=true|false 
+save_terminal_history=[true|false] 
 ;number of terminal commands to save
 save_terminal_commands=[integer] 
 </pre>
@@ -3791,20 +2972,10 @@ save_terminal_commands=[integer]
 ',
           ),
         ),
-        'pattern:match' => '/patterns/documentation/page',
-        'title' => 'Shell',
-        'description' => 'Access data trees, modify users, permissions, and groups, and interact directly with the terminal.',
-        'content' => '<p>
-	This application included with the framework provides the basis for interacting with your site. Only users with ownership on the root have the ability to edit users/groups and use the terminal in the shell.</p>
-',
       ),
       'haml-sass' => 
       array (
         'pattern:match' => '/patterns/documentation/page',
-        'node:owner' => '1',
-        'node:children' => 
-        array (
-        ),
         'title' => 'Using HAML & SASS',
         'description' => 'Learn how to speed up templating HTML views as well as simplify coding out CSS.',
         'content' => '<p>
@@ -3817,6 +2988,5 @@ save_terminal_commands=[integer]
         'hide-menu' => '1',
       ),
     ),
-    'admin:icon' => 'book',
   ),
 );
