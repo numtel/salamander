@@ -107,11 +107,6 @@ class Node_record_tree2 {
   			if(is_array($eventValidate)) $data=$eventValidate;
   			//if event says get out, do it!
   			elseif($eventValidate===false) return false;
-  			
-  			//perform write validation events for each item
-  			$data=$this->each_write_event($data,$address);
-  			//if event says get out, do it!
-  			if($data===false) return false;
   		}
 
 		//find highest ordered item
@@ -119,37 +114,16 @@ class Node_record_tree2 {
 		if(count($maxOrder)) $maxOrder=$maxOrder[0]['order'];
 		else $maxOrder=0;
 
-		$dataMod=$this->adjust_addresses($data);
-		//TODO:rewrite function so each item can be modified by a write validate event as it inserts print_r($dataMod);
-		$depth=substr_count($address,'/')-1;
+		//insert items and perform write events
+		$dataOut=$this->insert_items($address,$data,$maxOrder,$suppressEvents);
 		
-		$insRows=$this->create_insert_items($dataMod,$address,$depth,false,$maxOrder);
-		if($insRows===false) return false;
-		$allGood=false;
-		$nameIn=array();
-		foreach($insRows as $item){
-			//don't allow anything that contains directory separator
-			if(strpos($item['name'],'/')!==false) return false;
-			//skip over a name that matches a reserved value
-			if(substr($item['name'],0,5)==='node:') continue;
-			if(!in_array($item['address'].$item['name'],$nameIn)){
-				//make sure not overwriting
-				$curItem=$this->get($item['address'].$item['name']);
-				if(count($curItem)){ $allGood=false; break; }
-				$nameIn[]=$item['address'].$item['name'];
-			}
-			$allGood=$this->db->insert($this->table,$item);
-			if($allGood===false) break;
-		}
- 		if($allGood===true && $suppressEvents===false){
+		//perform insert complete event
+ 		if($dataOut!==false && $suppressEvents===false){
  			$itemAddress=$address==='/' ? '/' : substr($address,0,-1);
- 			$dataMod=$this->inserted_items($dataMod,$itemAddress);
- 			$this->event($itemAddress,'i','complete',array($curItem,$dataMod));
- 			$this->each_write_event($data,$address,true);
+ 			$this->event($itemAddress,'i','complete',array($curItem,$dataOut));
  		}
-		return $allGood;
+		return is_array($dataOut);
 	}
-
  	
  	//FUNCTION $node->record_tree2->edit([String $address],[Array $data])
  	//$address=string address of item to edit
@@ -1106,15 +1080,7 @@ class Node_record_tree2 {
 		}
 		return $output;
 	}
-	
-	private function inserted_items($data,$rootAddress){
-		$output=array();
-		foreach($data as $key=>$val){
-			$item=pull_item($this->get($rootAddress.'/'.$key,true,false,true));
-			if($item!==false) $output[$key]=$item;
-		}
-		return $output;
-	}
+
 	
  	
  	private function adjust_value_to_db($value,$isInsert=true){
@@ -1412,62 +1378,61 @@ class Node_record_tree2 {
 		}
 		return $items;
 	}
-	
-	private function insert_write_event($data,$relAddr='',$prefix='',$complete=false){
-		$relAddr=explode('/',$relAddr);
-		$relCur=array_shift($relAddr);
- 		foreach($data as $key=>$val){
- 			if($key===$relCur){
-	 			if(isset($val['node:children']) && count($relAddr)){
-	 				$children=$this->insert_write_event($val['node:children'],implode('/',$relAddr),$prefix.$key.'/',$complete);
-	 				if($children===false) return false;
-	 			}else{$children=false;}
-	 			if(isset($val['node:owner'])){
-	 				$owner=$val['node:owner'];
-	 				unset($val['node:owner']);
-	 			}else{$owner=false;}
-	 			if(count($relAddr)===0){
-		 			if($complete){
-		 				$this->event($prefix.$key,'w','complete');
-		 			}else{
-			 			$eventValidate=$this->event($prefix.$key,'w','validate',array(array(),$val));
-			 			if($eventValidate===false) return false;
-			  			//if event returns array use as replaced data
-			  			$extraAttr=array();
-			  			if($children!==false) $extraAttr['node:children']=$children;
-			  			if($owner!==false) $extraAttr['node:owner']=$owner;
-			  			if(is_array($eventValidate)) $data[$key]=$eventValidate+$extraAttr;
-		  			}
-	  			}
-  			}
- 		}
- 		return $data;
-	}
 
- 	private function each_write_event($data,$prefix='',$complete=false){
- 		foreach($data as $key=>$val){
- 			if(isset($val['node:children'])){
- 				$children=$this->each_write_event($val['node:children'],$prefix.$key.'/',$complete);
- 				if($children===false) return false;
+	private function insert_items($address='/',$items=array(),$maxOrder=0,$suppressEvents=false){
+		foreach($items as $key=>$val){
+			if(isset($val['node:children'])){
+				$children=$val['node:children'];
+				unset($val['node:children']);
  			}else{$children=false;}
  			if(isset($val['node:owner'])){
  				$owner=$val['node:owner'];
  				unset($val['node:owner']);
  			}else{$owner=false;}
- 			if($complete){
- 				$this->event($prefix.$key,'w','complete');
- 			}else{
-	 			$eventValidate=$this->event($prefix.$key,'w','validate',array(array(),$val));
-	 			if($eventValidate===false) return false;
-	  			//if event returns array use as replaced data
-	  			$extraAttr=array();
-	  			if($children!==false) $extraAttr['node:children']=$children;
-	  			if($owner!==false) $extraAttr['node:owner']=$owner;
-	  			if(is_array($eventValidate)) $data[$key]=$eventValidate+$extraAttr;
+ 			
+ 			if($suppressEvents===false){
+				$eventValidate=$this->event($address.$key,'w','validate',array(array(),$val));
+				if($eventValidate===false) return false;
+				//if event returns array use as replaced data
+				$extraAttr=array();
+				if($children!==false) $extraAttr['node:children']=$children;
+				if($owner!==false) $extraAttr['node:owner']=$owner;
+				if(is_array($eventValidate)){
+					$items[$key]=$val=$eventValidate+$extraAttr;
+				}
   			}
- 		}
- 		return $data;
- 	}
+  			
+  			$data=array($key=>$val);
+			$dataMod=$this->adjust_addresses($data);
+			$depth=substr_count($address,'/')-1;
+	
+			$insRows=$this->create_insert_items($dataMod,$address,$depth,false,$maxOrder);
+			if($insRows===false) return false;
+			$nameIn=array();
+			foreach($insRows as $item){
+				//don't allow anything that contains directory separator
+				if(strpos($item['name'],'/')!==false) return false;
+				//skip over a name that matches a reserved value
+				if(substr($item['name'],0,5)==='node:') continue;
+				if(!in_array($item['address'].$item['name'],$nameIn)){
+					//make sure not overwriting
+					$curItem=$this->get($item['address'].$item['name']);
+					if(count($curItem)){ return false; }
+					$nameIn[]=$item['address'].$item['name'];
+				}
+				if(!$this->db->insert($this->table,$item)) return false;;
+			}
+			
+			
+			if($children!==false){
+				$children=$this->insert_items($address.$key.'/',$children,0,$suppressEvents);
+ 				if($children===false) return false;
+ 				$items[$key]['node:children']=$data[$key]['node:children']=$children;
+			}
+			if($suppressEvents===false) $this->event($address.$key,'w','complete',array($data[$key],$val));
+		}
+		return $items;
+	}
 
  	private function query_boolean_sort($args){
  		$found=array();
