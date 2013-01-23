@@ -113,6 +113,11 @@ function organize_by_attrib($key,$data){
 	return $out;
 }
 
+function sort_by_attr($key,$data){
+	uasort($data, make_comparer($key));
+	return $data;
+}
+
 //$fitler=array('key to look in'=>'required value')
 //$data=array('itemname'=>array('attrib key'=>'attrib value'))
 //$invert=default:false return items that match the filter, true to return items that dont
@@ -159,4 +164,27 @@ function quote2entities($string,$entities_type='number')
     return $do;
 }
 
+//no $key provided=random key returned
+function array_paginate_init($data,$key=false){
+	if(!isset($_SESSION['array_paginate'])) $_SESSION['array_paginate']=array();
+	if($key===false){
+		while(!isset($key) || isset($_SESSION['array_paginate'][$key])){
+			$key=random_string();
+		}
+	}
+	
+	$_SESSION['array_paginate'][$key]=$data;
+	return $key;
+}
 
+function array_paginate_get($key,$pageNum=1,$pageSize=10){
+	if(!isset($_SESSION['array_paginate']) || !isset($_SESSION['array_paginate'][$key])) return false;
+	if($pageNum==='count') return count($_SESSION['array_paginate'][$key]);
+	return array_slice($_SESSION['array_paginate'][$key],($pageNum-1)*$pageSize,$pageSize);
+}
+
+function array_paginate_flush($key){
+	if(!isset($_SESSION['array_paginate']) || !isset($_SESSION['array_paginate'][$key])) return false;
+	unset($_SESSION['array_paginate'][$key]);
+	return true;
+}

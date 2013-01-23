@@ -507,7 +507,7 @@ class Node_record_tree2 {
  	
  	
  	
- 	//FUNCTION: $node->record_tree2->get([String $address],[Boolean $onlyAddresses])
+ 	//FUNCTION: $node->record_tree2->get_wild([String $address],[Boolean $onlyAddresses])
  	//$address=address (including wildcards) to find items that match
  	//$onlyAddresses=pass true to return only an array of possible item addresses (all may not exist)
  	public function get_wild($address,$onlyAddresses=false,$suppressEvents=false){
@@ -604,6 +604,7 @@ class Node_record_tree2 {
  		if(is_string($args)) $args=$this->parse_attribute_query_string($args);
  		$serialArgs=serialize($args);
  		if($pageSize>0 && $pageNum>1){
+ 			//TODO: what about the rootaddress!?!?
  			//check to see if the query's possible addresses exist in the users's session
  			if(isset($_SESSION['treeQueries']) && isset($_SESSION['treeQueries'][$serialArgs])){
  				$found=$_SESSION['treeQueries'][$serialArgs];
