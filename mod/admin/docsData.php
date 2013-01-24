@@ -330,6 +330,16 @@ Array(
 &lt;button type=&quot;submit&quot;&gt;Edit Item&lt;/button&gt;
 &lt;/form&gt;
 </pre>
+<p>
+	Or in HAML: (This example isn&#39;t very much shorter though...)</p>
+<pre class="code">
+%form{:method=&gt;&quot;post&quot;}
+	%input{:name=&gt;&quot;action&quot;,:type=&gt;&quot;hidden&quot;,:value=&gt;&quot;record_tree2/edit&quot;}
+	%input{:name=&gt;&quot;fields[address]&quot;,:type=&gt;&quot;hidden&quot;,:value=&gt;&quot;theData/someItem/myChild&quot;}
+	%input{:name=&gt;&quot;fields[data][pattern:match]&quot;,:type=&gt;&quot;hidden&quot;,:value=&gt;&quot;/patterns/items/children&quot;}
+	%textarea{:name=&gt;&quot;fields[data][comment]&quot;}
+	%button{:type=&gt;&quot;submit&quot;} Edit Item
+</pre>
 ',
           ),
           'events' => 
@@ -1727,7 +1737,7 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
                     'description' => 'Make items with attribute &#39;admin:locked&#39; set to true unable to be written, sorted, inserted or moved in your home directory',
-                    'code' => '$this->tree->bind(&#34;~/node:wild-recursive-or-nothing/node:attributes(`admin:locked`=&#39;true&#39;)&#34;, &#39;wsim&#39;, &#39;validate&#39;, 
+                    'code' => '$node->record_tree2->bind(&#34;~/node:wild-recursive-or-nothing/node:attributes(`admin:locked`=&#39;true&#39;)&#34;, &#39;wsim&#39;, &#39;validate&#39;, 
 function($address,$node,$curItem,$data){
 	return false;
 });',
@@ -2330,7 +2340,7 @@ function($address,$node,$curItem,$data){
               'query' => 
               array (
                 'pattern:match' => '/patterns/documentation/module-list/module/function',
-                'name' => 'query($rootAddress=\'/\',$args=array(),$depth=true,$suppressEvents=false,$pageSize=0,$pageNum=1,$onlySearch=false)',
+                'name' => 'query($rootAddress=\'/\',$args=array(),$depth=true,$suppressEvents=false,$onlySearch=false)',
                 'return' => 'Array on success, False on failure',
                 'description' => '<p>
 	Perform a query for a specific pattern of attributes</p>
@@ -2370,26 +2380,6 @@ function($address,$node,$curItem,$data){
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
                   ),
-                  'kaptzgkbdm' => 
-                  array (
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'name' => '$pageSize',
-                    'type' => 'Integer',
-                    'description' => '<p>
-	Specify the maximum number of items to return. (Default: 0 All Items)</p>
-',
-                  ),
-                  'uqgqoypthf' => 
-                  array (
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
-                    'name' => '$pageNum',
-                    'type' => 'Integer',
-                    'description' => '<p>
-	Specify which page to load of results from a query. (Default: 1 First Page)</p>
-<p>
-	After performing a query, the total number of items found is available on $node-&gt;record_tree2-&gt;lastQueryFoundCount.</p>
-',
-                  ),
                   'yruolaforg' => 
                   array (
                     'pattern:match' => '/patterns/documentation/module-list/module/function/parameter',
@@ -2416,13 +2406,6 @@ function($address,$node,$curItem,$data){
                     'pattern:match' => '/patterns/documentation/module-list/module/function/example',
                     'description' => 'Load all the comments that match the documentation\'s comment pattern.',
                     'code' => '$comments=$node->record_tree2->query(\'/\',"`pattern:match`=\'/patterns/documentation/module-list/module/function/comment\'");',
-                  ),
-                  'pawwakywdd' => 
-                  array (
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/example',
-                    'description' => 'Retrieve the second page of 10 items from a query and echo the total number of items found in the query.',
-                    'code' => '$page2 = $node->record_tree2->query(\'~/blog/bfmmzuvqit/\',"`foo`!=\'\'",true,false,10,2); 
-echo $node->record_tree2->lastQueryFoundCount;',
                   ),
                 ),
               ),
@@ -2969,6 +2952,139 @@ save_terminal_commands=[integer]
 	Perform operations on your site without needing to build test pages.</p>
 <p>
 	Learn new ways to make your functions and classes interact by trying out different calls.</p>
+',
+          ),
+        ),
+      ),
+      'extra-functions' => 
+      array (
+        'hide-menu' => '1',
+        'pattern:match' => '/patterns/documentation/page',
+        'title' => 'Extra Functions',
+        'description' => 'Extra functions provided in lib/general.php',
+        'content' => '<p>
+	These functions are in lib/general.php</p>
+',
+        'node:children' => 
+        array (
+          'eiygyrkjcc' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'json_encode_ex($value)',
+            'section' => '<p>
+	Provide json_encode function from library</p>
+',
+          ),
+          'uqltxjwqqs' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'json_decode_ex($value)',
+            'section' => '<p>
+	Provide json_decode function from library</p>
+',
+          ),
+          'arwcyjkfad' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'flatten_tree($data,$removeChildren=false)',
+            'section' => '<p>
+	Convert an array containing multiple levels of &#39;node:children&#39; into a flat array with the full node address as item key</p>
+',
+          ),
+          'lzdbmjtjsw' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'array_replace( array &$array, array &$array1 )',
+            'section' => '',
+          ),
+          'husfynyhol' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'random_string($length = 10)',
+            'section' => '<p>
+	Generate a random string of lowercase letters</p>
+',
+          ),
+          'cfogceckqe' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'var_not_null($var)',
+            'section' => '<p>
+	Returns boolean</p>
+',
+          ),
+          'ovczcpdhzr' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'pull_item($item=array())',
+            'section' => '<p>
+	When loading a single item from record_tree2-&gt;get, an array with a single item is returned. This function returns the contents of that item directly or false if there is no item or there is more than one item in the passed array.</p>
+',
+          ),
+          'kfrgvpfovs' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'organize_by_attrib($key,$data)',
+            'section' => '<p>
+	Split an array of items into separate arrays based on a given key. Returned is an array with keys for each unique value for the given key. The values of each item is the range of items pertaining to this key.</p>
+',
+          ),
+          'kubigezfkq' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'sort_by_attr($key,$data)',
+            'section' => '<p>
+	Return an array of record_tree2 items sorted by a specified attribute</p>
+',
+          ),
+          'dgpfkocmjb' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'filter_by_attrib($filter=array(),$data=array(),$invert=false)',
+            'section' => '<p>
+	&nbsp;</p>
+<div>
+	Filter an array of record_tree2 items by a set of key=&gt;value pairs.</div>
+<div>
+	&nbsp;</div>
+<div>
+	$fitler=array(&#39;key to look in&#39;=&gt;&#39;required value&#39;)</div>
+<div>
+	$data=array(&#39;itemname&#39;=&gt;array(&#39;attrib key&#39;=&gt;&#39;attrib value&#39;))</div>
+<div>
+	$invert=default:false return items that match the filter, true to return items that dont</div>
+',
+          ),
+          'btohhgvpmq' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'quote2entities($string,$entities_type=\'number\')',
+            'section' => '<p>
+	Replace quotes to HTML entities by names or numbers</p>
+',
+          ),
+          'phhrubvixn' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'array_paginate_init($data,$key=false)',
+            'section' => '<p>
+	Load an array into the user&#39;s session for caching. If $key is omitted, a random key will be returned for use in getting and flushing.</p>
+',
+          ),
+          'beludfiifr' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'array_paginate_get($key,$pageNum=1,$pageSize=10)',
+            'section' => '<p>
+	Return a slice of a cached array. Returns false if the $key is not found.</p>
+',
+          ),
+          'nizvoztcti' => 
+          array (
+            'pattern:match' => '/patterns/documentation/page/section',
+            'title' => 'array_paginate_flush($key)',
+            'section' => '<p>
+	Empty the array cache for a specified key</p>
 ',
           ),
         ),

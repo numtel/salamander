@@ -82,7 +82,10 @@ jQuery(function($){
 							});
 					},
 				itemClick=function(e){
-						if(e!==undefined && e.preventDefault!==undefined) e.preventDefault();
+						if(e!==undefined && e.preventDefault!==undefined){
+							if(e.ctrlKey) return; //for sorting
+							e.preventDefault();
+						}
 						var li=$(this);
 						//move up if the <a> is passed
 						if(!li.hasClass('tree-item')) li=li.parent();

@@ -4,7 +4,7 @@
 			%h1=$post['title']
 			.created
 				%span.label Posted on
-				%span.value=date('',strtotime($post['node:created']))
+				%span.value=date('l, F jS \a\t g:ia',strtotime($post['node:created']))
 			.content=$post['content']
 %ul.pager
 	%li.next.#{$pageNum===$lastPage ? 'disabled' :''}
