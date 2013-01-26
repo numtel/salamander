@@ -6,18 +6,18 @@
 		=$headerHTML
 	%body
 		#header
-			%a.scroll-pos#fork{:data-min-scroll=>"-1",:data-max-scroll=>"200",:data-formula-y=>"sP",:href=>"https://github.com/numtel/salamander"} Fork Me on Github!
+			%a.scroll-pos.scroll-pos-right#fork{:data-min-scroll=>"65%",:data-max-scroll=>"100%",:data-formula-y=>"-0.25*t",:data-formula-x=>"-0.07*t",:data-relative=>"#header",:href=>"https://github.com/numtel/salamander"} Fork Me on Github!
 			.body
-				%h1.logo.scroll-pos{:data-min-scroll=>"-1",:data-max-scroll=>"192",:data-formula-y=>"0.7*sP"} Salamander PHP Framework
+				%h1.logo.scroll-pos{:data-min-scroll=>"-1%",:data-max-scroll=>"100%",:data-formula-y=>"-0.15*t",:data-relative=>"#header"} Salamander PHP Framework
 		#contents
 			.body
 				=$content
 		#footer
 			.body
-				%p 
+				%p.scroll-pos.scroll-pos-bottom{:data-min-scroll=>"-1%",:data-max-scroll=>"100%",:data-formula-y=>"-0.2*t",:data-relative=>"#footer"}
 					Designed and built by 
 					%a{:href=>'mailto:ben@salamanderphp.com'} ben@salamanderphp.com
-				%p
+					%br
 					Code licensed under 
 					%a{:href=>'http://www.gnu.org/licenses/'} GPL v3
 					, documentation under 
