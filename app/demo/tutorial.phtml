@@ -187,9 +187,14 @@ $lastPage=(int)ceil($postCount/$pageSize);
 		</ul>
 	</li>
 	<li class="clearfix">
-		<h4>Populate with articles</h4>
+		<h4>Create root itema and populate with articles</h4>
 		<p>Use the following snippets to create a category and sample postings. Copy and paste into the terminal to use easily.</p>
 		<pre class="code"><code data-language="php">&lt;?php
+//insert root item
+$node->record_tree2->insert('/',array('myblog'=>
+   array('pattern:children'=>'/patterns/blog/',
+         'admin:icon'=>'book')));
+         
 //insert a category
 $node->record_tree2->insert('/myblog/',array('gen'=>
    array('pattern:match'=>'/patterns/blog/category',

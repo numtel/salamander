@@ -183,7 +183,8 @@ function array_paginate_get($key,$pageNum=1,$pageSize=10){
 	return array_slice($_SESSION['array_paginate'][$key],($pageNum-1)*$pageSize,$pageSize);
 }
 
-function array_paginate_flush($key){
+function array_paginate_flush($key=false){
+	if($key===false && isset($_SESSION['array_paginate'])) unset($_SESSION['array_paginate']);
 	if(!isset($_SESSION['array_paginate']) || !isset($_SESSION['array_paginate'][$key])) return false;
 	unset($_SESSION['array_paginate'][$key]);
 	return true;

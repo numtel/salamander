@@ -3082,9 +3082,9 @@ save_terminal_commands=[integer]
           'nizvoztcti' => 
           array (
             'pattern:match' => '/patterns/documentation/page/section',
-            'title' => 'array_paginate_flush($key)',
+            'title' => 'array_paginate_flush($key=false)',
             'section' => '<p>
-	Empty the array cache for a specified key</p>
+	Empty the array cache for a specified key (default: false for flush all pagination caches for this session)</p>
 ',
           ),
         ),
