@@ -14,6 +14,8 @@
 					.container
 						%a.brand{:href=>"#{$p}"}='Salamander Docs'
 						%ul.nav
+							%li.#{!count($node->page['params']) ? 'active' : ''}
+								%a{:href=>"#{$p}"} Home
 							-foreach($dataRoot['node:children'] as $cName=>$cInfo)
 								-if(count($cInfo['node:children'])>0 && (!isset($cInfo['hide-menu']) || $cInfo['hide-menu']==false))
 									%li.dropdown.#{isset($pageAddr) && $cInfo['node:address']===$pageAddr ? 'active' : ''}

@@ -352,19 +352,21 @@ jQuery(function($){
 				if(cPos!=='absolute') cItem.css({'position':'relative'});
 				//insert the button and show it and hide the menu
 				toolButton.attr('data-item-address',cItem.attr('data-item-address'));
-				toolButton.detach().appendTo(cItem).removeClass('hide');
+				toolButton.detach().appendTo(cItem)/*.removeClass('hide')*/;
 			}
-		}).mouseout(function(){
+		}).mouseout(function(e){
 			var cItem=$(this),
 				oldPos=cItem.attr('data-old-position');
 			//cancel out if the menu is open
 			if(toolButton.find('.open').length) return false;
 			//get out now if there's a deeper item hovering
 			if(cItem.find('[data-item-address]:hover').length) return false;
+			if(toolButton.parent().is(':hover')) return false;
+			console.log(toolButton.parent().is(':hover'));
 			//get off this item
 			cItem.attr('data-old-position','').css({'position':oldPos}).removeClass('tool-hovered');
 			//hide the button if it's not hovered over
-			toolButton.not(':hover').addClass('hide');
+			//toolButton.addClass('hide');
 		});
 	};
 	nodeTools.applyToolButton($('body'));

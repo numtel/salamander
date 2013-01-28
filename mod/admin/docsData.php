@@ -2913,7 +2913,7 @@ function($address,$node,$curItem,$data){
 	<li>
 		<code>f2</code> - Rename</li>
 	<li>
-		<code>f4</code>&nbsp;- Focus Address Bar (Use arrow keys and Home/End/PgUp/PgDn keys to navigate the tree browser)</li>
+		<code>f4</code>&nbsp;- Focus Address Bar (Use arrow keys and Home/End/PgUp/PgDn keys to navigate the tree browser, hold Ctrl and drag items to sort)</li>
 	<li>
 		<code>ctrl+m</code> - Move/Copy</li>
 </ul>

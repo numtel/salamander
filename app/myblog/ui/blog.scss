@@ -1,0 +1,14 @@
+body { font-family:Monda, sans-serif; line-height:1.5em; }
+
+.body { width:980px; margin:0 auto; position:relative; max-width:100%; }
+
+#header {
+	.logo { font-size:2.5em; font-family:Sacramento, serif; padding:50px 0; display:block; }
+	.controls { margin-top:50px; float:right; }
+}
+
+ul.posts { margin:0;
+	>li { margin-bottom:50px; list-style:none; }
+	h1 { font-size:25px; }
+	.content { margin-top:10px; padding:20px; box-shadow:inset 0 20px 30px #f3f3f3; }
+}

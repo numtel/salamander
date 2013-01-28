@@ -1,18 +1,27 @@
+<? $pageTitle="Blog Tutorial"; $pageId="tutorial"; ?>
 <h2>How to make a simple blog</h2>
+<a class="button fright" href="<?=$node->root_http_path?>myblog" target="_blank">View Demo Site</a>
+<p>All of the source code files are included in the app/myblog directory of the main source package.</p>
+
+<p>Some of the steps in this example use the shell's terminal to perform database actions.</p>
+</div><!--end .body-->
+
+<div id="terminal-display">
+<img class="scroll-pos" data-formula-y="-500-1*t" data-max-scroll="100%" data-min-scroll="-100%" data-relative="#terminal-display" src="<?=$rel?>ui/content/terminal.png" alt="Salamander Shell Terminal Screenshot" />
+</div>
+<div class="body">
 <ul class="features">
 	<li class="clearfix">
-		<div class="image"><img src="/salamander/app/demo/ui/content/data.png" /></div>
-		<div class="desc">
-			<h4>Create your application's data structure in the shell or using a command.</h4>
-			<p>Copy this code snippet into the terminal to perform this step. Change the insert address to another address if desired. Addreseses on the insert function must always end in a slash, denoting a range of items.</p>
-		</div>
-		<pre class="code">var_dump($node->record_tree2->insert('/patterns/',array (
+		<h4>Create your application's data structure in the shell or using a command.</h4>
+		<p>Copy this code snippet into the terminal to perform this step. Change the insert address to another address if desired.</p>
+		<pre class="code"><code data-language="generic">var_dump($node->record_tree2->insert('/patterns/',array (
   'blog' => array (
     'label' => 'Simple Blog',
     'node:children' => array (
       'category' => array (
         'label' => 'Category',
         'type' => 'recursive',
+        'recursive-level' => 'true',
         'node:children' => array (
           'title' => array (
             'label' => 'Title',
@@ -46,36 +55,154 @@
       ),
     ),
   ),
-)));</pre>
+)));</code></pre>
 	</li>
 	<li class="clearfix">
-		<div class="image"><img src="/salamander/app/demo/ui/content/pattern.png" /></div>
-		<div class="desc">
-			<h4>Specify pattern information for validation and other site configuration.</h4>
-			<p>Some pattern fields are validated by the tree_pattern module on data events.</p>
-			<p>Field patterns can be added to tell a site how to display specific types of data.</p>
-		</div>
+		<h4>Make a config.ini</h4>
+		<p>Prepare the environment for this site. </p>
+		<pre class="code"><code data-language="generic">[db]
+print_select_backtrace=false
+
+[init]
+[post]
+allow_login[]="user_user/login"
+[front]
+siteTitle="My Blog"
+dataPath="/myblog";record_tree2 data item where docs installed
+pageSize=10
+
+patternPath="/patterns/blog"
+appPath="#thistpl#/"
+default="index" ;default file in each directory
+missing_to_index=true ;send 404 errors to default page instead with all as parameters
+
+unset[]="js"
+unset[]="css"
+unset[]="scss"
+unset[]="config"
+
+js_min="myblog.min.js"
+;js[]="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+js[]="lib/ui/jquery.1.7.2.js"
+js[]="lib/ui/jquery-ui.js"
+;css[]="lib/ui/ui-lightness/jquery-ui-1.8.14.custom.css"
+;js[]="lib/ui/jquery.hotkeys.js"
+css[]="lib/ui/bootstrap.2.0.4/css/bootstrap.css"
+js[]="lib/ui/bootstrap.2.0.4/js/bootstrap.js"
+scss[]="#thisdir#/ui/blog.scss"
+;js[]="#thisdir#/ui/blog.js"
+
+config[]="pkg/tree-tools"
+headerHTML[]="<meta content=""width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0"" name=""viewport"" />"
+
+</code></pre>
 	</li>
 	<li class="clearfix">
-		<div class="image"><img src="/salamander/app/demo/ui/content/perms.png" /></div>
-		<div class="desc">
-			<h4>Set permissions on each item.</h4>
-			<p>Only those with ownership permissions can overwrite permissions already set by another user.</p>
-		</div>
+		<h4>Begin writing some templates.</h4>
+		<p>These files are included in the main source package.</p>
+		<ul class="code-samples cycler">
+			<li>
+				<h5>tpl.php</h5>
+				<pre class="code"><code data-language="php">&lt;?php
+//variables for referencing this app's url 
+$tr=$node->root_http_path.$node->ini['front']['appPath'];
+$appDir=substr($node->page['template'],0,strrpos($node->page['template'],'/'));
+
+//get variables from the config.ini file
+$toExtract=array('siteTitle','dataPath','patternPath','pageSize');
+foreach($toExtract as $iniVar){
+    $$iniVar=$node->ini['front'][$iniVar];
+}
+
+//load the root data item
+$dataConfig=pull_item($node->record_tree2->get($dataPath));
+
+</code></pre>
+			</li>
+			<li>
+				<h5>tpl.haml</h5>
+				<pre class="code"><code data-language="generic">!!! 5
+%html
+    %head
+        %meta{:charset=>'utf-8'}
+        %title=isset($overwriteTitle) ? $pageTitle : $siteTitle
+        %script
+            var appPath="#{$tr}",appDir="#{$appDir}";
+        =$headerHTML
+    %body
+        #header
+            .body
+                %a.logo{:href=>"#{$tr}"}=$siteTitle
+                -if($dataConfig['node:roles']['i'])
+                    %a.btn{:href=>"javascript:nodeTools.itemInsert('#{$dataPath}');"} Insert Post/Category
+        #main
+            .body
+                =$content
+</code></pre>
+			</li>
+			<li>
+				<h5>index.php</h5>
+				<pre class="code"><code data-language="php">&lt;?php
+//TODO: change to numeric on last param, enabling first params to be post/category address
+if(count($node->page['params'])>0 && is_numeric($node->page['params'][0]) && is_int($node->page['params'][0]*1)){
+	$pageNum=$node->page['params'][0]*1;
+}else $pageNum=1;
+
+//using $dataPath as the pagination key
+$pageData=array_paginate_get($dataPath,$pageNum,$pageSize);
+if($pageData===false){
+	$blogPosts=$node->record_tree2->query($dataPath,array('pattern:match'=>$patternPath.'/post'));
+	$blogPosts=array_reverse(sort_by_attr('node:created',$blogPosts));
+	array_paginate_init($blogPosts,$dataPath);
+	$pageData=array_paginate_get($dataPath,$pageNum,$pageSize);
+
+}
+$postCount=array_paginate_get($dataPath,'count');
+$lastPage=(int)ceil($postCount/$pageSize);
+
+</code></pre>
+			</li>
+			<li>
+				<h5>index.haml</h5>
+				<pre class="code"><code data-language="generic">%ul.posts
+    -foreach($pageData as $postAddr=>$post)
+        %li{:data-item-address=>"#{$post['node:address']}", :data-item-roles=>"#{$post['node:modeString']}",:data-pattern-match=>"#{$post['pattern:match']}"}
+            %h1=$post['title']
+            .created
+                %span.label Posted on
+                %span.value=date('l, F jS \a\t g:ia',strtotime($post['node:created']))
+            .content=$post['content']
+%ul.pager
+    %li.next.#{$pageNum===$lastPage ? 'disabled' :''}
+        %a{:href=>"#{$tr.($pageNum+1)}"}='Older &rarr;'
+    %li.previous.#{$pageNum===1 ? 'disabled' :''}
+        %a{:href=>"#{$tr.($pageNum-1)}"}='&larr; Newer'
+    -for($i=1;$i<=$lastPage;++$i)
+        -if($lastPage>10 && !($i===1 || $i===$lastPage || abs($i-$pageNum)<4))
+            -continue;
+        %li.#{$i===$pageNum ? 'disabled' :''}
+            %a{:href=>"#{$tr.$i}"}=$i
+</code></pre>
+			</li>
+		</ul>
 	</li>
 	<li class="clearfix">
-		<div class="image"><img src="/salamander/app/demo/ui/content/function.png" /></div>
-		<div class="desc">
-			<h4>Use simple functions to retrieve and manipulate data.</h4>
-			<p>Permission settings are automatically applied to all data operations.</p>
-		</div>
-	</li>
-	<li class="clearfix">
-		<div class="image"><img src="/salamander/app/demo/ui/content/tools.png" /></div>
-		<div class="desc">
-			<h4>Quickly apply drop-down item management using supplied tools.</h4>
-			<p>Only displays relevant tools for permissions.</p>
-			<p>Edit/Insert automatically generate fields from the pattern.</p>
-		</div>
+		<h4>Populate with articles</h4>
+		<p>Use the following snippets to create a category and sample postings. Copy and paste into the terminal to use easily.</p>
+		<pre class="code"><code data-language="php">&lt;?php
+//insert a category
+$node->record_tree2->insert('/myblog/',array('gen'=>
+   array('pattern:match'=>'/patterns/blog/category',
+         'title'=>'Testing')));
+		
+//Insert 30 'Lorem Ipsum' blog posts into category at /myblog/gen/ (copy all in one command)
+require('lib/LoremIpsum.class.php');
+$gen = new LoremIpsumGenerator;
+for($i=0;$i<30;++$i){
+   $node->record_tree2->insert('/myblog/gen/',array('post-#RAND#'=>
+        array('pattern:match'=>'/patterns/blog/post',
+              'title'=>$gen->getContent(mt_rand(4,15)),
+              'content'=>$gen->getContent(100))));
+}</code></pre>
 	</li>
 </ul>

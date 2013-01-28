@@ -11,6 +11,15 @@
 				%h1.logo.scroll-pos{:data-min-scroll=>"-1%",:data-max-scroll=>"100%",:data-formula-y=>"-0.15*t",:data-relative=>"#header"} Salamander PHP Framework
 		#contents
 			.body
+				%ul.nav-top
+					%li.#{$pageId==='index' ? 'active' :''}
+						%a{:href=>"#{$p}"} Overview
+					%li.#{$pageId==='tutorial' ? 'active' :''}
+						%a{:href=>"#{$p}tutorial"} Tutorial
+					%li
+						%a{:href=>"#{$node->root_http_path}docs"} Documentation
+					%li
+						%a{:href=>"https://github.com/numtel/salamander"} Download from GitHub
 				=$content
 		#footer
 			.body

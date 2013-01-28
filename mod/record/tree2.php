@@ -116,7 +116,6 @@ class Node_record_tree2 {
 
 		//insert items and perform write events
 		$dataOut=$this->insert_items($address,$data,$maxOrder,$suppressEvents);
-		
 		//perform insert complete event
  		if($dataOut!==false && $suppressEvents===false){
  			$itemAddress=$address==='/' ? '/' : substr($address,0,-1);
@@ -699,7 +698,6 @@ class Node_record_tree2 {
 				if($value && !$curRoles[$testRole]) return false;
 			}
 		}
- 		
  		//perform validation event
   		if($suppressEvents===false && !$this->event($address,'p','validate',array($mode,$accessors))) return false;
 		
@@ -1380,7 +1378,13 @@ class Node_record_tree2 {
   			$data=array($key=>$val);
 			$dataMod=$this->adjust_addresses($data);
 			$depth=substr_count($address,'/')-1;
-	
+			$newName=array_keys($dataMod);
+			if($newName[0]!==$key){
+				unset($items[$key]);
+				unset($data[$key]);
+				$key=$newName[0];
+				$items[$key]=$data[$key]=$val;
+			}
 			$insRows=$this->create_insert_items($dataMod,$address,$depth,false,$maxOrder);
 			if($insRows===false) return false;
 			$nameIn=array();
