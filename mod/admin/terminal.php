@@ -54,12 +54,13 @@ Object Reference:
 	\$this = \$node->admin_terminal
 	\$this->tree = \$node->record_tree2
 	\$this->home = \$node->tree_home
+Functions:
+	array_paginate_flush(); Clear all pagination caches for current session.
+	\$this->clearTerminalData(); Clear your saved terminal commands and variables.
 	
 Example - Display items at root of data tree 0 levels deep.
 	print_r(\$this->tree->get('/',0));
 	
-Example - Clear your saved terminal commands and variables.
-	\$this->clearTerminalData();
 ";
 
 	public function __construct($parent){

@@ -88,7 +88,13 @@ class Node_record_tree2 {
 		if($address!=='/'){
 			if(substr($address,-1)!=='/') $address.='/';
 			$curItem=pull_item($this->get(substr($address,0,-1),false,false,true));
-			if($curItem===false || $curItem['node:roles']['i']===false) return false;
+			if($curItem===false){
+				$this->error_message('Parent not found to insert into!');
+				return false;
+			}elseif($curItem['node:roles']['i']===false){
+				$this->error_message('No insert permission on parent!');
+				return false;
+			}
 			$addressSplit=explode('/',substr($address,0,-1));
 			$parentName=array_pop($addressSplit);
 		}else{ 
@@ -98,7 +104,10 @@ class Node_record_tree2 {
 							'node:roles'=>$this->mode_to_roles($rootMode),
 							'node:modeString'=>$this->mode_to_string($rootMode),
 							'node:address'=>'/');
-			if(!$curItem['node:roles']['i']) return false; 
+			if(!$curItem['node:roles']['i']){
+				$this->error_message('No insert permission on root!');
+				return false; 
+			}
 		}
   		if($suppressEvents===false){
  			//perform insert validation event
@@ -132,7 +141,13 @@ class Node_record_tree2 {
  		$where=array();
  		//make sure item exists and can write
  		$curItem=pull_item($this->get($address,false,false,true));
- 		if($curItem===false || $curItem['node:roles']['w']===false) return false;
+ 		if($curItem===false){
+ 			$this->error_message('Parent not found!');
+ 			return false;
+ 		}elseif($curItem['node:roles']['w']===false){
+	 		$this->error_message('No write permission on parent!');
+ 			return false;
+ 		}
  		
  		//perform validation event
   		if($suppressEvents===false){
@@ -158,7 +173,10 @@ class Node_record_tree2 {
 
  		foreach($data as $key=>$val){
  			//don't allow anything with a name that matches a reserved value
-			if(substr($key,0,5)==='node:') return false;
+			if(substr($key,0,5)==='node:'){
+				$this->error_message('Cannot write attribute with key beginning with reserved prefix "node:".');
+				return false;
+			}
  			if(isset($curItem[$key])){
  				$where['key']=$key;
  				$allGood=$this->db->update($this->table,$where,array('key'=>$key)
@@ -199,7 +217,13 @@ class Node_record_tree2 {
  		
  		//make sure item exists and user can set owner
  		$curItem=pull_item($this->get($address,false,false,true));
- 		if($curItem===false || $curItem['node:roles']['o']===false) return false;
+ 		if($curItem===false){
+ 			$this->error_message('Item not found!');
+ 			return false;
+ 		}elseif($curItem['node:roles']['o']===false){
+ 			$this->error_message('No set owner permission set on item!');
+ 			return false;
+ 		}
  		
  		//perform validation event
   		if($suppressEvents===false && !$this->event($curItem['node:address'],'o','validate',array($curItem,$userId))) return false;
@@ -242,7 +266,13 @@ class Node_record_tree2 {
  		
  		//make sure item exists and user can delete it
  		$curItem=pull_item($this->get($address,false,false,true));
- 		if($curItem===false || $curItem['node:roles']['d']===false) return false;
+ 		if($curItem===false){
+ 			$this->error_message('Item not found!');
+ 			return false;
+ 		}elseif($curItem['node:roles']['d']===false){
+ 			$this->error_message('No delete permission set on item!');
+ 			return false;
+ 		}
  		
  		//perform validation event
   		if($suppressEvents===false && !$this->event($curItem['node:address'],'d','validate',array($curItem,$address,$attribute))) return false;
@@ -277,12 +307,21 @@ class Node_record_tree2 {
  	//$newName=new name for this item
  	public function rename($itemAddress,$newName,$suppressEvents=false){
  		//names cannot contain directory separator or special code
- 		if(strpos($newName,'/')!==false || substr($newName,0,5)==='node:') return false;
+ 		if(strpos($newName,'/')!==false || substr($newName,0,5)==='node:'){
+ 			$this->error_message('Invalid new name specified!');
+ 			return false;
+ 		}
  		$itemAddress=$this->filter_address($itemAddress);
  		//make sure this address exists and user can edit it
  		$whereItem=array();
  		$curItem=pull_item($this->get($itemAddress,false,false,true));
- 		if($curItem===false || $curItem['node:roles']['m']===false) return false;
+ 		if($curItem===false){
+ 			$this->error_message('Item not found!');
+ 			return false;
+ 		}elseif($curItem['node:roles']['m']===false){
+ 			$this->error_message('No move permission set on item!');
+ 			return false;
+ 		}
 
   		//prepare the query
 		$addressSplit=explode('/',$itemAddress);
@@ -299,7 +338,10 @@ class Node_record_tree2 {
   		}
  		
  		$addrExists=$this->get($newItemAddress,false,false,true);
- 		if(count($addrExists)) return false;
+ 		if(count($addrExists)){
+ 			$this->error_message('Item already exists at new address!');
+ 			return false;
+ 		}
  		//update name field of this item and the addresses of children and the permissions
  		$oldChildAddress=mysql_real_escape_string($itemAddress.'/',$this->db->link);
  		$newChildAddress=mysql_real_escape_string($newItemAddress.'/',$this->db->link);
@@ -326,7 +368,13 @@ class Node_record_tree2 {
  		//make sure this address exists and user can move it
  		$whereItem=array();
  		$curItem=pull_item($this->get($itemAddress,false,false,true));
- 		if($curItem===false || $curItem['node:roles']['m']===false) return false;
+ 		if($curItem===false){
+ 			$this->error_message('Item not found!');
+ 			return false;
+ 		}elseif($curItem['node:roles']['m']===false){
+ 			$this->error_message('No move permission set on item!');
+ 			return false;
+ 		}
  		//prepare the query
 		$addressSplit=explode('/',$itemAddress);
 		$whereItem['name']=array_pop($addressSplit);
@@ -335,16 +383,28 @@ class Node_record_tree2 {
 		if($newAddress!=='/'){
 	 		//make sure new address exists and user can insert into it
 	 		$newParent=pull_item($this->get(substr($newAddress,0,-1),false,false,true));
-	 		if($newParent===false || $newParent['node:roles']['i']===false) return false;
+	 		if($newParent===false){
+	 			$this->error_message('New parent not found!');
+	 			return false;
+	 		}elseif($newParent['node:roles']['i']===false){
+	 			$this->error_message('No insert permission on new parent!');
+	 			return false;
+	 		}
  		}else{
  			//make sure user has permission on the root
 			$rootRoles=$this->mode_to_roles($this->mode('/'));
-			if(!$rootRoles['i']) return false; 
+			if(!$rootRoles['i']){
+				$this->error_message('No insert permission set on root!');
+				return false; 
+			}
  		}
  		//make sure this name doesnt exist at this address
  		$newItemAddress=$newAddress.$whereItem['name'];
  		$addrExists=$this->get($newItemAddress);
- 		if(count($addrExists)) return false;
+ 		if(count($addrExists)){
+ 			$this->error_message('Item exists at new address already!');
+ 			return false;
+ 		}
  		
  		//perform validation event
   		if($suppressEvents===false && (!$this->event($curItem['node:address'],'m','validate',array($curItem,$newItemAddress)) ||
@@ -381,7 +441,13 @@ class Node_record_tree2 {
  		if($parentAddress!=='/'){
 	 		//make sure this address exists and user can move it
 	 		$parent=pull_item($this->get($parentAddress,false,false,true));
-	 		if($parent===false || $parent['node:roles']['s']===false) return false;
+	 		if($parent===false){
+	 			$this->error_message('Parent not found!');
+	 			return false;
+	 		}elseif($parent['node:roles']['s']===false){
+	 			$this->error_message('No sort permission on parent!');
+	 			return false;
+	 		}
  		}else{
 			//make sure user has permission on the root
 			$rootMode=$this->mode('/');
@@ -389,7 +455,10 @@ class Node_record_tree2 {
 							'node:roles'=>$this->mode_to_roles($rootMode),
 							'node:modeString'=>$this->mode_to_string($rootMode),
 							'node:address'=>'/');
-			if(!$parent['node:roles']['i']) return false; 
+			if(!$parent['node:roles']['s']){
+				$this->error_message('No sort permission on root!');
+				return false;
+			}
  		}
  		
  		//perform validation event
@@ -431,7 +500,10 @@ class Node_record_tree2 {
  		*/
  		$where=array();
  		if(substr($address,-1)!=='/'){
-	 		if(strlen($address)<=1) return false;
+	 		if(strlen($address)<=1){
+	 			$this->error_message('Invalid address!');
+	 			return false;
+	 		}
 	 		$origAddress=$address;
 	 		$addressSplit=explode('/',$address);
 	 		$itemName=array_pop($addressSplit);
@@ -512,13 +584,17 @@ class Node_record_tree2 {
  	public function get_wild($address,$onlyAddresses=false,$suppressEvents=false){
  		$address=$this->filter_address($address);
  		//don't allow a wild call on just the root with any wildcards (would be killed later anyways)
- 		if(strlen($address)<=1) return false;
+ 		if(strlen($address)<=1){
+ 			$this->error_message('Invalid address!');
+ 			return false;
+ 		}
  		//clip trailing slash
  		if(strlen($address)>1 && substr($address,-1)==='/') $address=substr($address,0,-1);
  		//echo '['.$address.','.memory_get_usage()."]\n";
  		//if there isn't anything wild then it's just an address
  		if(strpos($address,'/node:')===false){
  			if($onlyAddresses) return array($address);
+ 			//TODO: provide more complete translation...
  			$cItem=pull_item($this->get($address,false,false,$suppressEvents));
  			if($cItem===false) return false;
  			else return array($address=>$cItem);
@@ -690,12 +766,18 @@ class Node_record_tree2 {
     	$address=$this->filter_address($address);
 		//make sure item exists and user can set permissions on it
 		$curRoles=$this->mode_to_roles($this->mode($address));
-		if($curRoles['p']===false) return false;
+		if($curRoles['p']===false){
+			$this->error_message('No ability to set permission on item!');
+			return false;
+		}
 		if($curRoles['o']===false){
 			//make sure user not elevating privileges
 			$newRoles=$this->mode_to_roles($mode);
 			foreach($newRoles as $testRole=>$value){
-				if($value && !$curRoles[$testRole]) return false;
+				if($value && !$curRoles[$testRole]){
+					$this->error_message('No ability to set specific permission on item!');
+					return false;
+				}
 			}
 		}
  		//perform validation event
@@ -709,14 +791,20 @@ class Node_record_tree2 {
 							'owner'=>$this->parent->user_user->currentId,
 							'address'=>$address);
     	}
-    	if(count($recip)===0) return false;
+    	if(count($recip)===0){
+    		$this->error_message('At least one accessor must be specified!');
+    		return false;
+    	}
     	foreach($recip as $accessor){
 			$current=$this->db->select($this->tablePerms,array('mode','owner'),
 											array('access_id'=>$accessor['access_id'],
 													'address'=>$address));
 			$current_id=array_keys($current);
 			if(count($current)>0){
-				if(!$curRoles['o']) return false;
+				if(!$curRoles['o']){
+					$this->error_message('Must be item owner to modify this permission!');
+					return false;
+				}
 				if($accessor['mode']==='delete'){
 					$return=$this->db->delete($this->tablePerms,array('id'=>$current_id[0]));
 				}else{
@@ -738,7 +826,10 @@ class Node_record_tree2 {
     	if($address!=='/' && $knowExists!==true){
 			//make sure this is just a single item
 			$curItem=pull_item($this->get($address,false,true,true));
-			if($curItem===false) return false;
+			if($curItem===false){
+				$this->error_message('Item not found!');
+				return false;
+			}
     	}
     	
 		
@@ -900,7 +991,10 @@ class Node_record_tree2 {
     //-------------------------------------------------------------------------------------
     public function copy($address, $newParent,$suppressEvents=false,$preserveOwner=false){
     	$data=$this->get($address,true,false,$suppressEvents);
-    	if($data===false) return false;
+    	if($data===false){
+    		$this->error_message('Source data not found!');
+    		return false;
+    	}
     	//if copying a single item to same parent item, use random name!
     	if(count($data)===1 && substr($address,0,strrpos($address,'/')+1)===$newParent){
     		$data=array_values($data);
@@ -912,6 +1006,14 @@ class Node_record_tree2 {
     //-------------------------------------------------------------------------------------
 	//BEGIN private helper functions:
     //-------------------------------------------------------------------------------------
+    private function error_message($string){
+ 		if(!isset($this->parent->ini['front']['echo_tree_errors']) ||
+ 			!$this->parent->ini['front']['echo_tree_errors']) return false;
+ 		//do what you want, do all you can, break all the fucking rules and go to hell with superman
+ 		echo $string." \t";
+ 		//and die like a champion yeah hey!
+    }
+    
     public function load_user_perms($address="/",$userId=false,$knowExists=false,$depth=false){
     	if($userId===false) $userId=$this->parent->user_user->currentId;
     	$address=$this->filter_address($address);
@@ -1386,7 +1488,10 @@ class Node_record_tree2 {
 				$items[$key]=$data[$key]=$val;
 			}
 			$insRows=$this->create_insert_items($dataMod,$address,$depth,false,$maxOrder);
-			if($insRows===false) return false;
+			if($insRows===false){
+				$this->error_message('Invalid insert data!');
+				return false;
+			}
 			$nameIn=array();
 			foreach($insRows as $item){
 				//don't allow anything that contains directory separator
@@ -1396,7 +1501,10 @@ class Node_record_tree2 {
 				if(!in_array($item['address'].$item['name'],$nameIn)){
 					//make sure not overwriting
 					$curItem=$this->get($item['address'].$item['name']);
-					if(count($curItem)){ return false; }
+					if(count($curItem)){ 
+						$this->error_message('Item already exists!');
+						return false; 
+					}
 					$nameIn[]=$item['address'].$item['name'];
 				}
 				if(!$this->db->insert($this->table,$item)) return false;;
@@ -1417,7 +1525,10 @@ class Node_record_tree2 {
  		$found=array();
  		$validModes=array('and','or','not');
  		if(!isset($args['query:mode'])) $args['query:mode']='and';
- 		if(!in_array($args['query:mode'],$validModes)) return false;
+ 		if(!in_array($args['query:mode'],$validModes)){
+ 			$this->error_message('Invalid boolean mode!');
+ 			return false;
+ 		}
  		$i=0;
 		foreach($args as $key=>$arg){
  			if(substr($key,0,6)==='query:') continue;
