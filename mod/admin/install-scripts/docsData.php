@@ -1,4 +1,7 @@
-<? $docsPattern=array('patterns'=>array('admin:icon'=>'th','node:children'=>array (
+<? 
+$install['Documentaion Data']=function($node){
+
+$docsPattern=array('patterns'=>array('admin:icon'=>'th','node:children'=>array (
   'documentation' => 
   array (
     'label' => 'Documentation Site',
@@ -3106,3 +3109,15 @@ save_terminal_commands=[integer]
     ),
   ),
 );
+
+
+if(!$node->record_tree2->insert('/',$docsPattern,true) ||
+	!$node->record_tree2->insert('/',$docsData,true))
+	return 'Install Failure: Could not import documentation data.';
+if(!$node->tree_pattern->rebuild_permissions())
+	return 'Install Failure: Could not set permissions on import data.';
+
+return true;
+
+};
+

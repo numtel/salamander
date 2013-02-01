@@ -30,10 +30,11 @@
 							%p.field
 								%label First User Password
 									%input{:name=>'fields[pw]',:value=>'',:type='password'}
-							%p.field
-								%label.checkbox
-									%input{:name=>'fields[installDocs]',:value=>'1',:type=>'checkbox',:checked=>'checked'}
-									Install Docs Data
+							-foreach($node->admin_install->get_scripts() as $key=>$function)
+								%p.field
+									%label.checkbox
+										%input{:name=>'fields[scripts][#{$key}]',:value=>'1',:type=>'checkbox',:checked=>'checked'}
+										Install #{$key}
 							.submit
 								%input{:type=>'hidden',:name=>'action',:value=>'admin_install/install'}
 								%button.btn.btn-primary{:type=>'submit'} Install

@@ -117,6 +117,7 @@ class Node_user_user {
     		$check=$hasher->CheckPassword($pw, $user[$user_id[0]]['pw']);
 			unset($hasher);
 			if($check){
+				session_unset();
 				$_SESSION['user_id']=$user_id[0];
 				$this->currentId=$user_id[0];
 				$this->load_groups(true);
@@ -146,7 +147,7 @@ class Node_user_user {
     }
     
     public function logout(){
-    	unset($_SESSION['user_id']);
+		session_unset();
     	$this->currentId=false;
     	return true;
     }

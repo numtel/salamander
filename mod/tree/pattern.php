@@ -126,13 +126,13 @@ class Node_tree_pattern {
 		}
 		//check which pattern item this matches
 		if(!isset($data['pattern:match'])) { 
-			$this->error_message('Pattern match not found!'); 
+			$this->error_message('Pattern match not set!'); 
 			return false;
 		}
 		$match=pull_item($this->tree->get($data['pattern:match']));
 		//fail if no pattern match
 		if($match===false) {
-			$this->error_message('Item not found!'); 
+			$this->error_message('Pattern match not found!'); 
 			return false;
 		}
 
