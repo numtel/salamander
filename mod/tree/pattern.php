@@ -32,6 +32,9 @@ class Node_tree_pattern {
 		$this->tree->bind(
 			"/node:wild-recursive-or-nothing/node:attributes(`pattern:children`!='')/node:wild-recursive", 
 			'w', 'validate', function($address,$node,$curItem,$data){
+				if(!isset($data['pattern:match']) && isset($curItem['pattern:match'])){
+					$data['pattern:match']=$curItem['pattern:match'];
+				}
 				return $node->tree_pattern->validate($address,$data);
 		});
 
@@ -110,11 +113,10 @@ class Node_tree_pattern {
  	}
  	
  	function error_message($string){
- 		if(!isset($this->parent->ini['front']['echo_pattern_errors']) ||
- 			!$this->parent->ini['front']['echo_pattern_errors']) return false;
- 		//do what you want, do all you can, break all the fucking rules and go to hell with superman
- 		echo $string." \t";
- 		//and die like a champion yeah hey!
+    	$this->tree->lastError=$string;
+    
+ 		if(isset($this->parent->ini['front']['echo_tree_errors']) &&
+ 			$this->parent->ini['front']['echo_tree_errors']) echo $string." \t";
  	}
  	
  	function validate($address,$data){

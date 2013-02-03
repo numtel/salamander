@@ -23,7 +23,7 @@ class Node_db_mysql {
 	
 	public $link=false;
 	public $count=0;
-	public $printSelectBacktrace=false;
+	public $printSelect=false;
 	
 	public function __construct($parent){
 		$this->parent=$parent;
@@ -38,8 +38,8 @@ class Node_db_mysql {
 		}
 		mysql_select_db($this->parent->ini['db']['database'],$this->link);
 
-		if(isset($this->parent->ini['db']['print_select_backtrace']))
-			$this->printSelectBacktrace=(bool)$this->parent->ini['db']['print_select_backtrace'];
+		if(isset($this->parent->ini['db']['print_select']))
+			$this->printSelect=$this->parent->ini['db']['print_select'];
 		
 		//don't show the password all the time
 		unset($this->parent->ini['db']['password']);
@@ -150,13 +150,15 @@ class Node_db_mysql {
 		
 		$this->count++;
 		$query="SELECT ".$field_names." FROM `".$table_name."`".$where_val." ".$limit;
-		if($this->printSelectBacktrace===true){
+		if($this->printSelect==='backtrace'){
 			$calls=debug_backtrace();
 			echo "<p>";
 			foreach($calls as $call){
 				echo "<strong>".$call['file'].' line '.$call['line'].'</strong><br>';
 			}
-			echo $query.'</p>';
+			echo $query."</p>";
+		}elseif($this->printSelect==='query'){
+			echo $query."\n\n";
 		}
 		
 		$result = mysql_query($query,$this->link);

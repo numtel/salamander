@@ -1,5 +1,5 @@
 <? 
-$install['Documentaion Data']=function($node){
+$install['Documentation Data']=function($node){
 
 $docsPattern=array('patterns'=>array('admin:icon'=>'th','node:children'=>array (
   'documentation' => 
@@ -461,9 +461,15 @@ password=&quot;password&quot;
 database=&quot;node&quot;
 table_prefix=&quot;new_&quot;
 </pre>
-<p>Additionally, an install parameter can be used to signal modules to create tables:</p>
+<p>
+	Additionally, an install parameter can be used to signal modules to create tables:</p>
 <pre>
 install=true
+</pre>
+<p>
+	For debugging SELECT queries, use the <code>print_select</code> parameter. Possible values are empty for no output, &quot;query&quot; to echo each select query, and &quot;backtrace&quot; to output in HTML the function that called the select.</p>
+<pre>
+print_select=&quot;query&quot;
 </pre>
 ',
           ),
@@ -1552,45 +1558,28 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
 </ul>
 ',
                   ),
-                  'comment-evbzrvlvyv' => 
+                ),
+              ),
+              'address_filters' => 
+              array (
+                'pattern:match' => '/patterns/documentation/module-list/module/function',
+                'name' => 'address_filters[]=function($address,$node)',
+                'description' => '<p>
+	Array of filter functions to apply to item addresses before performing an operation. See $this-&gt;filter_address() for application of these.</p>
+',
+                'return' => 'Modified address or same address',
+                'node:children' => 
+                array (
+                  'fhxeoglwqs' => 
                   array (
-                    'comment' => 'whahaha',
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-nqzddtmkqk' => 
-                  array (
-                    'comment' => 'hawhf',
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-ievwqpmujw' => 
-                  array (
-                    'comment' => 'asdfjah',
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-hpdusyjsms' => 
-                  array (
-                    'comment' => 'number4',
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-jmnlhofdau' => 
-                  array (
-                    'comment' => 'number5',
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-vazztobffb' => 
-                  array (
-                    'comment' => 'number6',
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-unjwuyncmc' => 
-                  array (
-                    'comment' => 'number7',
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
-                  ),
-                  'comment-fufddgjfaa' => 
-                  array (
-                    'comment' => 'number8',
-                    'pattern:match' => '/patterns/documentation/module-list/module/function/comment',
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/example',
+                    'description' => 'Create an address filter for the user\'s home directory.',
+                    'code' => '$node->record_tree2->addressFilters[]=function($address,$node){
+	if(substr($address,0,1)===\'~\') return $node->tree_home->homeAddress.substr($address,1);
+	if(substr($address,0,2)===\'/~\') return $node->tree_home->homeAddress.substr($address,2);
+	return $address;
+};
+',
                   ),
                 ),
               ),
@@ -1643,7 +1632,7 @@ debug_haml=true ;mod/render/haml: boolean output cached haml expanded instead of
                     'description' => '<p>
 	New with php 5.3, put functions anywhere like in JavaScript!</p>
 <p>
-	Unless specified otherwise below only, return False to cancel an event from proceeding, True to continue.&nbsp;</p>
+	Unless specified otherwise below only, return False to cancel an event from proceeding, True to continue. If passing false to cancel, the event function is responsible for providing a notice using PHP&#39;s trigger_error() to be scavenged using error_get_last().</p>
 <p>
 	<strong><span style="font-size:14px;">Validation event function parameters</span></strong></p>
 <p>
@@ -1798,6 +1787,12 @@ function($address,$node,$curItem,$data){
                     'name' => '$suppressEvents',
                     'type' => 'Boolean',
                     'description' => 'Suppress the execution of event code while performing this action (default: false)',
+                  ),
+                  'ogzniqifqi' => 
+                  array (
+                    'pattern:match' => '/patterns/documentation/module-list/module/function/example',
+                    'description' => 'Set all logged in users to have access to read, write and insert into an item.',
+                    'code' => '$node->record_tree2->chmod(\'/myitem\',7,array(-1));',
                   ),
                 ),
               ),
@@ -3110,7 +3105,6 @@ save_terminal_commands=[integer]
   ),
 );
 
-
 if(!$node->record_tree2->insert('/',$docsPattern,true) ||
 	!$node->record_tree2->insert('/',$docsData,true))
 	return 'Install Failure: Could not import documentation data.';
@@ -3120,4 +3114,3 @@ if(!$node->tree_pattern->rebuild_permissions())
 return true;
 
 };
-

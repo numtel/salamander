@@ -90,7 +90,7 @@ class Node_admin_install {
  	
  	public function generate_docsdata($outfile=false){
  		$out="<? 
-\$install['Documentaion Data']=function(\$node){
+\$install['Documentation Data']=function(\$node){
 
 \$docsPattern=array('patterns'=>array('admin:icon'=>'th','node:children'=>".var_export($this->tree->filter_for_insert($this->tree->get('/patterns/documentation',true)),true)."));\n\n\$docsData=".var_export($this->tree->filter_for_insert($this->tree->get('/docs',true)),true).";
 

@@ -41,6 +41,7 @@ class Node_record_tree2 {
 	public $tablePerms='tree2_perms';
 	public $addressFilters=array();
 	public $events=array();
+	public $lastError=false;
 	
 	//[r]ead,[w]rite,[i]nsert into,[d]elete,[s]ort,[m]ove,set [o]wner,set [p]ermissions
 	public $modes=array('r'=>1,'w'=>2,'i'=>4,'d'=>8,'s'=>16,'m'=>32,'o'=>64,'p'=>128);
@@ -271,6 +272,12 @@ class Node_record_tree2 {
  			return false;
  		}elseif($curItem['node:roles']['d']===false){
  			$this->error_message('No delete permission set on item!');
+ 			return false;
+ 		}elseif($attribute!==false && !isset($curItem[$attribute])){
+ 			$this->error_message('Attribute not set on item!');
+ 			return false;
+ 		}elseif($attribute!==false && count(array_filter(array_keys($curItem),function($v){return substr($v,0,5)!=='node:';}))===1 && isset($curItem[$attribute])){
+ 			$this->error_message('Cannot delete last attribute from item. Must delete entire item!');
  			return false;
  		}
  		
@@ -674,7 +681,7 @@ class Node_record_tree2 {
  	//$args=array('somekey'=>array('value'=>'33','operator'=>'>'),'otherkey'=>'someval','query:mode'=>'and|or|not')
  	//		arguments can contain nested arrays without the key set to perform complex boolean operations
  	//$depth=true (for all levels) or integer [0+] (for specific number of levels)
- 	public function query($rootAddress='/',$args=array(),$depth=true,$suppressEvents=false,$pageSize=0,$pageNum=1,$onlySearch=false){
+ 	public function query($rootAddress='/',$args=array(),$depth=true,$suppressEvents=false,$onlySearch=false){
  		$validOperators=array('>','<','>=','<=','=','!=','like');
  		if(is_string($args)) $args=$this->parse_attribute_query_string($args);
  		//force trailing slash
@@ -743,14 +750,10 @@ class Node_record_tree2 {
  		$found=$this->query_boolean_sort($args);
  		//load items
  		$results=array();
- 		
- 		for($i=0;$i<count($found)-1;++$i){
- 			if(isset($found[$i])){
-	 			$cAddress=$found[$i];
-	 			$cItem=pull_item($this->get($cAddress,false,false,$suppressEvents));
-	 			if($cItem!==false){
-	 				$results[$cAddress]=$cItem;
-			  	}
+ 		foreach($found as $cur){
+ 			$cItem=pull_item($this->get($cur,false,false,$suppressEvents));
+ 			if($cItem!==false){
+ 				$results[$cur]=$cItem;
 		  	}
 		}
  		return $results;
@@ -1007,11 +1010,10 @@ class Node_record_tree2 {
 	//BEGIN private helper functions:
     //-------------------------------------------------------------------------------------
     private function error_message($string){
- 		if(!isset($this->parent->ini['front']['echo_tree_errors']) ||
- 			!$this->parent->ini['front']['echo_tree_errors']) return false;
- 		//do what you want, do all you can, break all the fucking rules and go to hell with superman
- 		echo $string." \t";
- 		//and die like a champion yeah hey!
+    	$this->lastError=$string;
+    
+ 		if(isset($this->parent->ini['front']['echo_tree_errors']) &&
+ 			$this->parent->ini['front']['echo_tree_errors']) echo $string." \t";
     }
     
     public function load_user_perms($address="/",$userId=false,$knowExists=false,$depth=false){
